@@ -1,15 +1,11 @@
-import datetime
-
-
 class Curso:
 
-    def __init__(self, nombre_curso, creditos, cant_hrs_semanales, costo_curso, nota,):
+    def __init__(self, nombre_curso, creditos, cant_hrs_semanales, costo_curso, nota):
         self.__nombre_curso = nombre_curso
         self.__creditos = creditos
         self.__cant_hrs_semanales = cant_hrs_semanales
         self._costo_curso = costo_curso
         self._nota = nota
-
 
     @property
     def nombre_curso(self):
@@ -82,8 +78,3 @@ class Curso:
         Costo de Curso: {self.costo_curso}
         Nota: {self.nota}
         '''
-
-
-if __name__ == '__main__':
-    curso1 = Curso("Lengua", 5, 40, 150, 90, "Maestria", datetime.date(2019, 12, 4), "Activo", "Armando")
-    print(curso1)
