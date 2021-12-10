@@ -36,7 +36,7 @@ class Estudiante(Persona):
         del self.__total_a_pagar
 
     def __str__(self):
-        return f"""
+        return f"""\033[93m
         Id.{self.id_estudiante} = {self.nombre} {self.apellido}
         Cedula: {self.cedula}
         Direccion: {self.direccion}
@@ -45,7 +45,7 @@ class Estudiante(Persona):
         Email: {self.email}
         Matricula: {self.matricula}
         Total a Pagar: {self.total_a_pagar}
-    """
+        """
 
 
 if __name__ == '__main__':

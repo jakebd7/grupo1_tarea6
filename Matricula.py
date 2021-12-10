@@ -55,7 +55,7 @@ class Matricula:
         for curso in self._curso:
             cursos_str += curso.__str__()
 
-        return f'''
+        return f'''\033[92m
         Fecha de la Matricula: {self.__fecha_matricula}
         Hora de la Matricula: {self.__hora_matricula}
         ID: {self.id_matricula}

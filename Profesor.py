@@ -14,7 +14,7 @@ class Profesor(Persona, TipoProfesor, Turno):
         Turno.__init__(self, turno)
 
     def __str__(self):
-        return f"""
+        return f"""\033[91m
         Id.{self.id_profesor} = {self.nombre} {self.apellido}
         Cedula: {self.cedula}
         Direccion: {self.direccion}

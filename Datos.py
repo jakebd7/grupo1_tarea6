@@ -18,8 +18,9 @@ try:
     profesor_max_cursos = int(input("Ingrese Cuantos es el Maximo de Cursos a impartir para un Profesor: "))
     profesor_min_cursos = int(input("Ingrese Cuantos es el Minimo de Cursos a impartir para un Profesor: "))
 
-    # min_estudiante_para_abrir_programa = int(input("Ingrese el minimo de estudiantes para abrir un Programa: "))
-    # max_estudiante_para_abrir_programa = int(input("Ingrese el maximo de estudiantes para abrir un Programa: "))
+    max_estudiante_para_abrir_programa = int(input("Ingrese el maximo de estudiantes para abrir un Programa: "))
+    min_estudiante_para_abrir_programa = int(input("Ingrese el minimo de estudiantes para abrir un Programa: "))
+
     #
     # min_estudiante_para_abrir_curso = int(input("Ingrese el minimo de estudiantes para abrir un curso: "))
     # max_estudiante_para_abrir_curso = int(input("Ingrese el maximo de estudiantes para abrir un curso: "))
@@ -70,17 +71,21 @@ try:
     if cursos_min_programa <= Programa.id_programa <= cursos_max_programa:
         if estudiante_min_programa <= Estudiante.id <= estudiante_max_programa:
             if profesor_min_cursos <= Profesor.id_profesor <= profesor_max_cursos:
-                print(matricula1, estudiante1, programa_leyes, curso_leyes_1, curso_leyes_2,
-                      profesor_curso_leyes)  # Insercion 1
-                print(matricula2, estudiante2, programa_python, curso_python_1, curso_python_2,
-                      profesor_curso_python)  # Insercion 2
-                print(matricula3, estudiante3, programa_java, curso_java_1, curso_java_2,
-                      profesor_curso_java)  # Insercion 3
+                if min_estudiante_para_abrir_programa <= Matricula.contador_matricula <= max_estudiante_para_abrir_programa:
 
-                print(matricula1, estudiante1, programa_python, curso_python_1, curso_python_2, programa_python,
-                      profesor_curso_python)  # Insercion 4
-                print(matricula1, estudiante1, programa_java, curso_java_1, curso_java_2,
-                      profesor_curso_java)  # Insercion 5
+                    print(matricula1, estudiante1, programa_leyes, curso_leyes_1, curso_leyes_2,
+                          profesor_curso_leyes)  # Insercion 1
+                    print(matricula2, estudiante2, programa_python, curso_python_1, curso_python_2,
+                          profesor_curso_python)  # Insercion 2
+                    print(matricula3, estudiante3, programa_java, curso_java_1, curso_java_2,
+                          profesor_curso_java)  # Insercion 3
+
+                    print(matricula1, estudiante1, programa_python, curso_python_1, curso_python_2, programa_python,
+                          profesor_curso_python)  # Insercion 4
+                    print(matricula1, estudiante1, programa_java, curso_java_1, curso_java_2,
+                          profesor_curso_java)  # Insercion 5
+                else:
+                    print("Error en la Matricula para abrir un Programa ")
             else:
                 print("Error en la cantidad de Cursos para un Profesor")
         else:

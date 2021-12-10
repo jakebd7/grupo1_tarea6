@@ -71,7 +71,7 @@ class Curso:
         self.__nombre_curso.append(curso)
 
     def __str__(self):
-        return f'''
+        return f'''\033[0m 
         Nombre del Curso: {self.__nombre_curso}
         Creditos: {self.__creditos}
         Cantidad de Horas Semanales: {self.__cant_hrs_semanales} 
