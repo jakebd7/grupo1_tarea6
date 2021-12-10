@@ -28,7 +28,7 @@ class Estudiante(Persona):
         return self.__total_a_pagar
 
     @total_a_pagar.setter
-    def total_a_pagar(self,total_a_pagar):
+    def total_a_pagar(self, total_a_pagar):
         self.__total_a_pagar= total_a_pagar
 
     @total_a_pagar.deleter
