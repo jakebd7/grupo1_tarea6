@@ -4,11 +4,11 @@ from Turno import Turno
 
 
 class Profesor(Persona, TipoProfesor, Turno):
-    id = 0
+    id_profesor = 0
 
     def __init__(self, nombre, apellido, cedula, direccion, telefono, nacimiento, email, tipo, turno):
-        Profesor.id += 1
-        self.id_profesor = Profesor.id
+        Profesor.id_profesor += 1
+        self.id_profesor = Profesor.id_profesor
         Persona.__init__(self, nombre, apellido, cedula, direccion, telefono, nacimiento, email)
         TipoProfesor.__init__(self, tipo)
         Turno.__init__(self, turno)
@@ -39,10 +39,3 @@ if __name__ == '__main__':
 
     profesor = Profesor(nombre, apellido, cedula, direccion, telefono, nacimiento, email, tipo, turno)
     print(profesor)
-#
-#     profesor1 = Profesor("Pedro", "Altamirano", "001-121212-10005K", "RepartoSchick", 88997711, "12-12-12",
-#                          "Pedroaltamirano@tecnasa.com")
-#     profesor2 = Profesor("Maria", "Ordonez", "001-121212-10005K", "RepartoSchick", 88997711, "12-12-12",
-#                          "mariaordonez@tecnasa.com")
-#     print(profesor1)
-#     print(profesor2)
