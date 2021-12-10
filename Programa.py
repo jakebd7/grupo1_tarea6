@@ -1,6 +1,9 @@
 class Programa:
+    id_programa = 0
 
     def __init__(self, nombre_programa, fecha, estado_programa, director):
+        Programa.id_programa += 1
+        self.id_programa = Programa.id_programa
         self.__nombre_programa = nombre_programa
         self.__fecha = fecha
         self.__estado_programa = estado_programa
@@ -56,6 +59,7 @@ class Programa:
 
     def __str__(self):
         return f'''
+        Id: {self.id_programa}
         Nombre del Programa: {self.__nombre_programa}
         Fecha de Creacion: {self.__fecha}
         Estado del Programa: {self.__estado_programa} 
