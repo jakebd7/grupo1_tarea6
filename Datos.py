@@ -26,9 +26,9 @@ try:
     # max_estudiante_para_abrir_curso = int(input("Ingrese el maximo de estudiantes para abrir un curso: "))
 
     """Programa, Profesor y Curso 1"""
-    programa_leyes = Programa("Auditoria en Leyes", time.ctime(), "Activo", "Juan Guarnizo")
+    programa_leyes = Programa("Auditoria en Leyes", time.ctime(), "Activo", "Juan Guarnizo", 5)
     profesor_curso_leyes = Profesor("Mario Jose", "Dolores Estrada", "001-121212-1225L", "Masatepe", 88997744,
-                                    "12 Dic 2012","josedolroes@gmail.com", "Planta", "Matutino")
+                                    "12 Dic 2012", "josedolroes@gmail.com", "Planta", "Matutino")
     curso_leyes_1 = Curso("Leyes 1", 3, 40, 150, 90)
     curso_leyes_2 = Curso("Leyes 2", 3, 40, 150, 90)
     curso_leyes_3 = Curso("Leyes 3", 3, 40, 150, 90)
@@ -36,7 +36,7 @@ try:
     curso_leyes_final = Curso("Leyes Final", 1, 40, 150, 90)
 
     """Programa, Profesor y Curso 2"""
-    programa_python = Programa("Programacion Python", time.ctime(), "Activo", "Luis Alguera")
+    programa_python = Programa("Programacion Python", time.ctime(), "Activo", "Luis Alguera", 5)
     profesor_curso_python = Profesor("Luisa Marbelly", "Ramirez Gollena", "001-121212-1225L", "Masatepe", 88997744,
                                      "12 Dic 2012", "luisagollena@gmail.com", "Planta", "Matutino")
     curso_python_1 = Curso("Python 1", 3, 45, 180, 95)
@@ -46,14 +46,16 @@ try:
     curso_python_final = Curso("Python Final", 1, 45, 180, 95)
 
     """Programa, Profesor y Curso 3"""
-    programa_java = Programa("Programacion Java", time.ctime(), "Activo", "Mario Sanches")
+    programa_java = Programa("Programacion Java", time.ctime(), "Activo", "Mario Sanches", 4)
     profesor_curso_java = Profesor("Francisco Mora", "Gutierre Urbina", "001-121212-1225L", "Masatepe", 88997744,
-                                   "12 Dic 2012","franurbina@gmail.com", "Parcial", "Matutino")
+                                   "12 Dic 2012", "franurbina@gmail.com", "Parcial", "Matutino")
     curso_java_1 = Curso("Java 1", 3, 45, 180, 95)
     curso_java_2 = Curso("Java 2", 3, 45, 180, 95)
     curso_java_3 = Curso("Java 3", 3, 45, 180, 95)
     curso_java_4 = Curso("Java 4", 3, 45, 180, 95)
     curso_java_final = Curso("Java Final", 1, 45, 180, 95)
+
+    # Estudiante.total_pagar_m()
 
     """Creacion de Estudiantes"""
     estudiante1 = Estudiante("Jekson de Jesus", "Pineda Vasquez", "001-180297-1005K", "Managua", 88991269, "12 Feb 1997",
@@ -63,12 +65,10 @@ try:
     estudiante3 = Estudiante("David", "Weber", "001-121195-5006Q", "Managua", 66998855, "12 Nov 1995,",
                              "davidweber@gmail.com", True)
 
-    l1 = [curso_leyes_1, curso_leyes_2]
-
     """Creacion de Matriculas"""
-    matricula1 = Matricula(time.ctime(), time.ctime(), l1)
-    matricula2 = Matricula(time.ctime(), datetime.time(), [curso_python_1, curso_python_2])
-    matricula3 = Matricula(time.ctime(), time.ctime(), [curso_java_1, curso_java_2])
+    matricula1 = Matricula(time.ctime(), time.ctime(), [curso_leyes_1, curso_leyes_2], estudiante1.id_estudiante)
+    matricula2 = Matricula(time.ctime(), datetime.time(), [curso_python_1, curso_python_2], estudiante2.id_estudiante)
+    matricula3 = Matricula(time.ctime(), time.ctime(), [curso_java_1, curso_java_2], estudiante3.id_estudiante)
 
     if cursos_min_programa <= Programa.id_programa <= cursos_max_programa:
         if estudiante_min_programa <= Estudiante.id <= estudiante_max_programa:

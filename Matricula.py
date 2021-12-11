@@ -5,13 +5,14 @@ class Matricula:
     contador_matricula = 0
     total_vendido = 0
 
-    def __init__(self, fecha_matricula, hora_matricula, curso):
+    def __init__(self, fecha_matricula, hora_matricula, curso, id_estudiante):
         Matricula.contador_matricula += 1
         self.id_matricula = Matricula.contador_matricula
         self.__fecha_matricula = fecha_matricula
         self.__hora_matricula = hora_matricula
         self._curso = curso
         self.total_vendido = 0
+        self.id_estudiante = id_estudiante
 
     def total_vendido(self):
         total = 0

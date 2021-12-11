@@ -1,4 +1,6 @@
 from Personas import Persona
+from Programa import Programa
+from Matricula import Matricula
 
 
 class Estudiante(Persona):
@@ -10,8 +12,7 @@ class Estudiante(Persona):
         self.id_estudiante = Estudiante.id
         Persona.__init__(self, nombre, apellido, cedula, direccion, telefono, nacimiento, email)
         self.__matricula = matricula
-        # Estudiante.total_pagar.__add__()
-        self.total_pagar = Estudiante.total_pagar
+        self.total_pagar = 0
 
     @property
     def matricula(self):
@@ -23,10 +24,20 @@ class Estudiante(Persona):
 
     @matricula.deleter
     def matricula(self):
-        del self.__matricula\
+        del self.__matricula
 
+    def total_pagar_m(self):
+        if Programa.duracion_programa == 5:
+            descuento = Matricula.total_vendido - (0.10 * Matricula.total_vendido)
+            return descuento
+        elif Programa.duracion_programa.getter == 4:
+            descuento = Matricula.total_vendido - (0.05 * Matricula.total_vendido)
+            return descuento
+        else:
+            return Matricula.total_vendido
 
     def __str__(self):
+        # Estudiante.total_pagar(self)
         return f"""\033[93m
         Id.{self.id_estudiante} = {self.nombre} {self.apellido}
         Cedula: {self.cedula}
@@ -35,6 +46,7 @@ class Estudiante(Persona):
         Nacimiento: {self.nacimiento}
         Email: {self.email}
         Matricula: {self.matricula}
+        Total a Pagar: {self.total_pagar_m()}
         """
 
 

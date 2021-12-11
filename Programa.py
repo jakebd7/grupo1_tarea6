@@ -1,13 +1,14 @@
 class Programa:
     id_programa = 0
 
-    def __init__(self, nombre_programa, fecha, estado_programa, director):
+    def __init__(self, nombre_programa, fecha, estado_programa, director, duracion_programa):
         Programa.id_programa += 1
         self.id_programa = Programa.id_programa
         self.__nombre_programa = nombre_programa
         self.__fecha = fecha
         self.__estado_programa = estado_programa
         self.__director = director
+        self.__duracion_programa = duracion_programa
 
     @property
     def nombre_programa(self):
@@ -57,6 +58,18 @@ class Programa:
     def director(self):
         del self.__director
 
+    @property
+    def duracion_programa(self):
+        return self.__duracion_programa
+
+    @duracion_programa.setter
+    def duracion_programa(self, duracion_programa):
+        self.__duracion_programa = duracion_programa
+
+    @duracion_programa.deleter
+    def duracion_programa(self):
+        del self.__duracion_programa
+
     def __str__(self):
         return f'''
         Id: {self.id_programa}
@@ -64,4 +77,5 @@ class Programa:
         Fecha de Creacion: {self.__fecha}
         Estado del Programa: {self.__estado_programa} 
         Director: {self.__director}       
+        Duracion del Programa: {self.duracion_programa} años
         '''
