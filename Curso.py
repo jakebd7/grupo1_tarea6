@@ -4,7 +4,7 @@ class Curso:
         self.__nombre_curso = nombre_curso
         self.__creditos = creditos
         self.__cant_hrs_semanales = cant_hrs_semanales
-        self._costo_curso = costo_curso
+        self.__costo_curso = costo_curso
         self._nota = nota
 
     @property
@@ -45,15 +45,15 @@ class Curso:
 
     @property
     def costo_curso(self):
-        return self._costo_curso
+        return self.__costo_curso
 
     @costo_curso.setter
     def costo_curso(self, costo_curso):
-        self._costo_curso = costo_curso
+        self.__costo_curso = costo_curso
 
     @costo_curso.deleter
     def costo_curso(self):
-        del self._costo_curso
+        del self.__costo_curso
 
     @property
     def nota(self):
@@ -75,6 +75,6 @@ class Curso:
         Nombre del Curso: {self.__nombre_curso}
         Creditos: {self.__creditos}
         Cantidad de Horas Semanales: {self.__cant_hrs_semanales} 
-        Costo de Curso: {self.costo_curso}
+        Costo de Curso: {self.__costo_curso}
         Nota: {self.nota}
         '''

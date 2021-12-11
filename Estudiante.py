@@ -3,13 +3,15 @@ from Personas import Persona
 
 class Estudiante(Persona):
     id = 0
+    total_pagar = 0
 
-    def __init__(self, nombre, apellido, cedula, direccion, telefono, nacimiento, email, matricula:bool, total_a_pagar:float):
+    def __init__(self, nombre, apellido, cedula, direccion, telefono, nacimiento, email, matricula:bool):
         Estudiante.id += 1
         self.id_estudiante = Estudiante.id
         Persona.__init__(self, nombre, apellido, cedula, direccion, telefono, nacimiento, email)
         self.__matricula = matricula
-        self.__total_a_pagar = total_a_pagar
+        # Estudiante.total_pagar.__add__()
+        self.total_pagar = Estudiante.total_pagar
 
     @property
     def matricula(self):
@@ -23,17 +25,6 @@ class Estudiante(Persona):
     def matricula(self):
         del self.__matricula\
 
-    @property
-    def total_a_pagar(self):
-        return self.__total_a_pagar
-
-    @total_a_pagar.setter
-    def total_a_pagar(self, total_a_pagar):
-        self.__total_a_pagar= total_a_pagar
-
-    @total_a_pagar.deleter
-    def total_a_pagar(self):
-        del self.__total_a_pagar
 
     def __str__(self):
         return f"""\033[93m
@@ -44,7 +35,6 @@ class Estudiante(Persona):
         Nacimiento: {self.nacimiento}
         Email: {self.email}
         Matricula: {self.matricula}
-        Total a Pagar: {self.total_a_pagar}
         """
 
 
@@ -57,7 +47,6 @@ if __name__ == '__main__':
     nacimiento = input("Ingrese su Fecha de Nacimiento Dia Mes Año: ")
     email = input("Ingrese un email: ")
     matricula = bool(input("Ingrese Estado de la Matricula: "))
-    total_a_pagar = float(input("Ingrese el Pago: "))
 
-    estudiante = Estudiante(nombre, apellido, cedula, direccion, telefono, nacimiento, email, matricula, total_a_pagar)
+    estudiante = Estudiante(nombre, apellido, cedula, direccion, telefono, nacimiento, email, matricula)
     print(estudiante)

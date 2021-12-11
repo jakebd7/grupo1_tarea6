@@ -57,16 +57,18 @@ try:
 
     """Creacion de Estudiantes"""
     estudiante1 = Estudiante("Jekson de Jesus", "Pineda Vasquez", "001-180297-1005K", "Managua", 88991269, "12 Feb 1997",
-                             "jeksonpineda@gmail.com", True, 150.12)
+                             "jeksonpineda@gmail.com", True)
     estudiante2 = Estudiante("Jason", "Ortiz", "001-121190-5006Q", "Managua", 66998855, "12 Nov 1990,",
-                             "jasonortiz@gmail.com", True, 150.12)
+                             "jasonortiz@gmail.com", True)
     estudiante3 = Estudiante("David", "Weber", "001-121195-5006Q", "Managua", 66998855, "12 Nov 1995,",
-                             "davidweber@gmail.com", True, 150.12)
+                             "davidweber@gmail.com", True)
+
+    l1 = [curso_leyes_1, curso_leyes_2]
 
     """Creacion de Matriculas"""
-    matricula1 = Matricula(time.ctime(), time.ctime(), "Auditoria en Leyes")
-    matricula2 = Matricula(time.ctime(), datetime.time(), "Programacion Python")
-    matricula3 = Matricula(time.ctime(), time.ctime(), "Programacion Java")
+    matricula1 = Matricula(time.ctime(), time.ctime(), l1)
+    matricula2 = Matricula(time.ctime(), datetime.time(), [curso_python_1, curso_python_2])
+    matricula3 = Matricula(time.ctime(), time.ctime(), [curso_java_1, curso_java_2])
 
     if cursos_min_programa <= Programa.id_programa <= cursos_max_programa:
         if estudiante_min_programa <= Estudiante.id <= estudiante_max_programa:
@@ -80,7 +82,7 @@ try:
                     print(matricula3, estudiante3, programa_java, curso_java_1, curso_java_2,
                           profesor_curso_java)  # Insercion 3
 
-                    print(matricula1, estudiante1, programa_python, curso_python_1, curso_python_2, programa_python,
+                    print(matricula1, estudiante1, programa_python, curso_python_1, curso_python_2,
                           profesor_curso_python)  # Insercion 4
                     print(matricula1, estudiante1, programa_java, curso_java_1, curso_java_2,
                           profesor_curso_java)  # Insercion 5

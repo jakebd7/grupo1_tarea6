@@ -3,13 +3,21 @@ import time
 
 class Matricula:
     contador_matricula = 0
+    total_vendido = 0
 
     def __init__(self, fecha_matricula, hora_matricula, curso):
         Matricula.contador_matricula += 1
         self.id_matricula = Matricula.contador_matricula
         self.__fecha_matricula = fecha_matricula
         self.__hora_matricula = hora_matricula
-        self._curso = list(curso)
+        self._curso = curso
+        self.total_vendido = 0
+
+    def total_vendido(self):
+        total = 0
+        for i in self._curso:
+            total += i.costo_curso
+        self.total_vendido = total
 
     @property
     def fecha_matricula(self):
@@ -47,10 +55,8 @@ class Matricula:
     def curso(self):
         del self._curso
 
-    def agregar_curso(self, curso):
-        self._curso.append(curso)
-
     def __str__(self):
+        Matricula.total_vendido(self)
         cursos_str = ''
         for curso in self._curso:
             cursos_str += curso.__str__()
@@ -60,7 +66,8 @@ class Matricula:
         Hora de la Matricula: {self.__hora_matricula}
         ID: {self.id_matricula}
         Inscripcion: {cursos_str}
-        '''
+        \033[92mTotal Vendido: {self.total_vendido}
+                '''
 
 
 if __name__ == '__main__':
