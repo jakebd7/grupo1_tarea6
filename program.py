@@ -1,11 +1,14 @@
 class Program:
-    def __init__(self, program_name = "None", creation_date_program = "None", program_status = "None", principal = "None", min_courses = "None", max_courses = "None"):
+    instances = []
+
+    def __init__(self, program_name = "None", creation_date_program = None, program_status = None, principal = None, min_courses = None, max_courses = None):
         self.__program_name = program_name
         self.__creation_date_program = creation_date_program
         self.__program_status = program_status
         self.__principal = principal
         self.__min_courses = min_courses
         self.__max_courses = max_courses
+        self.__class__.instances.append(self)
 
     @property
     def program_name(self):

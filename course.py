@@ -1,11 +1,15 @@
 class Course:
-    def __init__(self, course_name = "None", credits = "None", week_hours = "None", program = "None", min_students = "None", max_students = "None"):
+    instances = []
+
+    def __init__(self, course_name = None, credits = None, week_hours = None, program = None, price = None,min_students = None, max_students = None):
         self.__course_name = course_name
         self.__credits = credits
         self.__week_hours = week_hours
         self.__program = program
+        self.__price = price
         self.__min_students = min_students
         self.__max_students = max_students
+        self.__class__.instances.append(self)
 
     @property
     def course_name(self):
@@ -52,6 +56,18 @@ class Course:
         self.__program = value
 
     @property
+    def price(self):
+        return self.__price
+
+    @price.setter
+    def price(self, value):
+        self.__price = value
+
+    @price.deleter
+    def price(self):
+        del self.__price
+
+    @property
     def min_students(self):
         return self.__min_students
 
@@ -74,7 +90,10 @@ class Course:
     @max_students.deleter
     def max_students(self):
         del self.__max_students
-    
-    @program.deleter
-    def program(self):
-        del self.__program
+
+
+#class A:
+#    instances = []
+#    def __init__(self):
+#        self.__class__.instances.append(self)
+#print('\n'.join(A.instances))

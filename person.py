@@ -1,8 +1,9 @@
-import tuition
+#import tuition
+import time
 
 class Person:
     
-    def __init__(self, name = "None", last_name = "None", identification = "None", address = "None", phone_number = "None", date_birth = "None", email = "None", min_courses = "None", max_courses = "None"):
+    def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None, min_courses = None, max_courses = None):
         self.__name = name
         self.__last_name = last_name
         self.__identification = identification
@@ -123,10 +124,12 @@ class Person:
 
     def create_person(type):
         class Teacher(Person):
-            def __init__(self, name = "None", last_name = "None", identification = "None", address = "None", phone_number = "None", date_birth = "None", email = "None", id_teacher = "None"):
+            instances = [] 
+
+            def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None, id_teacher = None):
                 super(Teacher, self).__init__(name, last_name, identification, address, phone_number, date_birth , email)
-                self.__id_teacher = id_teacher
-                self.__courses = []
+                self.__id_teacher = time.strftime("%d%m%y%H%M%S") #id_teacher
+                self.__class__.instances.append(self)
 
             @property
             def id_teacher(self):
@@ -140,26 +143,18 @@ class Person:
             def id_teacher(self):
                 del self.__id_teacher
 
-            @property
-            def courses(self):
-                return self.__courses
-
-            @courses.setter
-            def courses(self, value):
-                self.__courses.append(value)
-
-            @courses.deleter
-            def courses(self):
-                del self.__courses
-
             def create_teacher(self):
                 print("Create teacher placeholder")
 
         class Student(Person):
-            def __init__(self, name = "None", last_name = "None", identification = "None", address = "None", phone_number = "None", date_birth = "None", email = "None", id_student = "None"):
+            instances = []    
+
+            def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None):
                 super(Student, self).__init__(name, last_name, identification, address, phone_number, date_birth , email)
-                self.__id_student = id_student
-                self.__courses = {}
+                self.__id_student = time.strftime("%d%m%y%H%M%S") #id_student
+                Student.instances.append(self)
+                print("Creado estudidante No.{}".format(len(Student.instances)))
+                #print("Instancias creadas: {}".format(Student.instances))
    
             @property
             def id_student(self):
@@ -171,19 +166,7 @@ class Person:
 
             @id_student.deleter
             def id_student(self):
-                del self.__id_student
-            
-            @property
-            def courses(self):
-                return self.__courses
-    
-            @courses.setter
-            def courses(self, value):
-                self.__courses[value] = value
-
-            @courses.deleter
-            def courses(self):
-                del self.__courses            
+                del self.__id_student            
             
             def enroll(self):
                 if len(self.__courses) <= 6:
@@ -191,7 +174,7 @@ class Person:
                 else:
                     return False
 
-            def total_cost(self):
+            def total_cost(self,):
 
                 print("Placeholder for total_fee.")
 
