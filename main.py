@@ -1,0 +1,191 @@
+__author__ = "Grupo 1"
+
+# ----------------------
+# Importación de Módulos
+# ----------------------
+
+from os import name, system
+# from catalogs import *
+
+
+# --------------------
+# Definición de Clases
+# --------------------
+
+
+class TextFormat:
+    """ Clase con Código de Escape para los Formato del Texto """
+    # https://en.wikipedia.org/wiki/ANSI_escape_code
+    RED = "\33[91m"
+    GREEN = "\033[92m"
+    YELLOW = "\033[93m"
+    BLUE = "\033[94m"
+    MAGENTA = "\033[95m"
+    CYAN = "\033[96m"
+    WHITE = "\033[97m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
+    BOLD_UNDERLINE = BOLD + UNDERLINE
+    CLEAR = "\033[0m"
+
+
+# ---------------------------------------
+# Declaración de funciones personalizadas
+# ---------------------------------------
+
+
+def clear_screen():
+    """Limpia pantalla dependiendo tipo del sistema operativo"""
+    if name == "nt":
+        system("cls")
+    else:
+        system("clear")
+
+
+def clear_flag():
+    """Limpia banderas"""
+    global selected_submenu2
+    selected_submenu2 = ""
+    global selected_submenu1
+    selected_submenu1 = ""
+    global selected_menu
+    selected_menu = ""
+    clear_screen()
+
+
+def invalid_selection():
+    """Selección invalida"""
+    input(f"\n{TextFormat.YELLOW}Selección invalida. Digite cualquier tecla para continuar...{TextFormat.CLEAR}")
+    global selected_submenu2
+    selected_submenu2 = ""
+    global selected_submenu1
+    selected_submenu1 = ""
+    global selected_menu
+    selected_menu = ""
+    clear_screen()
+
+
+# ----------------------------------------
+# Ejecución de las funciones mediante menú
+# ----------------------------------------
+
+
+system('COLOR')
+selected_menu = ""
+selected_submenu1 = ""
+selected_submenu2 = ""
+
+while selected_menu != "s":
+    print(f"{TextFormat.GREEN}\n--------------------- PROGRAMACIÓN Y ESPECIALIZACIÓN EN PYTHON ---------------------\n"
+          f"---------------------        Trabajo No. 6  - Grupo No. 1        ---------------------{TextFormat.CLEAR}")
+    print(f"{TextFormat.CYAN}\nMENÚ\n{TextFormat.CLEAR}"
+          f"[A] {TextFormat.BOLD_UNDERLINE}{TextFormat.BOLD}A{TextFormat.CLEAR}dministrar\n"
+          f"[V] {TextFormat.BOLD_UNDERLINE}V{TextFormat.CLEAR}erificar Alumno Activo\n"
+          f"[C] {TextFormat.BOLD_UNDERLINE}C{TextFormat.CLEAR}alcular Analítica\n"
+          f"[S] {TextFormat.BOLD_UNDERLINE}S{TextFormat.CLEAR}alir\n")
+    selected_menu = input("Digite una opción del menú: ").lower()
+    if selected_menu == "a":
+        clear_screen()
+        print(f"\n{TextFormat.CYAN}Sub Menú - Administrar Catálogos\n{TextFormat.CLEAR}"
+              f"[M] {TextFormat.BOLD_UNDERLINE}M{TextFormat.CLEAR}atriculas\n"
+              f"[N] {TextFormat.BOLD_UNDERLINE}N{TextFormat.CLEAR}otas\n"
+              f"[E] {TextFormat.BOLD_UNDERLINE}E{TextFormat.CLEAR}dificios\n"
+              f"[A] {TextFormat.BOLD_UNDERLINE}A{TextFormat.CLEAR}ulas\n"
+              f"[T] {TextFormat.BOLD_UNDERLINE}T{TextFormat.CLEAR}urnos\n"
+              f"[I] T{TextFormat.BOLD_UNDERLINE}i{TextFormat.CLEAR}po de Turnos\n"
+              f"[P] {TextFormat.BOLD_UNDERLINE}P{TextFormat.CLEAR}rogramas\n"
+              f"[C] {TextFormat.BOLD_UNDERLINE}C{TextFormat.CLEAR}ursos\n"
+              f"[O] Pr{TextFormat.BOLD_UNDERLINE}o{TextFormat.CLEAR}fesores\n"
+              f"[S] E{TextFormat.BOLD_UNDERLINE}s{TextFormat.CLEAR}tudiantes\n"
+              f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
+        selected_submenu1 = input("Digite una opción: ").lower()
+        if selected_submenu1 in "mneatipcos" and selected_submenu1 != "":
+            clear_screen()
+            print(f"\n{TextFormat.CYAN}Sub Menú - Acciones\n{TextFormat.CLEAR}"
+                  f"[A] {TextFormat.BOLD_UNDERLINE}A{TextFormat.CLEAR}gregar\n"
+                  f"[C] {TextFormat.BOLD_UNDERLINE}C{TextFormat.CLEAR}onsultar\n"
+                  f"[M] {TextFormat.BOLD_UNDERLINE}M{TextFormat.CLEAR}odificar\n"
+                  f"[E] {TextFormat.BOLD_UNDERLINE}E{TextFormat.CLEAR}liminar\n"
+                  f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
+            selected_submenu2 = input("Digite una opción: ").lower()
+            if selected_submenu2 in "acme" and selected_submenu2 != "":
+
+                pass
+                clear_flag()
+
+                # if selected_submenu1 == "m":
+                #     pass
+                #     clear_flag()
+                # if selected_submenu1 == "n":
+                #     pass
+                #     clear_flag()
+                # if selected_submenu1 == "e":
+                #     pass
+                #     clear_flag()
+                # if selected_submenu1 == "a":
+                #     pass
+                #     clear_flag()
+                # if selected_submenu1 == "t":
+                #     pass
+                #     clear_flag()
+                # if selected_submenu1 == "i":
+                #     pass
+                #     clear_flag()
+                # if selected_submenu1 == "p":
+                #     pass
+                #     clear_flag()
+                # if selected_submenu1 == "c":
+                #     pass
+                #     clear_flag()
+                # if selected_submenu1 == "o":
+                #     pass
+                #     clear_flag()
+                # if selected_submenu1 == "s":
+                #     pass
+                #     clear_flag()
+
+            elif selected_submenu2 == "r":
+                clear_flag()
+
+            else:
+                invalid_selection()
+
+        elif selected_submenu1 == "r":
+            clear_flag()
+
+        else:
+            invalid_selection()
+
+    elif selected_menu == "v":
+        pass
+        clear_flag()
+
+    elif selected_menu == "c":
+        clear_screen()
+        print(f"{TextFormat.CYAN}\nSub Menú - Calcular Analítica{TextFormat.CLEAR}\n"
+              "[P] Por programa\n"
+              "[D] Por estudiante\n"
+              "[R] Regresar al Menú Principal\n")
+        selected_submenu1 = input("Digite una opción: ").lower()
+        if selected_submenu1 == "p":
+            pass
+            clear_flag()
+        elif selected_submenu1 == "d":
+            pass
+            clear_flag()
+        elif selected_submenu1 == "r":
+            clear_flag()
+        else:
+            invalid_selection()
+
+    elif selected_menu == "s":
+        selected_menu = input(f"{TextFormat.YELLOW}\nDigite \"S\", si está seguro que desea salir del programa "
+                              f"(Tomar en cuenta que esto borrara toda la información creada): "
+                              f"{TextFormat.CLEAR}").lower()
+        if selected_menu != "s":
+            invalid_selection()
+        else:
+            clear_screen()
+
+    else:
+        invalid_selection()
