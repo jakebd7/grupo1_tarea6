@@ -58,6 +58,16 @@ class Tuition:
         self.__programs = getattr(program, "instances")
         self.__students = getattr(student,"instances_student")
 
+        for program_obj in self.__programs:
+            if program.program_name == program_obj.program_name:
+                if len(self.__programs_students[program.program_name]) < program_obj.min_students:
+                    program_obj.program_status = "No Aperturado"
+                elif len(self.__programs_students[program.program_name]) > program_obj.max_students:
+                    program_obj.program_status = "Aperturado"
+                    return print("No es posible agregar mas estudiantes al programa {}. Cuota máxima de estudiantes alcanzada.".format(program.program_name))
+                else:
+                    program_obj.program_status = "Aperturado"
+
         if not (program.program_name in self.__programs_students):
             for program_name in self.__programs_students:
                 if student.id_student in self.__programs_students[program_name]:
@@ -71,21 +81,23 @@ class Tuition:
             else:
                 self.__programs_students[program.program_name].append(student.id_student)
         
-        for program_obj in self.__programs:
-            if program.program_name == program_obj.program_name:
-                if len(self.__programs_students[program.program_name]) < program_obj.min_students:
-                    program_obj.program_status = "No aperturado"
-                elif len(self.__programs_students[program.program_name]) > program_obj.max_students:
-                    program_obj.program_status = "Capacidad maxima a"
-                else:
-                    program_obj.program_status = "Aperturado"
-        
         return print("Estudiante inscrito exitosamente en el programa {}.".format(program.program_name))
 
     def add_course(self, course, student):
         self.__courses = getattr(course,"instances")
 
         program_name = None
+
+        # Seteo del atributo course_status del objeto course
+        for course_obj in self.__courses:
+            if course.course_name == course_obj.course_name:
+                if len(self.__courses_students[course.course_name]) < course_obj.min_students:
+                    course_obj.course_status = "No Aperturado"
+                elif len(self.__courses_students[course.course_name]) > course_obj.max_students:
+                    course_obj.course_status = "Aperturado"
+                    return print("No es posible agregar mas estudiantes al programa {}. Cuota máxima de estudiantes alcanzada.".format(course.course_name))
+                else:
+                    course_obj.course_status = "Aperturado"
 
         # Verificar que el estudiante este inscrito a un programa
         for program in self.__programs_students:
