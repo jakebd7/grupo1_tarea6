@@ -1,8 +1,10 @@
-#import tuition
-import time
+import random
 
 class Person:
     
+    instances_teacher = []
+    instances_student = []
+
     def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None, min_courses = None, max_courses = None):
         self.__name = name
         self.__last_name = last_name
@@ -124,13 +126,11 @@ class Person:
 
     def create_person(type):
         class Teacher(Person):
-            instances = [] 
 
             def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None, id_teacher = None):
                 super(Teacher, self).__init__(name, last_name, identification, address, phone_number, date_birth , email)
-                self.__id_teacher = time.strftime("%d%m%y%H%M%S") #id_teacher
-                self.__class__.instances.append(self)
-
+                self.__id_teacher = int("{}{}{}".format(random.randint(10,99), random.randint(10,99), random.randint(10,99)))
+                Person.instances_teacher.append(self)
             @property
             def id_teacher(self):
                 return self.__id_teacher
@@ -147,14 +147,10 @@ class Person:
                 print("Create teacher placeholder")
 
         class Student(Person):
-            instances = []    
-
             def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None):
                 super(Student, self).__init__(name, last_name, identification, address, phone_number, date_birth , email)
-                self.__id_student = time.strftime("%d%m%y%H%M%S") #id_student
-                Student.instances.append(self)
-                print("Creado estudidante No.{}".format(len(Student.instances)))
-                #print("Instancias creadas: {}".format(Student.instances))
+                self.__id_student = int("{}{}{}".format(random.randint(10,99), random.randint(10,99), random.randint(10,99)))
+                Person.instances_student.append(self)
    
             @property
             def id_student(self):
@@ -168,15 +164,40 @@ class Person:
             def id_student(self):
                 del self.__id_student            
             
-            def enroll(self):
-                if len(self.__courses) <= 6:
-                    return True
-                else:
-                    return False
+            def enroll(self, tuition):
+                for course in tuition.courses_students:
+                    if self.__id_student in tuition.courses_students[course]:
+                        print("Estudiante con id {} esta matriculado.".format(self.__id_student))
+                        return True
 
-            def total_cost(self,):
+                return False
 
-                print("Placeholder for total_fee.")
+            def total_cost(self, tuition):
+                
+                program_name = str
+                discount = int
+                total_pay = 0
+
+                for program_name in tuition.programs_students:
+                    if self.__id_student in tuition.programs_students[program_name]:
+                        for i in tuition.programs:
+                            if i.program_name == program_name:
+                                if i.program_duration == 5:
+                                    discount = 0.9
+                                elif i.program_duration == 4:
+                                    discount = 0.95
+                                else:
+                                    return print("El programa de estudios no tiene duración de 5 o 4 años.")
+                                break
+                        break
+                        
+                for course in tuition.courses_students:
+                    if self.__id_student in tuition.courses_students[course]:
+                        for i in tuition.courses:
+                            if i.course_name == course:
+                                total_pay += (i.price * discount) 
+
+                return total_pay
 
         if (type == "Teacher"):
             return Teacher()

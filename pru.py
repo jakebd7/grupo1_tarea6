@@ -1,16 +1,15 @@
-class Pru:
-    instances = []
+# a = {"Matematica": {"Jose": 95, "Roberto": 10, "Juan": 74}, "Robotica": {"Maria": 75, "Miguel": 84, "Esteban": 63, "Timoteo": 49}, "Ingles": {"Jose": 17, "Miguel": 13}}
 
-    def __init__(self, name = None):
-        self.name = name
-        Pru.instances.append(self)
-        print("Creado estudidante No.{}".format(len(Pru.instances)))
-        print("Instancias creadas: {}".format(Pru.instances))
+def cicle(a,b):
 
-a = Pru("Juan")
-input()
-b = Pru("Maria")
-input()
-c = Pru("Roberto")
+    f = "Que tristesa"
 
-print(len(Pru.instances))
+    for i in range(a,b,1):
+        print(i)
+
+        if i == 5:
+            return print("que honda")
+
+    return f
+
+cicle(1,20)

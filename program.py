@@ -1,13 +1,19 @@
+import time
+
 class Program:
     instances = []
 
-    def __init__(self, program_name = "None", creation_date_program = None, program_status = None, principal = None, min_courses = None, max_courses = None):
+    def __init__(self, program_name = None):
         self.__program_name = program_name
-        self.__creation_date_program = creation_date_program
-        self.__program_status = program_status
-        self.__principal = principal
-        self.__min_courses = min_courses
-        self.__max_courses = max_courses
+        self.__creation_date_program = time.strftime("%d/%m/%y")
+        self.__program_status = ""
+        self.__principal = ""
+        self.__courses = []
+        self.__min_students = 0
+        self.__max_students = 0
+        self.__min_courses = 0
+        self.__max_courses = 0
+        self.__program_duration = 0
         self.__class__.instances.append(self)
 
     @property
@@ -62,21 +68,50 @@ class Program:
     def courses(self):
         return self.__courses
 
-    @courses.setter
-    def courses(self, value):
-        self.__courses = value
-
-    @courses.deleter
-    def courses(self):
-        del self.courses    
-
     @property
     def min_courses(self):
         return self.__min_courses
 
+    @property
+    def min_students(self):
+        return self.__min_students
+
+    @min_students.setter
+    def min_students(self, value):
+        if self.__min_students == 0:
+            return print("Debe establecer primero la cantidad máxima de estudiantes que tendra el programa.")
+        elif value > self.__min_students:
+            return print("La cantidad minima de estudiantes del programa debe ser menor a la cantidad máxima de estudiantes.")
+        else:
+            self.__min_students = value
+
+    @min_students.deleter
+    def min_students(self):
+        del self.__min_students
+
+    @property
+    def max_students(self):
+        return self.__max_students
+
+    @max_students.setter
+    def min_students(self, value):
+        if value < self.__min_students:
+            return print("La cantidad máxima de estudiantes del programa debe ser mayor a la cantidad minima de estudiantes.")
+        else:
+            self.__max_students = value
+
+    @max_students.deleter
+    def max_students(self):
+        del self.__max_students
+
     @min_courses.setter
     def min_courses(self, value):
-        self.__min_courses = value
+        if self.__max_courses == 0:
+            return print("Debe establecer primero la cantidad máxima de cursos que tendra el programa.")
+        elif value > self.__max_courses:
+            return print("La cantidad minima de cursos del programa debe ser menor a la cantidad máxima de cursos.")
+        else:
+            self.__min_courses = value
 
     @min_courses.deleter
     def min_courses(self):
@@ -88,11 +123,37 @@ class Program:
 
     @max_courses.setter
     def max_courses(self, value):
-        self.__max_courses = value
+        if value < self.__min_courses:
+            return print("La cantidad máxima de cursos del programa debe ser mayor a la cantidad minima de cursos.")
+        else:
+            self.__max_courses = value
 
     @max_courses.deleter
     def max_courses(self):
         del self.__max_courses
+
+    @property
+    def program_duration(self):
+        return self.__program_duration
+
+    @program_duration.setter
+    def program_duration(self, value):
+        if value == 5 or value == 4:
+            self.__program_duration = value
+        else:
+            print("La duración del programa unicamente puede ser 5 o 4 años.")
+
+    @program_duration.deleter
+    def program_duration(self):
+        del self.__program_duration
     
-    def manage_program(self):
-        pass
+    def add_course(self, course):
+        if (len(self.__courses) + 1) > self.__max_courses:
+            return print("No es posible agregar mas cursos al programa {}. El programa ya ha alcanza su cuota máxima de cursos".format( self.__program_name))
+        else:
+            for i in range(0, len(self.__courses),1):
+                if course.course_name == self.__courses[i].course_name:
+                    return print("Ya existe un curso con el nombre {} en el programa {}".format(course.course_name, self.__program_name))
+            
+            self.__courses.append(course)
+            return print("Curso {} agregado existosamente al programa {}".format(course.course_name, self.__program_name))

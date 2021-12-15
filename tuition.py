@@ -6,7 +6,9 @@ class Tuition:
         self.__tuition_hour = time.strftime("%H%M%S")
         self.__students = []
         self.__courses = []
+        self.__programs = []
         self.__courses_students = {}
+        self.__programs_students = {}
   
     @property
     def tuition_date(self):
@@ -16,7 +18,7 @@ class Tuition:
     def tuition_date(self, value):
         self.__tuition_date = value
 
-    @tuition_date.setter
+    @tuition_date.deleter
     def tuition_date(self):
         del self.__tuition_date
 
@@ -36,46 +38,105 @@ class Tuition:
     def students(self):
         return self.__students
 
-    @students.setter
-    def students(self, value):
-        self.__students.append(value)
-
-    @students.setter
-    def students(self):
-        del self.__students
-
     @property
     def courses(self):
         return self.__courses
 
-    @courses.setter
-    def courses(self, value):
-        self.__courses.append(value)
-
-    @courses.setter
-    def courses(self):
-        del self.__courses
-
+    @property
+    def programs(self):
+        return self.__programs
+    
     @property
     def courses_students(self):
         return self.__courses_students
     
+    @property
+    def programs_students(self):
+        return self.__programs_students
+
+    def add_program(self, program, student):
+        self.__programs = getattr(program, "instances")
+        self.__students = getattr(student,"instances_student")
+
+        if not (program.program_name in self.__programs_students):
+            for program_name in self.__programs_students:
+                if student.id_student in self.__programs_students[program_name]:
+                    return print("El estudiante con id {} se encuentra inscrito en el {}. El estudiante no sera inscrito en otro programa".format(student.id_student, program_name))
+                
+            self.__programs_students[program.program_name] = [student.id_student]
+            
+        else:
+            if student.id_student in self.__programs_students[program.program_name]:
+                return print("El estudiante con id {} ya se encuentra inscrito en este programa.".format(student.id_student))
+            else:
+                self.__programs_students[program.program_name].append(student.id_student)
+        
+        for program_obj in self.__programs:
+            if program.program_name == program_obj.program_name:
+                if len(self.__programs_students[program.program_name]) < program_obj.min_students:
+                    program_obj.program_status = "No aperturado"
+                elif len(self.__programs_students[program.program_name]) > program_obj.max_students:
+                    program_obj.program_status = "Capacidad maxima a"
+                else:
+                    program_obj.program_status = "Aperturado"
+        
+        return print("Estudiante inscrito exitosamente en el programa {}.".format(program.program_name))
+
     def add_course(self, course, student):
-        self.__courses.append(getattr(course,'instances'))
-        self.__students.append(getattr(student,'instances'))
-        if (course.course_name in self.__courses_students) == False:
+        self.__courses = getattr(course,"instances")
+
+        program_name = None
+
+        # Verificar que el estudiante este inscrito a un programa
+        for program in self.__programs_students:
+            if student.id_student in self.__programs_students[program]:
+                program_name = program
+                break
+
+        if program_name == None:
+            return print("El estudiante debe estar inscrito en algun programa para ser agregado en algun curso.")
+        
+        # Verificar que el programa tiene la cantidad minima de cursos establecidos
+        for program in self.__programs:
+            if program.program_name == program_name:
+                if (len(program.courses) <= program.min_courses):
+                    return print("El programa aun no cuenta con la cantidad minima de cursos para que se inscriban estudiantes.")
+        
+        # Verificar que el curso esta dentro del programa al que esta inscrito el estudiante
+        for program in self.__programs:
+            if program.program_name == program_name:
+                if not (course.course_name in program.courses):
+                    return print("No existe un curso con el nombre {} en el programa que se encuentra inscrito el estudiante.".format(course.course_name))
+        
+        # Agregar estudiante a un curso
+        if not (course.course_name in self.__courses_students):
             self.__courses_students[course.course_name] = {student.id_student: None}
+            return print("Estudiante con id {} agregado exitosamente al curso {}".format(student.id_student, course.course_name))
+        elif student.id_student in self.__courses_students[course.course_name]:
+            return print("El estudiante con id {} ya se encuentra inscrito en el curso {}.".format(student.id_student, course.course_name))
         else:
             self.__courses_students[course.course_name][student.id_student] = None
+            return print("Estudiante con id {} agregado exitosamente al curso {}".format(student.id_student, course.course_name))
 
     def add_note(self, course, student, note):
-        self.__courses_students[course][student.id_student] = note
+       
+        if not (course.course_name in self.__courses_students):
+            return print("No existe el curso {}.".format(course.course_name))
+        elif not(student.id_student in self.__courses_students[course.course_name]):
+            return print("No existe un estudiante con el id {}.".format(student.id_student))
+        else:
+            self.__courses_students[course.course_name][student.id_student] = note
+            return print("Nota agregada exitosamente.")
+
 
     def total_fee(self):
-        for i in self.__courses:
-            print("El nombre del curso es: {}".format(i.course_name))
-        #total = 0
-        #for course in self.__courses:
-        #    total = total + (len(self.__courses_students[course.course_name]) * course.price)
+        total_pay = 0
+        
+        if len(self.__courses_students) == 0:
+            print("No hay estudiantes inscritos a cursos.")
+            return total_pay
+        
+        for course in self.__courses:
+            total_pay += (len(self.__courses_students[course.course_name]) * course.price)
 
-        #return total
+        return total_pay
