@@ -1,4 +1,4 @@
-# a = {"Matematica": {"Jose": 95, "Roberto": 10, "Juan": 74}, "Robotica": {"Maria": 75, "Miguel": 84, "Esteban": 63, "Timoteo": 49}, "Ingles": {"Jose": 17, "Miguel": 13}}
+#a = {"Matematica": {"Jose": 95, "Roberto": 10, "Juan": 74}, "Robotica": {"Maria": 75, "Miguel": 84, "Esteban": 63, "Timoteo": 49}, "Ingles": {"Jose": 17, "Miguel": 13}}
 
 def cicle(a,b):
 

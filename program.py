@@ -6,7 +6,7 @@ class Program:
     def __init__(self, program_name = None):
         self.__program_name = program_name
         self.__creation_date_program = time.strftime("%d/%m/%y")
-        self.__program_status = ""
+        self.__program_status = None
         self.__principal = ""
         self.__courses = []
         self.__min_students = 0
@@ -69,18 +69,14 @@ class Program:
         return self.__courses
 
     @property
-    def min_courses(self):
-        return self.__min_courses
-
-    @property
     def min_students(self):
         return self.__min_students
 
     @min_students.setter
     def min_students(self, value):
-        if self.__min_students == 0:
+        if self.__max_students == 0:
             return print("Debe establecer primero la cantidad máxima de estudiantes que tendra el programa.")
-        elif value > self.__min_students:
+        elif value > self.__max_students:
             return print("La cantidad minima de estudiantes del programa debe ser menor a la cantidad máxima de estudiantes.")
         else:
             self.__min_students = value
@@ -94,7 +90,7 @@ class Program:
         return self.__max_students
 
     @max_students.setter
-    def min_students(self, value):
+    def max_students(self, value):
         if value < self.__min_students:
             return print("La cantidad máxima de estudiantes del programa debe ser mayor a la cantidad minima de estudiantes.")
         else:
@@ -103,6 +99,10 @@ class Program:
     @max_students.deleter
     def max_students(self):
         del self.__max_students
+
+    @property
+    def min_courses(self):
+        return self.__min_courses
 
     @min_courses.setter
     def min_courses(self, value):

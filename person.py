@@ -5,7 +5,7 @@ class Person:
     instances_teacher = []
     instances_student = []
 
-    def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None, min_courses = None, max_courses = None):
+    def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None):
         self.__name = name
         self.__last_name = last_name
         self.__identification = identification
@@ -13,8 +13,8 @@ class Person:
         self.__phone_number = phone_number
         self.__date_birth = date_birth
         self.__email = email
-        self.__min_courses = min_courses
-        self.__max_courses = max_courses
+        self.__min_courses = 0
+        self.__max_courses = 0
 
     @property
     def name(self):
@@ -106,7 +106,12 @@ class Person:
 
     @min_courses.setter
     def min_courses(self, value):
-        self.__min_courses = value
+        if self.__max_courses == 0:
+            return print("Debe establecer primero la cantidad máxima de cursos.")
+        elif value > self.__max_courses:
+            return print("La cantidad minima de cursos debe ser menor a la cantidad máxima de cursos.")
+        else:
+            self.__min_courses = value
 
     @min_courses.deleter
     def min_courses(self):
@@ -118,7 +123,10 @@ class Person:
 
     @max_courses.setter
     def max_courses(self, value):
-        self.__max_courses = value
+        if value < self.__min_courses:
+            return print("La cantidad máxima de cursos debe ser mayor a la cantidad minima de cursos.")
+        else:
+            self.__max_courses = value
 
     @max_courses.deleter
     def max_courses(self):
@@ -130,7 +138,35 @@ class Person:
             def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None, id_teacher = None):
                 super(Teacher, self).__init__(name, last_name, identification, address, phone_number, date_birth , email)
                 self.__id_teacher = int("{}{}{}".format(random.randint(10,99), random.randint(10,99), random.randint(10,99)))
+                self.__courses = []
+                self.__teacher_type = None
+                self.__turn = None
                 Person.instances_teacher.append(self)
+
+            @property
+            def teacher_type(self):
+                return self.__teacher_type
+
+            @teacher_type.setter
+            def teacher_type(self, value):
+                self.__teacher_type = value
+
+            @teacher_type.deleter
+            def teacher_type(self):
+                del self.__teacher_type
+
+            @property
+            def turn(self):
+                return self.__turn
+
+            @turn.setter
+            def turn(self, value):
+                self.__turn = value
+
+            @turn.deleter
+            def turn(self):
+                del self.__turn
+
             @property
             def id_teacher(self):
                 return self.__id_teacher
@@ -150,6 +186,7 @@ class Person:
             def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None):
                 super(Student, self).__init__(name, last_name, identification, address, phone_number, date_birth , email)
                 self.__id_student = int("{}{}{}".format(random.randint(10,99), random.randint(10,99), random.randint(10,99)))
+                self.__discount_grades = 1
                 Person.instances_student.append(self)
    
             @property
@@ -175,7 +212,8 @@ class Person:
             def total_cost(self, tuition):
                 
                 program_name = str
-                discount = int
+                no_discount = False
+                discount_duration = 1
                 total_pay = 0
 
                 for program_name in tuition.programs_students:
@@ -183,9 +221,9 @@ class Person:
                         for i in tuition.programs:
                             if i.program_name == program_name:
                                 if i.program_duration == 5:
-                                    discount = 0.9
+                                    discount_duration = 0.9
                                 elif i.program_duration == 4:
-                                    discount = 0.95
+                                    discount_duration = 0.95
                                 else:
                                     return print("El programa de estudios no tiene duración de 5 o 4 años.")
                                 break
@@ -195,7 +233,21 @@ class Person:
                     if self.__id_student in tuition.courses_students[course]:
                         for i in tuition.courses:
                             if i.course_name == course:
-                                total_pay += (i.price * discount) 
+                                total_pay += (i.price * discount_duration) 
+
+                total_pay *= self.__discount_grades
+
+                for course in tuition.courses_students:
+                    if self.__id_student in tuition.courses_students[course]:
+                        if  tuition.courses_students[course][self.__id_student] == None:
+                            pass
+                        elif tuition.courses_students[course][self.__id_student] < 90:
+                            no_discount = True
+
+                if no_discount == False:
+                    self.__discount_grades = 0.9 # descuento del 10 %
+                else:
+                    self.__discount_grades = 1    
 
                 return total_pay
 
