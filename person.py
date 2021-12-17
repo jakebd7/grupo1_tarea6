@@ -5,13 +5,14 @@ class Person:
     instances_teacher = []
     instances_student = []
 
-    def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None):
+    def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, age = None, email = None):
         self.__name = name
         self.__last_name = last_name
         self.__identification = identification
         self.__address = address
         self.__phone_number = phone_number
         self.__date_birth = date_birth
+        self.__age = age
         self.__email = email
         self.__min_courses = 0
         self.__max_courses = 0
@@ -75,6 +76,21 @@ class Person:
     @phone_number.deleter
     def phone_number(self):
         del self.__phone_number
+
+    @property
+    def age(self):
+        return self.__age
+
+    @age.setter
+    def age(self, value):
+        if value >= 16:
+            self.__age = value
+        else:
+            return print("Los estudiantes y profesores deben tener una edad igual o superior a 16 años.")
+
+    @age.deleter
+    def age(self):
+        del self.__age
 
     @property
     def date_birth(self):

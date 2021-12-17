@@ -1,6 +1,8 @@
 import time
 
 class Tuition:
+    instances = []
+
     def __init__(self,):
         self.__tuition_date = time.strftime("%d/%m/%y")
         self.__tuition_hour = time.strftime("%H%M%S")
@@ -9,6 +11,8 @@ class Tuition:
         self.__programs = []
         self.__courses_students = {}
         self.__programs_students = {}
+        self.__credits_students = {}
+        self.__class__.instances.append(self)
   
     @property
     def tuition_date(self):
@@ -53,6 +57,10 @@ class Tuition:
     @property
     def programs_students(self):
         return self.__programs_students
+
+    @property
+    def credits_students(self):
+        return self.__credits_students
 
     def add_program(self, program, student):
         self.__programs = getattr(program, "instances")
@@ -141,8 +149,15 @@ class Tuition:
             return print("No existe el curso {}.".format(course.course_name))
         elif not(student.id_student in self.__courses_students[course.course_name]):
             return print("No existe un estudiante con el id {}.".format(student.id_student))
+        elif course.credits == None:
+            return print("No ha establecido los creditos del curso {}.".format(course.course_name))
         else:
             self.__courses_students[course.course_name][student.id_student] = note
+            if self.__courses_students[course.course_name][student.id_student] >= 60:
+                if not (student.id_student in self.__credits_students):
+                    self.__credits_students[student.id_student] = course.credits
+                else:
+                    self.__credits_students[student.id_student] += course.credits
             return print("Nota agregada exitosamente.")
 
 
