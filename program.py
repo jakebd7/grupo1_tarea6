@@ -75,9 +75,10 @@ class Program:
     @min_students.setter
     def min_students(self, value):
         if self.__max_students == 0:
-            return print("Debe establecer primero la cantidad máxima de estudiantes que tendra el programa.")
+            return print("\nDebe establecer primero la cantidad máxima de estudiantes que tendra el programa.")
         elif value > self.__max_students:
-            return print("La cantidad minima de estudiantes del programa debe ser menor a la cantidad máxima de estudiantes.")
+            print("\nLa cantidad mínima de estudiantes del programa debe ser menor a la cantidad máxima de estudiantes.")
+            return False
         else:
             self.__min_students = value
 
@@ -92,7 +93,8 @@ class Program:
     @max_students.setter
     def max_students(self, value):
         if value < self.__min_students:
-            return print("La cantidad máxima de estudiantes del programa debe ser mayor a la cantidad minima de estudiantes.")
+            print("\nLa cantidad máxima de estudiantes del programa debe ser mayor a la cantidad minima de estudiantes.")
+            return False
         else:
             self.__max_students = value
 
@@ -107,9 +109,10 @@ class Program:
     @min_courses.setter
     def min_courses(self, value):
         if self.__max_courses == 0:
-            return print("Debe establecer primero la cantidad máxima de cursos que tendra el programa.")
+            return print("\nDebe establecer primero la cantidad máxima de cursos que tendra el programa.")
         elif value > self.__max_courses:
-            return print("La cantidad minima de cursos del programa debe ser menor a la cantidad máxima de cursos.")
+            print("\nLa cantidad mínima de cursos del programa debe ser menor a la cantidad máxima de cursos.")
+            return False
         else:
             self.__min_courses = value
 
@@ -124,7 +127,8 @@ class Program:
     @max_courses.setter
     def max_courses(self, value):
         if value < self.__min_courses:
-            return print("La cantidad máxima de cursos del programa debe ser mayor a la cantidad minima de cursos.")
+            print("\nLa cantidad máxima de cursos del programa debe ser mayor a la cantidad minima de cursos.")
+            return False
         else:
             self.__max_courses = value
 
@@ -141,7 +145,8 @@ class Program:
         if value == 5 or value == 4:
             self.__program_duration = value
         else:
-            print("La duración del programa unicamente puede ser 5 o 4 años.")
+            print("\nLa duración del programa unicamente puede ser 5 o 4 años.")
+            return False
 
     @program_duration.deleter
     def program_duration(self):
