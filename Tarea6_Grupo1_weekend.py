@@ -121,7 +121,7 @@ while selected_menu != "s":
                 if selected_submenu2 == "a":
                     if selected_submenu1 == "p":
                         clear_screen()
-                        print(f"\n{TextFormat.CYAN}Creación de Nuevo Programa\n{TextFormat.CLEAR}")
+                        print(f"\n{TextFormat.CYAN}Creación de Nuevo Programa{TextFormat.CLEAR}")
                         program_name = str
                         while True:
                             try:
@@ -259,8 +259,13 @@ while selected_menu != "s":
                                 clear_flag()
                                 break
                             elif verification == "n":
-                                print(f"\nEl programa {locals()[program_name].program_name} no se creara.")
-                                del locals()[program_name]                                
+                                print(f"\n{TextFormat.CYAN}El programa \"{locals()[program_name].program_name}\" no se creara.{TextFormat.CLEAR}")
+                                for instance in Program.instances:
+                                    if locals()[program_name] == instance:
+                                        instance_index = Program.instances.index(instance)
+                                        del Program.instances[instance_index]
+                                del locals()[program_name]
+                                                                
                                 input("\nPulse enter para continuar.")
                                 clear_flag()
                                 break
