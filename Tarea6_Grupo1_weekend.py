@@ -187,12 +187,12 @@ while selected_menu != "s":
 
                         while True:
                             try:
-                                entrada = int(input("\nMáxima cantidad de alumnos: "))
-                                if entrada <= 0:
-                                    locals()[program_name].max_students = entrada
+                                max_students = int(input("\nMáxima cantidad de alumnos: "))
+                                if max_students <= 0:
+                                    locals()[program_name].max_students = max_students
                                     raise SyntaxError    
                                 else:
-                                    locals()[program_name].max_students = entrada
+                                    locals()[program_name].max_students = max_students
                             except ValueError:
                                 print("\nDebe ingresar únicamente números enteros positivos.")
                             except SyntaxError:
@@ -202,12 +202,12 @@ while selected_menu != "s":
 
                         while True:
                             try:
-                                entrada = int(input("\nMínima cantidad de alumnos: "))
-                                if entrada < 0:
-                                    locals()[program_name].min_students = entrada
+                                min_students = int(input("\nMínima cantidad de alumnos: "))
+                                if min_students < 0:
+                                    locals()[program_name].min_students = min_students
                                     raise SyntaxError    
                                 else:
-                                    locals()[program_name].min_students = entrada
+                                    locals()[program_name].min_students = min_students
                             except ValueError:
                                 print("\nDebe ingresar únicamente números enteros positivos.")
                             except SyntaxError:
@@ -217,12 +217,12 @@ while selected_menu != "s":
 
                         while True:
                             try:
-                                entrada = int(input("\nMáxima cantidad de cursos: "))
-                                if entrada <= 0:
-                                    locals()[program_name].max_courses = entrada
+                                max_courses = int(input("\nMáxima cantidad de cursos: "))
+                                if max_courses <= 0:
+                                    locals()[program_name].max_courses = max_courses
                                     raise SyntaxError    
                                 else:
-                                    locals()[program_name].max_courses = entrada
+                                    locals()[program_name].max_courses = max_courses
                             except ValueError:
                                 print("\nDebe ingresar únicamente números enteros positivos.")
                             except SyntaxError:
@@ -232,12 +232,12 @@ while selected_menu != "s":
 
                         while True:
                             try:
-                                entrada = int(input("\nMínima cantidad de cursos: "))
-                                if entrada < 0:
-                                    locals()[program_name].min_courses = entrada
+                                min_courses = int(input("\nMínima cantidad de cursos: "))
+                                if min_courses < 0:
+                                    locals()[program_name].min_courses = min_courses
                                     raise SyntaxError    
                                 else:
-                                    locals()[program_name].min_courses = entrada
+                                    locals()[program_name].min_courses = min_courses
                             except ValueError:
                                 print("\nDebe ingresar únicamente números enteros positivos.")
                             except SyntaxError:
@@ -248,12 +248,12 @@ while selected_menu != "s":
 
                         while True:
                             try:
-                                entrada = int(input("\nDuración del programa en años: "))  
-                                if entrada != 4 and entrada != 5:
-                                    locals()[program_name].program_duration = entrada
+                                program_duration = int(input("\nDuración del programa en años: "))  
+                                if program_duration != 4 and program_duration != 5:
+                                    locals()[program_name].program_duration = program_duration
                                     raise SyntaxError    
                                 else:
-                                    locals()[program_name].program_duration = entrada
+                                    locals()[program_name].program_duration = program_duration
                             except ValueError:
                                 print("\nDebe ingresar únicamente números enteros positivos.")
                             except SyntaxError:
@@ -350,7 +350,7 @@ while selected_menu != "s":
                                         try:
                                             new_program_name = input("\nIngrese nuevo nombre del programa: ")
                                             only_white_spaces = True
-                                            for i in program_name:
+                                            for i in new_program_name:
                                                 if i != " ":
                                                     only_white_spaces = False
                                                     break
@@ -358,7 +358,7 @@ while selected_menu != "s":
                                             if only_white_spaces == True:
                                                 raise ValueError("\nEl nuevo nombre del programa no debe contener únicamente espacios vacíos.")
 
-                                            for i in program_name:
+                                            for i in new_program_name:
                                                 if i.isalnum() == False:
                                                     if i != " ":                                        
                                                         raise ValueError("\nEl nuevo nombre del programa solo puede contener letras, números y espacios vacíos.")
@@ -386,7 +386,7 @@ while selected_menu != "s":
                                             
                                             del locals()[program_name]               
                                             Program.instances.append(locals()[new_program_name])
-                                            print(f"\nEl nuevo nombre del programa es \"{locals()[new_program_name].program_name}\"")
+                                            print(f"\nEl nuevo nombre del programa es \"{locals()[new_program_name].program_name}\".")
                                             break
                                         elif change_check == "n":
                                             print(f"\nNo se realizo níngun cambio, el nombre del programa continua siendo \"{locals()[program_name].program_name}\".")
@@ -402,7 +402,7 @@ while selected_menu != "s":
                                         try:
                                             new_principal = input("\nIngrese nuevo nombre del director del programa: ")
                                             only_white_spaces = True
-                                            for i in program_name:
+                                            for i in new_principal:
                                                 if i != " ":
                                                     only_white_spaces = False
                                                     break
@@ -410,7 +410,7 @@ while selected_menu != "s":
                                             if only_white_spaces == True:
                                                 raise ValueError("\nEl nuevo nombre del director del programa no debe contener únicamente espacios vacíos.")
 
-                                            for i in program_name:
+                                            for i in new_principal:
                                                 if i.isalnum() == False:
                                                     if i != " ":                                        
                                                         raise ValueError("\nEl nuevo nombre del director del programa solo puede contener letras, números y espacios vacíos.")
@@ -424,7 +424,7 @@ while selected_menu != "s":
                                         change_check = input(f"\nConfirme que desea cambiar el nombre del director del programa de \"{locals()[program_name].principal}\" a \"{new_principal}\" (S/N): ").lower()
                                         if change_check == "s":
                                             locals()[program_name].principal = new_principal                                                          
-                                            print(f"\nEl nuevo nombre del director del programa es \"{locals()[program_name].principal}\"")
+                                            print(f"\nEl nuevo nombre del director del programa es \"{locals()[program_name].principal}\".")
                                             break
                                         elif change_check == "n":
                                             print(f"\nNo se realizo níngun cambio, el nombre del director del programa continua siendo \"{locals()[program_name].principal}\".")
@@ -435,37 +435,149 @@ while selected_menu != "s":
                                 elif selected_submenu3 == "e": 
                                     clear_screen()
                                     print(f"\n{TextFormat.CYAN}Modificar Cantidad Máxima de Alumnos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
-                                    new_max_students = str
+
+                                    new_max_students = int                               
                                     while True:
                                         try:
-                                            new_max_students = int(input("\nIngrese nuevo nombre del director del programa: "))
-                                            only_white_spaces = True
-                                            for i in program_name:
-                                                if i != " ":
-                                                    only_white_spaces = False
-                                                    break
-                                    
-                                            if only_white_spaces == True:
-                                                raise ValueError("\nEl nuevo nombre del director del programa no debe contener únicamente espacios vacíos.")
-
-                                            for i in program_name:
-                                                if i.isalnum() == False:
-                                                    if i != " ":                                        
-                                                        raise ValueError("\nEl nuevo nombre del director del programa solo puede contener letras, números y espacios vacíos.")
-
-                                        except ValueError as arg:
-                                            print(arg)
+                                            new_max_students = int(input("\nIngrese la nueva cantidad máxima de alumnos que tendra el programa: "))
+                                            if new_max_students <= 0 or new_max_students < locals()[program_name].min_students:
+                                                locals()[program_name].max_students = new_max_students
+                                                raise SyntaxError
+                                        except ValueError:
+                                            print("\nDebe ingresar únicamente números enteros positivos.")
+                                        except SyntaxError:
+                                            continue
                                         else:
                                             break
                                     
                                     while True:
-                                        change_check = input(f"\nConfirme que desea cambiar el nombre del director del programa de \"{locals()[program_name].principal}\" a \"{new_principal}\" (S/N): ").lower()
+                                        change_check = input(f"\nConfirme que desea cambiar la cantidad máxima de alumnos del programa de \"{locals()[program_name].max_students}\" a \"{new_max_students}\" (S/N): ").lower()
                                         if change_check == "s":
-                                            locals()[program_name].principal = new_principal                                                          
-                                            print(f"\nEl nuevo nombre del director del programa es \"{locals()[program_name].principal}\"")
+                                            locals()[program_name].max_students = new_max_students                                                        
+                                            print(f"\nLa nueva cantidad máxima de alumnos del programa es \"{locals()[program_name].max_students}\".")
                                             break
                                         elif change_check == "n":
-                                            print(f"\nNo se realizo níngun cambio, el nombre del director del programa continua siendo \"{locals()[program_name].principal}\".")
+                                            print(f"\nNo se realizo níngun cambio, la cantidad máxima de alumnos del programa continua siendo \"{locals()[program_name].max_students}\".")
+                                            break
+                                    
+                                    input("\nPresione enter para continuar.")
+                                    clear_flag()
+                                elif selected_submenu3 == "s": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Modificar Cantidad Mínima de Alumnos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+
+                                    new_min_students = int                               
+                                    while True:
+                                        try:
+                                            new_min_students = int(input("\nIngrese la nueva cantidad mínima de alumnos que tendra el programa: "))
+                                            if new_min_students < 0 or new_min_students > locals()[program_name].max_students:
+                                                locals()[program_name].min_students = new_min_students
+                                                raise SyntaxError
+                                        except ValueError:
+                                            print("\nDebe ingresar únicamente números enteros positivos.")
+                                        except SyntaxError:
+                                            continue
+                                        else:
+                                            break
+                                    
+                                    while True:
+                                        change_check = input(f"\nConfirme que desea cambiar la cantidad mínima de alumnos del programa de \"{locals()[program_name].min_students}\" a \"{new_min_students}\" (S/N): ").lower()
+                                        if change_check == "s":
+                                            locals()[program_name].min_students = new_min_students                                                        
+                                            print(f"\nLa nueva cantidad mínima de alumnos del programa es \"{locals()[program_name].min_students}\".")
+                                            break
+                                        elif change_check == "n":
+                                            print(f"\nNo se realizo níngun cambio, la cantidad mínima de alumnos del programa continua siendo \"{locals()[program_name].min_students}\".")
+                                            break
+                                    
+                                    input("\nPresione enter para continuar.")
+                                    clear_flag()
+                                elif selected_submenu3 == "c": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Modificar Cantidad Máxima de Cursos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+
+                                    new_max_courses = int                               
+                                    while True:
+                                        try:
+                                            new_max_courses = int(input("\nIngrese la nueva cantidad máxima de cursos que tendra el programa: "))
+                                            if new_max_courses <= 0 or new_max_courses < locals()[program_name].min_courses:
+                                                locals()[program_name].max_courses = new_max_courses
+                                                raise SyntaxError
+                                        except ValueError:
+                                            print("\nDebe ingresar únicamente números enteros positivos.")
+                                        except SyntaxError:
+                                            continue
+                                        else:
+                                            break
+                                    
+                                    while True:
+                                        change_check = input(f"\nConfirme que desea cambiar la cantidad máxima de cursos del programa de \"{locals()[program_name].max_courses}\" a \"{new_max_courses}\" (S/N): ").lower()
+                                        if change_check == "s":
+                                            locals()[program_name].max_courses = new_max_courses                                                      
+                                            print(f"\nLa nueva cantidad máxima de cursos del programa es \"{locals()[program_name].max_courses}\".")
+                                            break
+                                        elif change_check == "n":
+                                            print(f"\nNo se realizo níngun cambio, la cantidad máxima de cursos del programa continua siendo \"{locals()[program_name].max_courses}\".")
+                                            break
+                                    
+                                    input("\nPresione enter para continuar.")
+                                    clear_flag()
+                                elif selected_submenu3 == "u": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Modificar Cantidad Mínima de Cursos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+
+                                    new_min_courses = int                               
+                                    while True:
+                                        try:
+                                            new_min_courses = int(input("\nIngrese la nueva cantidad mínima de cursos que tendra el programa: "))
+                                            if new_min_courses < 0 or new_min_courses > locals()[program_name].max_courses:
+                                                locals()[program_name].min_courses = new_min_courses
+                                                raise SyntaxError
+                                        except ValueError:
+                                            print("\nDebe ingresar únicamente números enteros positivos.")
+                                        except SyntaxError:
+                                            continue
+                                        else:
+                                            break
+                                    
+                                    while True:
+                                        change_check = input(f"\nConfirme que desea cambiar la cantidad mínima de cursos del programa de \"{locals()[program_name].min_courses}\" a \"{new_min_courses}\" (S/N): ").lower()
+                                        if change_check == "s":
+                                            locals()[program_name].min_courses = new_min_courses                                                     
+                                            print(f"\nLa nueva cantidad mínima de cursos del programa es \"{locals()[program_name].min_courses}\".")
+                                            break
+                                        elif change_check == "n":
+                                            print(f"\nNo se realizo níngun cambio, la cantidad mínima de cursos del programa continua siendo \"{locals()[program_name].min_courses}\".")
+                                            break
+                                    
+                                    input("\nPresione enter para continuar.")
+                                    clear_flag()
+                                elif selected_submenu3 == "g": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Modificar Duración del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+
+                                    new_program_durations = int                               
+                                    while True:
+                                        try:
+                                            new_program_durations = int(input("\nIngrese la nueva duración (en años) que tendra el programa: "))
+                                            if new_program_durations != 4 and new_program_durations != 5:
+                                                locals()[program_name].program_duration = new_program_durations
+                                                raise SyntaxError
+                                        except ValueError:
+                                            print("\nDebe ingresar únicamente números enteros positivos.")
+                                        except SyntaxError:
+                                            continue
+                                        else:
+                                            break
+                                    
+                                    while True:
+                                        change_check = input(f"\nConfirme que desea cambiar la duración (en años) del programa de \"{locals()[program_name].program_duration}\" a \"{new_program_durations}\" (S/N): ").lower()
+                                        if change_check == "s":
+                                            locals()[program_name].program_duration = new_program_durations                                                    
+                                            print(f"\nLa nueva duración (en años) del programa es \"{locals()[program_name].program_duration}\".")
+                                            break
+                                        elif change_check == "n":
+                                            print(f"\nNo se realizo níngun cambio, la duración (en años) del programa continua siendo \"{locals()[program_name].program_duration}\".")
                                             break
                                     
                                     input("\nPresione enter para continuar.")
