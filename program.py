@@ -75,11 +75,16 @@ class Program:
     @min_students.setter
     def min_students(self, value):
         if self.__max_students == 0:
-            return print("\nDebe establecer primero la cantidad máxima de estudiantes que tendra el programa.")
+            print("\nDebe establecer primero la cantidad máxima de estudiantes que tendra el programa.")
+            return False
         elif value > self.__max_students:
             print("\nLa cantidad mínima de estudiantes del programa debe ser menor a la cantidad máxima de estudiantes.")
             return False
+        elif value < 0:
+            print("\nLa cantidad mínima de estudiantes del programa debe ser mayor o igual a 0.")
+            return False
         else:
+            print("Entre aqui")
             self.__min_students = value
 
     @min_students.deleter
@@ -92,7 +97,10 @@ class Program:
 
     @max_students.setter
     def max_students(self, value):
-        if value < self.__min_students:
+        if value <= 0:
+            print("\nLa cantidad máxima de estudiantes del programa no puede ser 0 o menor que 0.")
+            return False
+        elif value < self.__min_students:
             print("\nLa cantidad máxima de estudiantes del programa debe ser mayor a la cantidad minima de estudiantes.")
             return False
         else:
@@ -109,10 +117,14 @@ class Program:
     @min_courses.setter
     def min_courses(self, value):
         if self.__max_courses == 0:
-            return print("\nDebe establecer primero la cantidad máxima de cursos que tendra el programa.")
+            print("\nDebe establecer primero la cantidad máxima de cursos que tendra el programa.")
+            return False
         elif value > self.__max_courses:
             print("\nLa cantidad mínima de cursos del programa debe ser menor a la cantidad máxima de cursos.")
             return False
+        elif value < 0:
+            print("\nLa cantidad mínima de cursos del programa debe ser mayor o igual a 0.")
+            return False            
         else:
             self.__min_courses = value
 
@@ -126,8 +138,11 @@ class Program:
 
     @max_courses.setter
     def max_courses(self, value):
-        if value < self.__min_courses:
-            print("\nLa cantidad máxima de cursos del programa debe ser mayor a la cantidad minima de cursos.")
+        if value <= 0:
+            print("\nLa cantidad máxima de cursos del programa no puede ser 0 o menor que 0.")
+            return False
+        elif value < self.__min_courses:
+            print("\nLa cantidad máxima de cursos del programa debe ser mayor a la cantidad mínima de cursos.")
             return False
         else:
             self.__max_courses = value

@@ -4,6 +4,7 @@ __autor__ = 'David Weeber, Jason Ortiz, Jekson Pineda, Amilcar Ibarra, Leonardo 
 # Importación de Módulos
 # ----------------------
 
+import copy
 from classroom import Classroom
 from person import Person
 from tuition import Tuition
@@ -53,6 +54,8 @@ def clear_screen():
 
 def clear_flag():
     """Limpia banderas"""
+    global selected_submenu3
+    selected_submenu3 = ""
     global selected_submenu2
     selected_submenu2 = ""
     global selected_submenu1
@@ -65,6 +68,8 @@ def clear_flag():
 def invalid_selection():
     """Selección invalida"""
     input(f"\n{TextFormat.YELLOW}Selección invalida. Digite cualquier tecla para continuar...{TextFormat.CLEAR}")
+    global selected_submenu3
+    selected_submenu3 = ""
     global selected_submenu2
     selected_submenu2 = ""
     global selected_submenu1
@@ -83,9 +88,11 @@ system('COLOR')
 selected_menu = ""
 selected_submenu1 = ""
 selected_submenu2 = ""
+selected_submenu3 = ""
 
 while selected_menu != "s":
-    print(f"{TextFormat.GREEN}\n--------------------- PROGRAMACIÓN Y ESPECIALIZACIÓN EN PYTHON ---------------------\n"
+    clear_screen()
+    print(f"{TextFormat.GREEN}\n---------------------  PROGRAMACIÓN Y ESPECIALIZACIÓN EN PYTHON  ---------------------\n"
           f"---------------------        Trabajo No. 6  - Grupo No. 1        ---------------------{TextFormat.CLEAR}")
     print(f"{TextFormat.CYAN}\nMENÚ\n{TextFormat.CLEAR}"
           f"[A] {TextFormat.BOLD_UNDERLINE}{TextFormat.BOLD}A{TextFormat.CLEAR}dministrar\n"
@@ -140,13 +147,14 @@ while selected_menu != "s":
                                         if i != " ":                                        
                                             raise ValueError("\nEl nombre del programa solo puede contener letras, números y espacios vacíos.")
 
-                                for i in Program.instances:
-                                    if program_name == i.program_name:
+                                for instance in Program.instances:
+                                    if locals()[program_name] == instance: 
                                         raise ValueError(f"\nYa existe un programa con el nombre \"{program_name}\".")
 
                             except ValueError as arg:
                                 print(arg)
-                                continue
+                            except KeyError:
+                                break
                             else:
                                 break         
 
@@ -172,7 +180,6 @@ while selected_menu != "s":
                                  
                             except ValueError as arg:
                                 print(arg)
-                                continue
                             else:
                                 break
 
@@ -184,8 +191,7 @@ while selected_menu != "s":
                                 if locals()[program_name].max_students == False:
                                     raise SyntaxError
                             except ValueError:
-                                print("\nDebe ingresar únicamente números enteros.")
-                                continue
+                                print("\nDebe ingresar únicamente números enteros positivos.")
                             except SyntaxError:
                                 continue
                             else:
@@ -196,9 +202,9 @@ while selected_menu != "s":
                                 locals()[program_name].min_students = int(input("\nMínima cantidad de alumnos: "))
                                 if locals()[program_name].min_students == False:
                                     raise SyntaxError
+                                print("paso el raise")
                             except ValueError:
-                                print("\nDebe ingresar únicamente números enteros.")
-                                continue
+                                print("\nDebe ingresar únicamente números enteros positivos.")
                             except SyntaxError:
                                 continue
                             else:
@@ -211,7 +217,6 @@ while selected_menu != "s":
                                     raise SyntaxError
                             except ValueError:
                                 print("\nDebe ingresar únicamente números enteros.")
-                                continue
                             except SyntaxError:
                                 continue
                             else:
@@ -224,7 +229,6 @@ while selected_menu != "s":
                                     raise SyntaxError
                             except ValueError:
                                 print("\nDebe ingresar únicamente números enteros.")
-                                continue
                             except SyntaxError:
                                 continue
                             else:
@@ -235,9 +239,9 @@ while selected_menu != "s":
                                 locals()[program_name].program_duration = int(input("\nDuración del programa en años: "))  
                                 if locals()[program_name].program_duration == False:
                                     raise SyntaxError
+                                print("Continua")
                             except ValueError:
                                 print("\nDebe ingresar únicamente números enteros.")
-                                continue
                             except SyntaxError:
                                 continue
                             else:
@@ -270,13 +274,194 @@ while selected_menu != "s":
                                 clear_flag()
                                 break
                     #clear_flag()
-                # if selected_submenu1 == "c":
+                # if selected_submenu2 == "c":
                 #     pass
                 #     clear_flag()
-                # if selected_submenu1 == "m":
-                #     pass
+                if selected_submenu2 == "m":
+                    if selected_submenu1 == "p":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Modificar Información de Programa{TextFormat.CLEAR}")
+                        if len(Program.instances) == 0:
+                            print("\nNo existe ningún programa creado.")
+
+                            input("\nPresione enter para continuar.")
+                            clear_flag()
+                        else:
+                            program_name = str
+                            while True:
+                                try:
+                                    program_name = input("\nIngrese nombre del programa a modificar: ")
+                                    only_white_spaces = True
+                                    for i in program_name:
+                                        if i != " ":
+                                            only_white_spaces = False
+                                            break
+                                    
+                                    if only_white_spaces == True:
+                                        raise ValueError("\nEl nombre del programa no debe contener únicamente espacios vacíos.")
+
+                                    for i in program_name:
+                                        if i.isalnum() == False:
+                                            if i != " ":                                        
+                                                raise ValueError("\nEl nombre del programa solo puede contener letras, números y espacios vacíos.")
+
+                                    for instance in Program.instances:
+                                        if locals()[program_name] == instance:
+                                            pass
+
+                                except ValueError as arg:
+                                    print(arg)
+                                except KeyError:
+                                    print(f"\nNo existe un programa con el nombre \"{program_name}\".")
+                                else:
+                                    break         
+
+                            clear_screen()
+                            print(f"\n{TextFormat.CYAN}Modificar Información del Programa \"{locals()[program_name].program_name}\"\n{TextFormat.CLEAR}"
+                                f"\n[P] Modificar Nombre del {TextFormat.BOLD_UNDERLINE}P{TextFormat.CLEAR}rograma\n"
+                                f"[D] Modificar Nombre del {TextFormat.BOLD_UNDERLINE}D{TextFormat.CLEAR}irector\n"
+                                f"[E] Modificar Cantidad Máxima de {TextFormat.BOLD_UNDERLINE}E{TextFormat.CLEAR}studiantes\n"
+                                f"[S] Modificar Cantidad Mínima de E{TextFormat.BOLD_UNDERLINE}s{TextFormat.CLEAR}tudiantes\n"
+                                f"[C] Modificar Cantidad Máxima de {TextFormat.BOLD_UNDERLINE}C{TextFormat.CLEAR}ursos\n"
+                                f"[U] Modificar Cantidad Mínima de C{TextFormat.BOLD_UNDERLINE}u{TextFormat.CLEAR}rsos\n"
+                                f"[G] Modificar Duración del Pro{TextFormat.BOLD_UNDERLINE}g{TextFormat.CLEAR}rama en años\n"
+                                f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
+                            selected_submenu3 = input("Digite una opción: ").lower() 
+                            if selected_submenu3 in "pdescug" and selected_submenu3 != "":    
+                                if selected_submenu3 == "p": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Modificar Nombre del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+                                    new_program_name = str
+                                    while True:
+                                        try:
+                                            new_program_name = input("\nIngrese nuevo nombre del programa: ")
+                                            only_white_spaces = True
+                                            for i in program_name:
+                                                if i != " ":
+                                                    only_white_spaces = False
+                                                    break
+                                    
+                                            if only_white_spaces == True:
+                                                raise ValueError("\nEl nuevo nombre del programa no debe contener únicamente espacios vacíos.")
+
+                                            for i in program_name:
+                                                if i.isalnum() == False:
+                                                    if i != " ":                                        
+                                                        raise ValueError("\nEl nuevo nombre del programa solo puede contener letras, números y espacios vacíos.")
+
+                                            for instance in Program.instances:
+                                                if locals()[new_program_name] == instance:
+                                                    raise ValueError(f"\nYa existe un programa con el nombre \"{new_program_name}\".")
+
+                                        except ValueError as arg:
+                                            print(arg)
+                                        except KeyError:
+                                            break
+                                        else:
+                                            break
+                                    
+                                    while True:
+                                        change_check = input(f"\nConfirme que desea cambiar el nombre del programa de \"{locals()[program_name].program_name}\" a \"{new_program_name}\" (S/N): ").lower()
+                                        if change_check == "s":
+                                            locals()[new_program_name] = copy.deepcopy(locals()[program_name])
+                                            locals()[new_program_name].program_name = new_program_name
+                                            for instance in Program.instances:
+                                                if locals()[program_name] == instance:
+                                                    instance_index = Program.instances.index(instance)
+                                                    del Program.instances[instance_index]
+                                            
+                                            del locals()[program_name]               
+                                            Program.instances.append(locals()[new_program_name])
+                                            print(f"\nEl nuevo nombre del programa es \"{locals()[new_program_name].program_name}\"")
+                                            break
+                                        elif change_check == "n":
+                                            print(f"\nNo se realizo níngun cambio, el nombre del programa continua siendo \"{locals()[program_name].program_name}\".")
+                                            break
+                                    
+                                    input("\nPresione enter para continuar.")
+                                    clear_flag()
+                                elif selected_submenu3 == "d": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Modificar Nombre del Director del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+                                    new_principal = str
+                                    while True:
+                                        try:
+                                            new_principal = input("\nIngrese nuevo nombre del director del programa: ")
+                                            only_white_spaces = True
+                                            for i in program_name:
+                                                if i != " ":
+                                                    only_white_spaces = False
+                                                    break
+                                    
+                                            if only_white_spaces == True:
+                                                raise ValueError("\nEl nuevo nombre del director del programa no debe contener únicamente espacios vacíos.")
+
+                                            for i in program_name:
+                                                if i.isalnum() == False:
+                                                    if i != " ":                                        
+                                                        raise ValueError("\nEl nuevo nombre del director del programa solo puede contener letras, números y espacios vacíos.")
+
+                                        except ValueError as arg:
+                                            print(arg)
+                                        else:
+                                            break
+                                    
+                                    while True:
+                                        change_check = input(f"\nConfirme que desea cambiar el nombre del director del programa de \"{locals()[program_name].principal}\" a \"{new_principal}\" (S/N): ").lower()
+                                        if change_check == "s":
+                                            locals()[program_name].principal = new_principal                                                          
+                                            print(f"\nEl nuevo nombre del director del programa es \"{locals()[program_name].principal}\"")
+                                            break
+                                        elif change_check == "n":
+                                            print(f"\nNo se realizo níngun cambio, el nombre del director del programa continua siendo \"{locals()[program_name].principal}\".")
+                                            break
+                                    
+                                    input("\nPresione enter para continuar.")
+                                    clear_flag()
+                                elif selected_submenu3 == "e": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Modificar Cantidad Máxima de Alumnos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+                                    new_max_students = str
+                                    while True:
+                                        try:
+                                            new_max_students = int(input("\nIngrese nuevo nombre del director del programa: "))
+                                            only_white_spaces = True
+                                            for i in program_name:
+                                                if i != " ":
+                                                    only_white_spaces = False
+                                                    break
+                                    
+                                            if only_white_spaces == True:
+                                                raise ValueError("\nEl nuevo nombre del director del programa no debe contener únicamente espacios vacíos.")
+
+                                            for i in program_name:
+                                                if i.isalnum() == False:
+                                                    if i != " ":                                        
+                                                        raise ValueError("\nEl nuevo nombre del director del programa solo puede contener letras, números y espacios vacíos.")
+
+                                        except ValueError as arg:
+                                            print(arg)
+                                        else:
+                                            break
+                                    
+                                    while True:
+                                        change_check = input(f"\nConfirme que desea cambiar el nombre del director del programa de \"{locals()[program_name].principal}\" a \"{new_principal}\" (S/N): ").lower()
+                                        if change_check == "s":
+                                            locals()[program_name].principal = new_principal                                                          
+                                            print(f"\nEl nuevo nombre del director del programa es \"{locals()[program_name].principal}\"")
+                                            break
+                                        elif change_check == "n":
+                                            print(f"\nNo se realizo níngun cambio, el nombre del director del programa continua siendo \"{locals()[program_name].principal}\".")
+                                            break
+                                    
+                                    input("\nPresione enter para continuar.")
+                                    clear_flag()
+                            elif selected_submenu3 == "r":
+                                clear_flag()
+                            else:
+                                invalid_selection()
                 #     clear_flag()
-                # if selected_submenu1 == "e":
+                # if selected_submenu2 == "e":
                 #     pass
                 #     clear_flag()
 
