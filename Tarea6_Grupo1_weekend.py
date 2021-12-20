@@ -187,9 +187,12 @@ while selected_menu != "s":
 
                         while True:
                             try:
-                                locals()[program_name].max_students = int(input("\nMáxima cantidad de alumnos: "))
-                                if locals()[program_name].max_students == False:
-                                    raise SyntaxError
+                                entrada = int(input("\nMáxima cantidad de alumnos: "))
+                                if entrada <= 0:
+                                    locals()[program_name].max_students = entrada
+                                    raise SyntaxError    
+                                else:
+                                    locals()[program_name].max_students = entrada
                             except ValueError:
                                 print("\nDebe ingresar únicamente números enteros positivos.")
                             except SyntaxError:
@@ -199,10 +202,12 @@ while selected_menu != "s":
 
                         while True:
                             try:
-                                locals()[program_name].min_students = int(input("\nMínima cantidad de alumnos: "))
-                                if locals()[program_name].min_students == False:
-                                    raise SyntaxError
-                                print("paso el raise")
+                                entrada = int(input("\nMínima cantidad de alumnos: "))
+                                if entrada < 0:
+                                    locals()[program_name].min_students = entrada
+                                    raise SyntaxError    
+                                else:
+                                    locals()[program_name].min_students = entrada
                             except ValueError:
                                 print("\nDebe ingresar únicamente números enteros positivos.")
                             except SyntaxError:
@@ -212,11 +217,14 @@ while selected_menu != "s":
 
                         while True:
                             try:
-                                locals()[program_name].max_courses = int(input("\nMáxima cantidad de cursos: "))
-                                if locals()[program_name].max_courses == False:
-                                    raise SyntaxError
+                                entrada = int(input("\nMáxima cantidad de cursos: "))
+                                if entrada <= 0:
+                                    locals()[program_name].max_courses = entrada
+                                    raise SyntaxError    
+                                else:
+                                    locals()[program_name].max_courses = entrada
                             except ValueError:
-                                print("\nDebe ingresar únicamente números enteros.")
+                                print("\nDebe ingresar únicamente números enteros positivos.")
                             except SyntaxError:
                                 continue
                             else:
@@ -224,28 +232,34 @@ while selected_menu != "s":
 
                         while True:
                             try:
-                                locals()[program_name].min_courses = int(input("\nMínima cantidad de cursos: "))
-                                if locals()[program_name].min_courses == False:
-                                    raise SyntaxError
+                                entrada = int(input("\nMínima cantidad de cursos: "))
+                                if entrada < 0:
+                                    locals()[program_name].min_courses = entrada
+                                    raise SyntaxError    
+                                else:
+                                    locals()[program_name].min_courses = entrada
                             except ValueError:
-                                print("\nDebe ingresar únicamente números enteros.")
+                                print("\nDebe ingresar únicamente números enteros positivos.")
                             except SyntaxError:
                                 continue
                             else:
                                 break
 
+
                         while True:
                             try:
-                                locals()[program_name].program_duration = int(input("\nDuración del programa en años: "))  
-                                if locals()[program_name].program_duration == False:
-                                    raise SyntaxError
-                                print("Continua")
+                                entrada = int(input("\nDuración del programa en años: "))  
+                                if entrada != 4 and entrada != 5:
+                                    locals()[program_name].program_duration = entrada
+                                    raise SyntaxError    
+                                else:
+                                    locals()[program_name].program_duration = entrada
                             except ValueError:
-                                print("\nDebe ingresar únicamente números enteros.")
+                                print("\nDebe ingresar únicamente números enteros positivos.")
                             except SyntaxError:
                                 continue
                             else:
-                                break                        
+                                break                       
                         
                         while True:
                             verification = input(f"\nDesea crear el programa \"{locals()[program_name].program_name}\" con la información asociada que ha ingresado (S/N): ").lower()
