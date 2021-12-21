@@ -287,14 +287,72 @@ while selected_menu != "s":
                                 input("\nPulse enter para continuar.")
                                 clear_flag()
                                 break
-                    #clear_flag()
-                # if selected_submenu2 == "c":
-                #     pass
-                #     clear_flag()
+ 
+                if selected_submenu2 == "c":
+                    if selected_submenu1 == "p":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Consultar Información de Programas{TextFormat.CLEAR}") 
+                        if len(Program.instances) == 0:
+                            print("\nNo existe ningún programa creado.")
+
+                            input("\nPresione enter para continuar.")
+                            clear_flag()
+                        else: 
+                            while True:
+                                program_list = input("\nDesea ver una lista de todos los programas creados (S/N): ").lower()
+                                if program_list == "s":
+                                    print("")
+                                    for i in range(0, len(Program.instances),1):
+                                        print(f"({i}) {Program.instances[i].program_name}")
+                                    break
+                                elif program_list == "n":
+                                    break
+                                
+                            program_name = str
+                            while True:
+                                try:
+                                    program_name = input("\nIngrese nombre del programa a consultar: ")
+                                    only_white_spaces = True
+                                    for i in program_name:
+                                        if i != " ":
+                                            only_white_spaces = False
+                                            break
+                                            
+                                    if only_white_spaces == True:
+                                        raise ValueError("\nEl nombre del programa no debe contener únicamente espacios vacíos.")
+
+                                    for i in program_name:
+                                        if i.isalnum() == False:
+                                            if i != " ":                                        
+                                                raise ValueError("\nEl nombre del programa solo puede contener letras, números y espacios vacíos.")
+
+                                    for instance in Program.instances:
+                                        if locals()[program_name] == instance:
+                                            pass
+
+                                except ValueError as arg:
+                                    print(arg)
+                                except KeyError:
+                                    print(f"\nNo existe un programa con el nombre \"{program_name}\".")
+                                else:
+                                    break   
+                                        
+                            print(f"\nLa información asociada al programa \"{locals()[program_name].program_name}\" es: "
+                                  "\n"
+                                  f"\nNombre del Programa: {locals()[program_name].program_name}\n"
+                                  f"Director: {locals()[program_name].principal}\n"
+                                  f"Máximo de Estudiantes: {locals()[program_name].max_students}\n"
+                                  f"Mínimo de Estudiantes: {locals()[program_name].min_students}\n"
+                                  f"Máximo de Cursos: {locals()[program_name].max_courses}\n"
+                                  f"Mínimo de Cursos: {locals()[program_name].min_courses}\n"                            
+                                  f"Duración del Programa en años: {locals()[program_name].program_duration}")
+
+                            input("\nPulse enter para continuar.")
+                            clear_screen()                                    
                 if selected_submenu2 == "m":
                     if selected_submenu1 == "p":
                         clear_screen()
-                        print(f"\n{TextFormat.CYAN}Modificar Información de Programa{TextFormat.CLEAR}")
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Información de Programas{TextFormat.CLEAR}")
                         if len(Program.instances) == 0:
                             print("\nNo existe ningún programa creado.")
 
@@ -331,8 +389,8 @@ while selected_menu != "s":
                                     break         
 
                             clear_screen()
-                            print(f"\n{TextFormat.CYAN}Modificar Información del Programa \"{locals()[program_name].program_name}\"\n{TextFormat.CLEAR}"
-                                f"\n[P] Modificar Nombre del {TextFormat.BOLD_UNDERLINE}P{TextFormat.CLEAR}rograma\n"
+                            print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Información del Programa \"{locals()[program_name].program_name}\"\n{TextFormat.CLEAR}"
+                                f"[P] Modificar Nombre del {TextFormat.BOLD_UNDERLINE}P{TextFormat.CLEAR}rograma\n"
                                 f"[D] Modificar Nombre del {TextFormat.BOLD_UNDERLINE}D{TextFormat.CLEAR}irector\n"
                                 f"[E] Modificar Cantidad Máxima de {TextFormat.BOLD_UNDERLINE}E{TextFormat.CLEAR}studiantes\n"
                                 f"[S] Modificar Cantidad Mínima de E{TextFormat.BOLD_UNDERLINE}s{TextFormat.CLEAR}tudiantes\n"
@@ -344,7 +402,7 @@ while selected_menu != "s":
                             if selected_submenu3 in "pdescug" and selected_submenu3 != "":    
                                 if selected_submenu3 == "p": 
                                     clear_screen()
-                                    print(f"\n{TextFormat.CYAN}Modificar Nombre del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Nombre del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
                                     new_program_name = str
                                     while True:
                                         try:
@@ -396,7 +454,7 @@ while selected_menu != "s":
                                     clear_flag()
                                 elif selected_submenu3 == "d": 
                                     clear_screen()
-                                    print(f"\n{TextFormat.CYAN}Modificar Nombre del Director del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Nombre del Director del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
                                     new_principal = str
                                     while True:
                                         try:
@@ -434,7 +492,7 @@ while selected_menu != "s":
                                     clear_flag()
                                 elif selected_submenu3 == "e": 
                                     clear_screen()
-                                    print(f"\n{TextFormat.CYAN}Modificar Cantidad Máxima de Alumnos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad Máxima de Alumnos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
 
                                     new_max_students = int                               
                                     while True:
@@ -464,7 +522,7 @@ while selected_menu != "s":
                                     clear_flag()
                                 elif selected_submenu3 == "s": 
                                     clear_screen()
-                                    print(f"\n{TextFormat.CYAN}Modificar Cantidad Mínima de Alumnos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad Mínima de Alumnos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
 
                                     new_min_students = int                               
                                     while True:
@@ -494,7 +552,7 @@ while selected_menu != "s":
                                     clear_flag()
                                 elif selected_submenu3 == "c": 
                                     clear_screen()
-                                    print(f"\n{TextFormat.CYAN}Modificar Cantidad Máxima de Cursos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad Máxima de Cursos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
 
                                     new_max_courses = int                               
                                     while True:
@@ -524,7 +582,7 @@ while selected_menu != "s":
                                     clear_flag()
                                 elif selected_submenu3 == "u": 
                                     clear_screen()
-                                    print(f"\n{TextFormat.CYAN}Modificar Cantidad Mínima de Cursos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad Mínima de Cursos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
 
                                     new_min_courses = int                               
                                     while True:
@@ -554,7 +612,7 @@ while selected_menu != "s":
                                     clear_flag()
                                 elif selected_submenu3 == "g": 
                                     clear_screen()
-                                    print(f"\n{TextFormat.CYAN}Modificar Duración del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Duración del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
 
                                     new_program_durations = int                               
                                     while True:
@@ -587,8 +645,93 @@ while selected_menu != "s":
                             else:
                                 invalid_selection()
                 #     clear_flag()
-                # if selected_submenu2 == "e":
-                #     pass
+                if selected_submenu2 == "e":
+                    if selected_submenu1 == "p":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Programas{TextFormat.CLEAR}") 
+                        if len(Program.instances) == 0:
+                            print("\nNo existe ningún programa creado.")
+
+                            input("\nPresione enter para continuar.")
+                            clear_flag()
+                        else:
+                            program_name = str
+                            while True:
+                                try:
+                                    program_name = input("\nIngrese nombre del programa a eliminar: ")
+                                    only_white_spaces = True
+                                    for i in program_name:
+                                        if i != " ":
+                                            only_white_spaces = False
+                                            break
+                                    
+                                    if only_white_spaces == True:
+                                        raise ValueError("\nEl nombre del programa no debe contener únicamente espacios vacíos.")
+
+                                    for i in program_name:
+                                        if i.isalnum() == False:
+                                            if i != " ":                                        
+                                                raise ValueError("\nEl nombre del programa solo puede contener letras, números y espacios vacíos.")
+
+                                    for instance in Program.instances:
+                                        if locals()[program_name] == instance:
+                                            pass
+
+                                except ValueError as arg:
+                                    print(arg)
+                                except KeyError:
+                                    print(f"\nNo existe un programa con el nombre \"{program_name}\".")
+                                else:
+                                    break   
+
+                            clear_screen()
+                            print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Programa \"{locals()[program_name].program_name}\"\n{TextFormat.CLEAR}"
+                                f"\n[E] {TextFormat.BOLD_UNDERLINE}E{TextFormat.CLEAR}liminar el programa \"{locals()[program_name].program_name}\"\n"
+                                f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
+                            selected_submenu3 = input("Digite una opción: ").lower() 
+                            clear_screen()
+                            print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+                            if selected_submenu3 in "er" and selected_submenu3 != "":     
+                                if selected_submenu3 == "e":                                    
+                                    while True:
+                                        review_information = input(f"\nDesea revisar la información asociada al programa \"{locals()[program_name].program_name}\" antes de elimninarlo (S/N): ").lower()
+                                        if review_information == "s":
+                                            print(f"\nNombre del Programa: {locals()[program_name].program_name}\n"
+                                                f"Director: {locals()[program_name].principal}\n"
+                                                f"Máximo de Estudiantes: {locals()[program_name].max_students}\n"
+                                                f"Mínimo de Estudiantes: {locals()[program_name].min_students}\n"
+                                                f"Máximo de Cursos: {locals()[program_name].max_courses}\n"
+                                                f"Mínimo de Cursos: {locals()[program_name].min_courses}\n"                            
+                                                f"Duración del Programa en años: {locals()[program_name].program_duration}")
+                                            break
+                                        elif review_information == "n":
+                                            break
+                                        else:
+                                            pass
+
+                                    while True:
+                                        print(f"\n{TextFormat.RED}La acción de eliminación no puede ser revertida, tenga cuidado con los programas que elimina.{TextFormat.CLEAR}")
+                                        delete_check = input(f"\nConfirme eliminación del programa \"{locals()[program_name].program_name}\" (S/N): ").lower()
+                                        if delete_check == "s":
+                                            for instance in Program.instances:
+                                                if locals()[program_name] == instance:
+                                                    instance_index = Program.instances.index(instance)
+                                                    del Program.instances[instance_index]
+                                            
+                                            del locals()[program_name]               
+                                            print(f"\nEl programa de nombre \"{program_name}\" fue eliminado.")
+                                            break
+                                        elif delete_check == "n":
+                                            print(f"\nNo se realizo níngun acción, el programa de nombre \"{locals()[program_name].program_name}\" no fue eliminado.")
+                                            break
+                                    
+                                    input("\nPresione enter para continuar.")
+                                    clear_flag()
+                            elif selected_submenu3 == "r":
+                                clear_flag()
+                            else:
+                                invalid_selection()                                    
+
                 #     clear_flag()
 
             elif selected_submenu2 == "r":
