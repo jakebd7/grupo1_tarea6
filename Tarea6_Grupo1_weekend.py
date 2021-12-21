@@ -291,7 +291,7 @@ while selected_menu != "s":
                 if selected_submenu2 == "c":
                     if selected_submenu1 == "p":
                         clear_screen()
-                        print(f"\n{TextFormat.CYAN}Sub Menú - Consultar Información de Programas{TextFormat.CLEAR}") 
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Consultar Información de Programas{TextFormat.CLEAR}")
                         if len(Program.instances) == 0:
                             print("\nNo existe ningún programa creado.")
 
@@ -730,9 +730,479 @@ while selected_menu != "s":
                             elif selected_submenu3 == "r":
                                 clear_flag()
                             else:
-                                invalid_selection()                                    
+                                invalid_selection()
 
-                #     clear_flag()
+                if selected_submenu2 == "a":
+                    if selected_submenu1 == "e":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Creación de Nuevo Edificio{TextFormat.CLEAR}")
+                        building_name = str
+                        while True:
+                            try:
+                                building_name = input("\nNombre del Edificio: ")
+                                only_white_spaces = True
+                                for i in building_name:
+                                    if i != " ":
+                                        only_white_spaces = False
+                                        break
+
+                                if only_white_spaces == True:
+                                    raise ValueError("\nEl nombre del edificio no debe contener únicamente espacios vacíos.")
+
+                                for i in building_name:
+                                    if i.isalnum() == False:
+                                        if i != " ":
+                                            raise ValueError("\nEl nombre del edificio solo puede contener letras, números y espacios vacíos.")
+
+                                for instance in Building.instances:
+                                    if locals()[building_name] == instance:
+                                        raise ValueError(f"\nYa existe un programa con el nombre \"{building_name}\".")
+
+                            except ValueError as arg:
+                                print(arg)
+                            except KeyError:
+                                break
+                            else:
+                                break
+
+                        locals()[building_name] = Building(building_name)
+
+                        building_address = str
+                        while True:
+                            building_address = input("\nDireccion: ")
+                            try:
+                                only_white_spaces = True
+                                for i in building_address:
+                                    if i != " ":
+                                        only_white_spaces = False
+                                        break
+
+                                if only_white_spaces == True:
+                                    raise ValueError(
+                                        "\nLa direccion del edificio no debe contener únicamente espacios vacíos.")
+
+                                for i in building_address:
+                                    if i.isalpha() == False:
+                                        if i != " ":
+                                            raise ValueError(
+                                                "\nLa direccion del edificio solo puede contener letras y espacios vacíos.")
+
+                            except ValueError as arg:
+                                print(arg)
+                            else:
+                                break
+
+                        locals()[building_name].principal = building_address
+
+                        while True:
+                            try:
+                                number_of_floors = int(input("\nNumero de Pisos: "))
+                                if number_of_floors <= 0:
+                                    locals()[building_name].number_of_floors = number_of_floors
+                                    raise SyntaxError
+                                else:
+                                    locals()[building_name].number_of_floors = number_of_floors
+                            except ValueError:
+                                print("\nDebe ingresar únicamente números enteros positivos.")
+                            except SyntaxError:
+                                continue
+                            else:
+                                break
+
+                        while True:
+                            try:
+                                number_of_classrooms = int(input("\nNumero de Aulas: "))
+                                if number_of_classrooms < 0:
+                                    locals()[building_name].number_of_classrooms = number_of_classrooms
+                                    raise SyntaxError
+                                else:
+                                    locals()[building_name].number_of_classrooms = number_of_classrooms
+                            except ValueError:
+                                print("\nDebe ingresar únicamente números enteros positivos.")
+                            except SyntaxError:
+                                continue
+                            else:
+                                break
+
+                        while True:
+                            verification = input(f"\nDesea crear un edificio \"{locals()[building_name].building_name}\" con la información asociada que ha ingresado (S/N): ").lower()
+                            if verification == "s":
+                                print(f"\n{TextFormat.CYAN}Se ha creado el edificio \"{locals()[building_name].building_name}\" con la siguiente información asociada:\n{TextFormat.CLEAR}"
+                                      f"\nNombre del Edificio: {locals()[building_name].building_name}\n"
+                                      f"Direccion: {locals()[building_name].principal}\n"
+                                      f"Numero de Pisos: {locals()[building_name].number_of_floors}\n"
+                                      f"Numero de Aula: {locals()[building_name].number_of_classrooms}\n")
+
+                                input("Pulse enter para continuar.")
+                                clear_flag()
+                                break
+                            elif verification == "n":
+                                print(f"\n{TextFormat.CYAN}El edificio \"{locals()[building_name].building_name}\" no se creara.{TextFormat.CLEAR}")
+                                for instance in Building.instances:
+                                    if locals()[building_name] == instance:
+                                        instance_index = Building.instances.index(instance)
+                                        del Building.instances[instance_index]
+                                del locals()[building_name]
+
+                                input("\nPulse enter para continuar.")
+                                clear_flag()
+                                break
+
+                if selected_submenu2 == "c":
+                    if selected_submenu1 == "e":
+                        clear_screen()
+                        print(
+                            f"\n{TextFormat.CYAN}Sub Menú - Consultar Información de Edificios{TextFormat.CLEAR}")
+                        if len(Building.instances) == 0:
+                            print("\nNo existe ningún edificio creado.")
+
+                            input("\nPresione enter para continuar.")
+                            clear_flag()
+                        else:
+                            while True:
+                                building_list = input("\nDesea ver una lista de todos los Edificios creados (S/N): ").lower()
+                                if building_list == "s":
+                                    print("")
+                                    for i in range(0, len(Building.instances), 1):
+                                        print(f"({i}) {Building.instances[i].building_name}")
+                                    break
+                                elif building_list == "n":
+                                    break
+
+                            building_name = str
+                            while True:
+                                try:
+                                    building_name = input("\nIngrese nombre del Edificio a consultar: ")
+                                    only_white_spaces = True
+                                    for i in building_name:
+                                        if i != " ":
+                                            only_white_spaces = False
+                                            break
+
+                                    if only_white_spaces == True:
+                                        raise ValueError("\nEl nombre del edificio no debe contener únicamente espacios vacíos.")
+
+                                    for i in building_name:
+                                        if i.isalnum() == False:
+                                            if i != " ":
+                                                raise ValueError("\nEl nombre del edificio solo puede contener letras, números y espacios vacíos.")
+
+                                    for instance in Building.instances:
+                                        if locals()[building_name] == instance:
+                                            pass
+
+                                except ValueError as arg:
+                                    print(arg)
+                                except KeyError:
+                                    print(f"\nNo existe un edificio con el nombre \"{building_name}\".")
+                                else:
+                                    break
+
+                            print(
+                                f"\nLa información asociada al edificio \"{locals()[building_name].building_name}\" es: "
+                                "\n"
+                                f"\nNombre del Edificio: {locals()[building_name].building_name}\n"
+                                f"Direccion: {locals()[building_name].principal}\n"
+                                f"Numero de Pisos: {locals()[building_name].number_of_floors}\n"
+                                f"Numero de Aulas: {locals()[building_name].number_of_classrooms}\n")
+
+                            input("\nPulse enter para continuar.")
+                            clear_screen()
+
+                if selected_submenu2 == "m":
+                    if selected_submenu1 == "e":
+                        clear_screen()
+                        print(
+                            f"\n{TextFormat.CYAN}Sub Menú - Modificar Información de Edificio{TextFormat.CLEAR}")
+                        if len(Building.instances) == 0:
+                            print("\nNo existe ningún edificio creado.")
+
+                            input("\nPresione enter para continuar.")
+                            clear_flag()
+                        else:
+                            building_name = str
+                            while True:
+                                try:
+                                    building_name = input("\nIngrese nombre del edificio a modificar: ")
+                                    only_white_spaces = True
+                                    for i in building_name:
+                                        if i != " ":
+                                            only_white_spaces = False
+                                            break
+
+                                    if only_white_spaces == True:
+                                        raise ValueError("\nEl nombre del edificio no debe contener únicamente espacios vacíos.")
+
+                                    for i in building_name:
+                                        if i.isalnum() == False:
+                                            if i != " ":
+                                                raise ValueError( "\nEl nombre del edifiicio solo puede contener letras, números y espacios vacíos.")
+
+                                    for instance in Building.instances:
+                                        if locals()[building_name] == instance:
+                                            pass
+
+                                except ValueError as arg:
+                                    print(arg)
+                                except KeyError:
+                                    print(f"\nNo existe un Edificio con el nombre: \"{building_name}\".")
+                                else:
+                                    break
+
+                            clear_screen()
+                            print(
+                                f"\n{TextFormat.CYAN}Sub Menú - Modificar Información del Programa \"{locals()[building_name].building_name}\"\n{TextFormat.CLEAR}"
+                                f"[E] Modificar Nombre del {TextFormat.BOLD_UNDERLINE}P{TextFormat.CLEAR}dificio\n"
+                                f"[D] Modificar Nombre de la {TextFormat.BOLD_UNDERLINE}D{TextFormat.CLEAR}ireccionr\n"
+                                f"[N] Modificar la Cantidad de {TextFormat.BOLD_UNDERLINE}E{TextFormat.CLEAR}umero de Pisos\n"
+                                f"N[u] Modificar la Cantidad de {TextFormat.BOLD_UNDERLINE}s{TextFormat.CLEAR}mero de Aulas\n"
+                                f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
+                            selected_submenu3 = input("Digite una opción: ").lower()
+                            if selected_submenu3 in "pdescug" and selected_submenu3 != "":
+                                if selected_submenu3 == "e":
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Nombre del Edificio \"{locals()[building_name].building_name}\"{TextFormat.CLEAR}")
+                                    new_building_name = str
+                                    while True:
+                                        try:
+                                            new_building_name = input("\nIngrese nuevo nombre del edificio: ")
+                                            only_white_spaces = True
+                                            for i in new_building_name:
+                                                if i != " ":
+                                                    only_white_spaces = False
+                                                    break
+
+                                            if only_white_spaces == True:
+                                                raise ValueError("\nEl nuevo nombre del eidificio no debe contener únicamente espacios vacíos.")
+
+                                            for i in new_building_name:
+                                                if i.isalnum() == False:
+                                                    if i != " ":
+                                                        raise ValueError("\nEl nuevo nombre del edificio solo puede contener letras, números y espacios vacíos.")
+
+                                            for instance in Building.instances:
+                                                if locals()[new_building_name] == instance:
+                                                    raise ValueError(f"\nYa existe un edificio con el nombre \"{new_building_name}\".")
+
+                                        except ValueError as arg:
+                                            print(arg)
+                                        except KeyError:
+                                            break
+                                        else:
+                                            break
+
+                                    while True:
+                                        change_check = input(f"\nConfirme que desea cambiar el nombre del edificio de \"{locals()[building_name].building_name}\" a \"{new_building_name}\" (S/N): ").lower()
+                                        if change_check == "s":
+                                            locals()[new_building_name] = copy.deepcopy(locals()[building_name])
+                                            locals()[new_building_name].building_name = new_building_name
+                                            for instance in Building.instances:
+                                                if locals()[building_name] == instance:
+                                                    instance_index = Building.instances.index(instance)
+                                                    del Building.instances[instance_index]
+
+                                            del locals()[building_name]
+                                            Building.instances.append(locals()[new_building_name])
+                                            print(f"\nEl nuevo nombre del edificio es \"{locals()[new_building_name].building_name}\".")
+                                            break
+                                        elif change_check == "n":
+                                            print(f"\nNo se realizo níngun cambio, el nombre del edificio continua siendo \"{locals()[building_name].building_name}\".")
+                                            break
+
+                                    input("\nPresione enter para continuar.")
+                                    clear_flag()
+                                elif selected_submenu3 == "d":
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar la Direccion del Edificio \"{locals()[building_name].building_name}\"{TextFormat.CLEAR}")
+                                    new_building_address = str
+                                    while True:
+                                        try:
+                                            new_building_address = input("\nIngrese la nueva Direccion del Edificio: ")
+                                            only_white_spaces = True
+                                            for i in new_building_address:
+                                                if i != " ":
+                                                    only_white_spaces = False
+                                                    break
+
+                                            if only_white_spaces == True:
+                                                raise ValueError("\nLa dirreccion del edificio no debe contener únicamente espacios vacíos.")
+
+                                            for i in new_building_address:
+                                                if i.isalnum() == False:
+                                                    if i != " ":
+                                                        raise ValueError("\nLa nueva direccion del edificio solo puede contener letras, números y espacios vacíos.")
+
+                                        except ValueError as arg:
+                                            print(arg)
+                                        else:
+                                            break
+
+                                    while True:
+                                        change_check = input(f"\nConfirme que desea cambiar la direccion del edificio de \"{locals()[building_name].principal}\" a \"{new_building_address}\" (S/N): ").lower()
+                                        if change_check == "s":
+                                            locals()[building_name].principal = new_building_address
+                                            print(f"\nLa nueva direccion del edificio es: \"{locals()[building_name].principal}\".")
+                                            break
+                                        elif change_check == "n":
+                                            print(f"\nNo se realizo níngun cambio, la direccion del edificio continua siendo \"{locals()[building_name].principal}\".")
+                                            break
+
+                                    input("\nPresione enter para continuar.")
+                                    clear_flag()
+                                elif selected_submenu3 == "n":
+                                    clear_screen()
+                                    print(
+                                        f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad de Pisos de un Edificio \"{locals()[building_name].building_name}\"{TextFormat.CLEAR}")
+                                    new_number_of_floors = int
+                                    while True:
+                                        try:
+                                            new_number_of_floors = int(input("\nIngrese la nueva cantidad pisos que tendra el edificio: "))
+                                            if new_number_of_floors <= 0 or new_number_of_floors < locals()[building_name].number_of_floors:
+                                                locals()[building_name].number_of_floors = new_number_of_floors
+                                                raise SyntaxError
+                                        except ValueError:
+                                            print("\nDebe ingresar únicamente números enteros positivos.")
+                                        except SyntaxError:
+                                            continue
+                                        else:
+                                            break
+
+                                    while True:
+                                        change_check = input(f"\nConfirme que desea cambiar la cantidad de pisos de un edificio \"{locals()[building_name].number_of_floors}\" a \"{new_number_of_floors}\" (S/N): ").lower()
+                                        if change_check == "s":
+                                            locals()[building_name].number_of_floors = new_number_of_floors
+                                            print(f"\nLa nueva cantidad de pisos de un edificio es \"{locals()[building_name].number_of_floors}\".")
+                                            break
+                                        elif change_check == "n":
+                                            print(
+                                                f"\nNo se realizo níngun cambio, la cantidad de pisos de un edificio continua siendo \"{locals()[building_name].number_of_floors}\".")
+                                            break
+
+                                    input("\nPresione enter para continuar.")
+                                    clear_flag()
+                                elif selected_submenu3 == "u":
+                                    clear_screen()
+                                    print(
+                                        f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad de Aulas en un Edificio \"{locals()[building_name].building_name}\"{TextFormat.CLEAR}")
+
+                                    new_number_of_classrooms = int
+                                    while True:
+                                        try:
+                                            new_number_of_classrooms = int(input("\nIngrese la nueva cantidad de Aulas en un Edificio: "))
+                                            if new_number_of_classrooms < 0 or new_number_of_classrooms > locals()[building_name].number_of_classrooms:
+                                                locals()[building_name].number_of_classrooms = new_number_of_classrooms
+                                                raise SyntaxError
+                                        except ValueError:
+                                            print("\nDebe ingresar únicamente números enteros positivos.")
+                                        except SyntaxError:
+                                            continue
+                                        else:
+                                            break
+
+                                    while True:
+                                        change_check = input(f"\nConfirme que desea cambiar la cantidad de aulas para un edificio de \"{locals()[building_name].number_of_classrooms}\" a \"{new_number_of_classrooms}\" (S/N): ").lower()
+                                        if change_check == "s":
+                                            locals()[building_name].number_of_classrooms = new_number_of_classrooms
+                                            print(f"\nLa nueva cantidad de aulas por un edificio es \"{locals()[building_name].number_of_classrooms}\".")
+                                            break
+                                        elif change_check == "n":
+                                            print(f"\nNo se realizo níngun cambio, la cantidad de aulas para un edificio continua siendo \"{locals()[building_name].number_of_classrooms}\".")
+                                            break
+
+                                    input("\nPresione enter para continuar.")
+                                    clear_flag()
+                            elif selected_submenu3 == "r":
+                                clear_flag()
+                            else:
+                                invalid_selection()
+
+                if selected_submenu2 == "e":
+                    if selected_submenu1 == "e":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Edificio{TextFormat.CLEAR}")
+                        if len(Building.instances) == 0:
+                            print("\nNo existe ningún edificio creado.")
+
+                            input("\nPresione enter para continuar.")
+                            clear_flag()
+                        else:
+                            building_name = str
+                            while True:
+                                try:
+                                    building_name = input("\nIngrese nombre del edificio a eliminar: ")
+                                    only_white_spaces = True
+                                    for i in building_name:
+                                        if i != " ":
+                                            only_white_spaces = False
+                                            break
+
+                                    if only_white_spaces == True:
+                                        raise ValueError("\nEl nombre del edificio no debe contener únicamente espacios vacíos.")
+
+                                    for i in building_name:
+                                        if i.isalnum() == False:
+                                            if i != " ":
+                                                raise ValueError("\nEl nombre del edificio solo puede contener letras, números y espacios vacíos.")
+
+                                    for instance in Building.instances:
+                                        if locals()[building_name] == instance:
+                                            pass
+
+                                except ValueError as arg:
+                                    print(arg)
+                                except KeyError:
+                                    print(f"\nNo existe un Edificio con el nombre \"{building_name}\".")
+                                else:
+                                    break
+
+                            clear_screen()
+                            print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Edificio \"{locals()[building_name].building_name}\"\n{TextFormat.CLEAR}"
+                                f"\n[E] {TextFormat.BOLD_UNDERLINE}E{TextFormat.CLEAR}liminar el Edificio \"{locals()[building_name].building_name}\"\n"
+                                f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
+                            selected_submenu3 = input("Digite una opción: ").lower()
+                            clear_screen()
+                            print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Edificio \"{locals()[building_name].building_name}\"{TextFormat.CLEAR}")
+                            if selected_submenu3 in "er" and selected_submenu3 != "":
+                                if selected_submenu3 == "e":
+                                    while True:
+                                        review_information = input(
+                                            f"\nDesea revisar la información asociada al edificio \"{locals()[building_name].building_name}\" antes de elimninarlo (S/N): ").lower()
+                                        if review_information == "s":
+                                            print(
+                                                f"\nNombre del Edificio: {locals()[building_name].building_name}\n"
+                                                f"Direccion: {locals()[building_name].principal}\n"
+                                                f"Numero de Pisos: {locals()[building_name].number_of_floors}\n"
+                                                f"Numero de Aulas: {locals()[building_name].number_of_classrooms}\n")
+                                            break
+                                        elif review_information == "n":
+                                            break
+                                        else:
+                                            pass
+
+                                    while True:
+                                        print(f"\n{TextFormat.RED}La acción de eliminación no puede ser revertida, tenga cuidado con los edificios que elimina.{TextFormat.CLEAR}")
+                                        delete_check = input(f"\nConfirme eliminación del edificio \"{locals()[building_name].building_name}\" (S/N): ").lower()
+                                        if delete_check == "s":
+                                            for instance in Building.instances:
+                                                if locals()[building_name] == instance:
+                                                    instance_index = Building.instances.index(instance)
+                                                    del Building.instances[instance_index]
+
+                                            del locals()[building_name]
+                                            print(f"\nEl Edificio de nombre \"{building_name}\" fue eliminado.")
+                                            break
+                                        elif delete_check == "n":
+                                            print(f"\nNo se realizo níngun acción, el edificio de nombre \"{locals()[building_name].building_name}\" no fue eliminado.")
+                                            break
+
+                                    input("\nPresione enter para continuar.")
+                                    clear_flag()
+                            elif selected_submenu3 == "r":
+                                clear_flag()
+                            else:
+                                invalid_selection()
+
+                        #     clear_flag()
 
             elif selected_submenu2 == "r":
                 clear_flag()
