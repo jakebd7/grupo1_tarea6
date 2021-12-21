@@ -9,10 +9,10 @@ class Program:
         self.__program_status = None
         self.__principal = ""
         self.__courses = []
-        self.__min_students = 0
         self.__max_students = 0
-        self.__min_courses = 0
+        self.__min_students = 0
         self.__max_courses = 0
+        self.__min_courses = 0
         self.__program_duration = 0
         self.__class__.instances.append(self)
 

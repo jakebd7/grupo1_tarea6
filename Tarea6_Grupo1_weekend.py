@@ -4,6 +4,7 @@ __autor__ = 'David Weeber, Jason Ortiz, Jekson Pineda, Amilcar Ibarra, Leonardo 
 # Importación de Módulos
 # ----------------------
 
+#import extra_for_test
 import copy
 from classroom import Classroom
 from person import Person
@@ -79,6 +80,33 @@ def invalid_selection():
     clear_screen()
 
 
+# Programa 1 de prueba
+programa_1 = Program("programa_1")
+programa_1.principal = "Jose Lopez"
+programa_1.max_students = 25
+programa_1.min_students = 10
+programa_1.max_courses = 25
+programa_1.min_courses = 10
+programa_1.program_duration = 4
+
+# Programa 2 de prueba
+programa_2 = Program("programa_2")
+programa_2.principal = "Maria Perez"
+programa_2.max_students = 50
+programa_2.min_students = 15
+programa_2.max_courses = 75
+programa_2.min_courses = 42
+programa_2.program_duration = 5
+
+# Programa 3 de prueba
+programa_3 = Program("programa_3")
+programa_3.principal = "Juan de Arco"
+programa_3.max_students = 90
+programa_3.min_students = 21
+programa_3.max_courses = 78
+programa_3.min_courses = 13
+programa_3.program_duration = 4
+
 # ----------------------------------------
 # Ejecución de las funciones mediante menú
 # ----------------------------------------
@@ -139,13 +167,21 @@ while selected_menu != "s":
                                         only_white_spaces = False
                                         break
                                 
+                                only_underscores = True
+                                for i in program_name:
+                                    if i != "_":
+                                        only_underscores = False
+                                        break
+                                    
                                 if only_white_spaces == True:
                                     raise ValueError("\nEl nombre del programa no debe contener únicamente espacios vacíos.")
+                                elif only_underscores == True:
+                                    raise ValueError("\nEl nombre del programa no debe contener únicamente guiones bajos.")
 
                                 for i in program_name:
                                     if i.isalnum() == False:
-                                        if i != " ":                                        
-                                            raise ValueError("\nEl nombre del programa solo puede contener letras, números y espacios vacíos.")
+                                        if i != " " and i != "_":                                        
+                                            raise ValueError("\nEl nombre del programa solo puede contener letras, números, espacios vacíos y guiones bajos.")                                
 
                                 for instance in Program.instances:
                                     if locals()[program_name] == instance: 
@@ -169,14 +205,22 @@ while selected_menu != "s":
                                     if i != " ":
                                         only_white_spaces = False
                                         break
-                                
+
+                                only_underscores = True
+                                for i in principal_name:
+                                    if i != "_":
+                                        only_underscores = False
+                                        break
+                                    
                                 if only_white_spaces == True:
                                     raise ValueError("\nEl nombre del director no debe contener únicamente espacios vacíos.")
-                                
+                                elif only_underscores == True:                                    
+                                    raise ValueError("\nEl nombre del director no debe contener únicamente guiones bajos.")
+
                                 for i in principal_name:
-                                    if i.isalpha() == False:
-                                        if i != " ":
-                                            raise ValueError("\nEl nombre del director solo puede contener letras y espacios vacíos.")
+                                    if i.isalnum() == False:
+                                        if i != " " and i != "_":                                        
+                                            raise ValueError("\nEl nombre del director solo puede contener letras, números, espacios vacíos y guiones bajos.")                                
                                  
                             except ValueError as arg:
                                 print(arg)
@@ -287,7 +331,47 @@ while selected_menu != "s":
                                 input("\nPulse enter para continuar.")
                                 clear_flag()
                                 break
- 
+                    elif selected_submenu1 == "c":
+                            clear_screen()
+                            print(f"\n{TextFormat.CYAN}Creación de Nuevo Curso{TextFormat.CLEAR}")
+                            course_name = str
+                            while True:
+                                try:
+                                    course_name = input("\nNombre del curso: ")
+                                    only_white_spaces = True
+                                    for i in course_name:
+                                        if i != " ":
+                                            only_white_spaces = False
+                                            break
+                                    
+                                    only_underscores = True
+                                    for i in course_name:
+                                        if i != "_":
+                                            only_underscores = False
+                                            break
+                                    
+                                    if only_white_spaces == True:
+                                        raise ValueError("\nEl nombre del curso no debe contener únicamente espacios vacíos.")    
+                                    elif only_underscores == True:
+                                        raise ValueError("\nEl nombre del curso no debe contener únicamente guiones bajos.")                                        
+
+                                    for i in course_name:
+                                        if i.isalnum() == False:
+                                            if i != " " and i != "_":                                        
+                                                raise ValueError("\nEl nombre del curso solo puede contener letras, números, espacios vacíos y guiones bajos.")
+
+                                    for instance in Course.instances:
+                                        if locals()[course_name] == instance: 
+                                            raise ValueError(f"\nYa existe un curso con el nombre \"{course_name}\".")
+
+                                except ValueError as arg:
+                                    print(arg)
+                                except KeyError:
+                                    break
+                                else:
+                                    break         
+
+                            locals()[program_name] = Program(program_name)
                 if selected_submenu2 == "c":
                     if selected_submenu1 == "p":
                         clear_screen()
@@ -317,14 +401,22 @@ while selected_menu != "s":
                                         if i != " ":
                                             only_white_spaces = False
                                             break
-                                            
+
+                                    only_underscores = True
+                                    for i in program_name:
+                                        if i != "_":
+                                            only_underscores = False
+                                            break
+                                    
                                     if only_white_spaces == True:
                                         raise ValueError("\nEl nombre del programa no debe contener únicamente espacios vacíos.")
+                                    elif only_underscores == True:                                    
+                                        raise ValueError("\nEl nombre del programa no debe contener únicamente guiones bajos.")
 
                                     for i in program_name:
                                         if i.isalnum() == False:
-                                            if i != " ":                                        
-                                                raise ValueError("\nEl nombre del programa solo puede contener letras, números y espacios vacíos.")
+                                            if i != " " and i != "_":                                        
+                                                raise ValueError("\nEl nombre del programa solo puede contener letras, números, espacios vacíos y guiones bajos.")                                
 
                                     for instance in Program.instances:
                                         if locals()[program_name] == instance:
@@ -368,14 +460,22 @@ while selected_menu != "s":
                                         if i != " ":
                                             only_white_spaces = False
                                             break
+
+                                    only_underscores = True
+                                    for i in program_name:
+                                        if i != "_":
+                                            only_underscores = False
+                                            break
                                     
                                     if only_white_spaces == True:
                                         raise ValueError("\nEl nombre del programa no debe contener únicamente espacios vacíos.")
+                                    elif only_underscores == True:                                    
+                                        raise ValueError("\nEl nombre del programa no debe contener únicamente guiones bajos.")
 
                                     for i in program_name:
                                         if i.isalnum() == False:
-                                            if i != " ":                                        
-                                                raise ValueError("\nEl nombre del programa solo puede contener letras, números y espacios vacíos.")
+                                            if i != " " and i != "_":                                        
+                                                raise ValueError("\nEl nombre del programa solo puede contener letras, números, espacios vacíos y guiones bajos.")                                
 
                                     for instance in Program.instances:
                                         if locals()[program_name] == instance:
@@ -412,14 +512,22 @@ while selected_menu != "s":
                                                 if i != " ":
                                                     only_white_spaces = False
                                                     break
+
+                                            only_underscores = True
+                                            for i in new_program_name:
+                                                if i != "_":
+                                                    only_underscores = False
+                                                    break
                                     
                                             if only_white_spaces == True:
                                                 raise ValueError("\nEl nuevo nombre del programa no debe contener únicamente espacios vacíos.")
+                                            elif only_underscores == True:                                    
+                                                raise ValueError("\nEl nuevo nombre del programa no debe contener únicamente guiones bajos.")
 
                                             for i in new_program_name:
                                                 if i.isalnum() == False:
-                                                    if i != " ":                                        
-                                                        raise ValueError("\nEl nuevo nombre del programa solo puede contener letras, números y espacios vacíos.")
+                                                    if i != " " and i != "_":                                        
+                                                        raise ValueError("\nEl nuevo nombre del programa solo puede contener letras, números, espacios vacíos y guiones bajos.")                                
 
                                             for instance in Program.instances:
                                                 if locals()[new_program_name] == instance:
@@ -464,14 +572,22 @@ while selected_menu != "s":
                                                 if i != " ":
                                                     only_white_spaces = False
                                                     break
+
+                                            only_underscores = True
+                                            for i in new_principal:
+                                                if i != "_":
+                                                    only_underscores = False
+                                                    break
                                     
                                             if only_white_spaces == True:
                                                 raise ValueError("\nEl nuevo nombre del director del programa no debe contener únicamente espacios vacíos.")
+                                            elif only_underscores == True:                                    
+                                                raise ValueError("\nEl nuevo nombre del director del programa no debe contener únicamente guiones bajos.")
 
                                             for i in new_principal:
                                                 if i.isalnum() == False:
-                                                    if i != " ":                                        
-                                                        raise ValueError("\nEl nuevo nombre del director del programa solo puede contener letras, números y espacios vacíos.")
+                                                    if i != " " and i != "_":                                        
+                                                        raise ValueError("\nEl nuevo nombre del director del programa solo puede contener letras, números, espacios vacíos y guiones bajos.")                                
 
                                         except ValueError as arg:
                                             print(arg)
@@ -664,14 +780,22 @@ while selected_menu != "s":
                                         if i != " ":
                                             only_white_spaces = False
                                             break
+
+                                    only_underscores = True
+                                    for i in program_name:
+                                        if i != "_":
+                                            only_underscores = False
+                                            break
                                     
                                     if only_white_spaces == True:
                                         raise ValueError("\nEl nombre del programa no debe contener únicamente espacios vacíos.")
+                                    elif only_underscores == True:                                    
+                                        raise ValueError("\nEl nombre del programa no debe contener únicamente guiones bajos.")
 
                                     for i in program_name:
                                         if i.isalnum() == False:
-                                            if i != " ":                                        
-                                                raise ValueError("\nEl nombre del programa solo puede contener letras, números y espacios vacíos.")
+                                            if i != " " and i != "_":                                        
+                                                raise ValueError("\nEl nombre del programa solo puede contener letras, números, espacios vacíos y guiones bajos.")                                
 
                                     for instance in Program.instances:
                                         if locals()[program_name] == instance:
