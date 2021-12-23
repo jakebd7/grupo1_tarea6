@@ -20,4 +20,7 @@ class Turn:
 
     def turn_define(self, teacher):
         teacher.turn = self.__turn
+
+    def __str__(self):
+        return "Turno"
     

@@ -78,3 +78,5 @@ class Building:
         else:
             return print("No se pueden añadir mas aulas al edificio {}. La capacidad máxima de aulas se ha alcanzado previamente.".format(self.__name))
 
+    def __str__(self):
+        return "Edificio"

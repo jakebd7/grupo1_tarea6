@@ -14,8 +14,8 @@ class Person:
         self.__date_birth = date_birth
         self.__age = age
         self.__email = email
-        self.__min_courses = 0
         self.__max_courses = 0
+        self.__min_courses = 0
 
     @property
     def name(self):
@@ -147,6 +147,9 @@ class Person:
     @max_courses.deleter
     def max_courses(self):
         del self.__max_courses
+
+    def __str__(self):
+        return "Persona"
 
     def create_person(type):
         class Teacher(Person):

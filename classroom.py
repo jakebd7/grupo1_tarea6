@@ -75,6 +75,7 @@ class Classroom:
         elif course.max_students > self.__seats_capacity:
             return print("La cantidad máxima de alumnos que tendra el curso {}, excede la capacidad de asientos del aula {}".format(course.course_name, self.__classroom_name))
 
-        
+    def __str__(self):
+        return "Aula"
 
         

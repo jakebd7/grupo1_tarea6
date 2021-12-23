@@ -19,3 +19,6 @@ class Teacher_type:
 
     def type_define(self, teacher):
         teacher.teacher_type = self.__type_teacher
+
+    def __str__(self):
+        return "Tipo de Profesor"

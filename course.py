@@ -1,16 +1,16 @@
 class Course:
     instances = []
 
-    def __init__(self, course_name = None, credits = None, week_hours = None, program = None, price = None, teacher = None, course_status = None):
+    def __init__(self, course_name = None, credits = None, week_hours = None, program = None, price = None, teacher = None):
         self.__course_name = course_name
         self.__credits = credits
         self.__week_hours = week_hours
         self.__program = program
         self.__price = price
         self.__teacher = teacher
-        self.__course_status = course_status
-        self.__min_students = 0
+        self.__course_status = "No Aperturado"
         self.__max_students = 0
+        self.__min_students = 0
         self.__class__.instances.append(self)
 
     @property
@@ -31,7 +31,10 @@ class Course:
 
     @credits.setter
     def credits(self, value):
-        self.__credits = value
+        if value < 0:
+            print("\nLa cantidad de creditos del curso debe ser un número entero positivo mayor o igual a 0.")
+        else:            
+            self.__credits = value
 
     @credits.deleter
     def credits(self):
@@ -43,7 +46,10 @@ class Course:
 
     @week_hours.setter
     def week_hours(self, value):
-        self.__week_hours = value
+        if value < 0:
+            print("\nLa cantidad de horas semanales del curso debe ser un número entero positivo mayor o igual a 0.")
+        else:        
+            self.__week_hours = value
 
     @week_hours.deleter
     def week_hours(self):
@@ -63,7 +69,10 @@ class Course:
 
     @price.setter
     def price(self, value):
-        self.__price = value
+        if value < 0:
+            print("\nEl precio del curso debe ser un número entero positivo mayor o igual a 0.")
+        else:
+            self.__price = value
 
     @price.deleter
     def price(self):
@@ -84,9 +93,9 @@ class Course:
         
         if teacher_counter < teacher.min_courses -1:            
             self.__teacher = teacher
-            print("El profesor de nombre {} con id {}, aun no ha alcanzado su cuota minima de cursos.".format(teacher.name, teacher.id_teacher))    
+            print(f"\nEl profesor de nombre \"{teacher.name} {teacher.last_name}\" con id \"{teacher.id_teacher}\", aun no ha alcanzado su cuota mínima de cursos.")    
         elif teacher_counter >= teacher.max_courses:
-            return print("No se pueden agregar mas cursos al profesor de nombre {} con id {}, su cuota máxima de cursos ha sido alcanzada previamente.".format(teacher.name, teacher.id_teacher))
+            print(f"\nNo se pueden agregar mas cursos al profesor de nombre \"{teacher.name} {teacher.last_name}\" con id \"{teacher.id_teacher}\", su cuota máxima de cursos ha sido alcanzada previamente.")
         else:
             self.__teacher = teacher
 
@@ -113,9 +122,11 @@ class Course:
     @min_students.setter
     def min_students(self, value):
         if self.__max_students == 0:
-            return print("Debe establecer primero la cantidad máxima de estudiantes que tendra el programa.")
+            print("\nDebe establecer primero la cantidad máxima de estudiantes que tendra el curso.")
         elif value > self.__max_students:
-            return print("La cantidad minima de estudiantes del programa debe ser menor a la cantidad máxima de estudiantes.")
+            print(f"\nLa cantidad mínima de estudiantes del curso debe ser menor a la cantidad máxima de estudiantes, la cual es: \"{self.__max_students}\"")
+        elif value < 0:
+            print("\nLa cantidad mínima de estudiantes del curso debe ser mayor o igual a 0.")
         else:
             self.__min_students = value
 
@@ -129,11 +140,16 @@ class Course:
 
     @max_students.setter
     def max_students(self, value):
-        if value < self.__min_students:
-            return print("La cantidad máxima de estudiantes del programa debe ser mayor a la cantidad minima de estudiantes.")
+        if value <= 0:
+            print("\nLa cantidad máxima de estudiantes del curso no puede ser 0 o menor que 0.")
+        elif value < self.__min_students:
+            print(f"\nLa cantidad máxima de estudiantes del curso debe ser mayor a la cantidad mínima de estudiantes, la cual es: \"{self.__min_students}\"")
         else:
             self.__max_students = value
 
     @max_students.deleter
     def max_students(self):
         del self.__max_students
+
+    def __str__(self):
+        return "Curso"

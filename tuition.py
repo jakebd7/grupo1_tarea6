@@ -3,7 +3,8 @@ import time
 class Tuition:
     instances = []
 
-    def __init__(self,):
+    def __init__(self,name = None):
+        self.__name = name
         self.__tuition_date = time.strftime("%d/%m/%y")
         self.__tuition_hour = time.strftime("%H%M%S")
         self.__students = []
@@ -14,6 +15,18 @@ class Tuition:
         self.__credits_students = {}
         self.__class__.instances.append(self)
   
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, value):
+        self.__name = value
+
+    @name.deleter
+    def name(self):
+        del self.__name
+
     @property
     def tuition_date(self):
         return self.__tuition_date
@@ -101,13 +114,13 @@ class Tuition:
                 break
 
         if program_name == None:
-            return print("El estudiante debe estar inscrito en algun programa para ser agregado en algun curso.")
+            print("El estudiante debe estar inscrito en algun programa para ser agregado en algun curso.")
         
         # Verificar que el programa tiene la cantidad minima de cursos establecidos
         for program in self.__programs:
             if program.program_name == program_name:
                 if (len(program.courses) < program.min_courses):
-                    return print("El programa aun no cuenta con la cantidad minima de cursos para que se inscriban estudiantes.")
+                    print("El programa aun no cuenta con la cantidad minima de cursos para que se inscriban estudiantes.")
 
         # Verificar que el estudiante no ha excedido la capacida máxima de cursos que puede tomar
         for course_x in self.__courses_students:
@@ -115,7 +128,7 @@ class Tuition:
                 course_student_counter += 1
 
         if course_student_counter >= student.max_courses:
-            return print("No es posible inscribir mas cursos al estudiante de nombre {} con id {}. Cuota máxima de cursos alcanzada.".format(student.name, student.id_student))
+            print("No es posible inscribir mas cursos al estudiante de nombre {} con id {}. Cuota máxima de cursos alcanzada.".format(student.name, student.id_student))
         elif course_student_counter == 0:
             pass
         elif course_student_counter < student.min_courses:
@@ -125,32 +138,32 @@ class Tuition:
         for program in self.__programs:
             if program.program_name == program_name:
                 if not (course in program.courses):
-                    return print("No existe un curso con el nombre {} en el programa que se encuentra inscrito el estudiante.".format(course.course_name))
+                    print("No existe un curso con el nombre {} en el programa que se encuentra inscrito el estudiante.".format(course.course_name))
         
         # Agregar estudiante a un curso
         if not (course.course_name in self.__courses_students):
             self.__courses_students[course.course_name] = {student.id_student: None}
             course.course_status = "No Aperturado"
-            return print("El estudiante de nombre {} con id {} fue agregado exitosamente al curso {}".format(student.name, student.id_student, course.course_name))
+            print("El estudiante de nombre {} con id {} fue agregado exitosamente al curso {}".format(student.name, student.id_student, course.course_name))
         elif student.id_student in self.__courses_students[course.course_name]:
-            return print("El estudiante de nombre {} con id {} ya se encuentra inscrito en el curso {}.".format(student.name, student.id_student, course.course_name))
+            print("El estudiante de nombre {} con id {} ya se encuentra inscrito en el curso {}.".format(student.name, student.id_student, course.course_name))
         elif (len(self.__courses_students[course.course_name]) <= course.max_students):
             self.__courses_students[course.course_name][student.id_student] = None
             if (len(self.__courses_students[course.course_name]) >= course.min_students):
                 course.course_status = "Aperturado" 
-            return print("El estudiante de nombre {} con id {} fue agregado exitosamente al curso {}".format(student.name, student.id_student, course.course_name))
+            print("El estudiante de nombre {} con id {} fue agregado exitosamente al curso {}".format(student.name, student.id_student, course.course_name))
 
         else:
-            return print("No es posible agregar mas estudiantes al curso {}. Cuota máxima de estudiantes alcanzada.".format(course.course_name))
+            print("No es posible agregar mas estudiantes al curso {}. Cuota máxima de estudiantes alcanzada.".format(course.course_name))
 
     def add_note(self, course, student, note):
        
         if not (course.course_name in self.__courses_students):
-            return print("No existe el curso {}.".format(course.course_name))
+            print("No existe el curso {}.".format(course.course_name))
         elif not(student.id_student in self.__courses_students[course.course_name]):
-            return print("No existe un estudiante con el id {}.".format(student.id_student))
+            print("No existe un estudiante con el id {}.".format(student.id_student))
         elif course.credits == None:
-            return print("No ha establecido los creditos del curso {}.".format(course.course_name))
+            print("No ha establecido los creditos del curso {}.".format(course.course_name))
         else:
             self.__courses_students[course.course_name][student.id_student] = note
             if self.__courses_students[course.course_name][student.id_student] >= 60:
@@ -158,7 +171,7 @@ class Tuition:
                     self.__credits_students[student.id_student] = course.credits
                 else:
                     self.__credits_students[student.id_student] += course.credits
-            return print("Nota agregada exitosamente.")
+            print("Nota agregada exitosamente.")
 
 
     def total_fee(self):
@@ -172,3 +185,6 @@ class Tuition:
             total_pay += (len(self.__courses_students[course.course_name]) * course.price)
 
         return total_pay
+
+    def __str__(self):
+        return "Matricula"

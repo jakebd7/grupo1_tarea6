@@ -6,7 +6,7 @@ class Program:
     def __init__(self, program_name = None):
         self.__program_name = program_name
         self.__creation_date_program = time.strftime("%d/%m/%y")
-        self.__program_status = None
+        self.__program_status = "No Aperturado"
         self.__principal = ""
         self.__courses = []
         self.__max_students = 0
@@ -157,11 +157,29 @@ class Program:
     
     def add_course(self, course):
         if (len(self.__courses) + 1) > self.__max_courses:
-            return print("No es posible agregar mas cursos al programa {}. El programa ya ha alcanza su cuota máxima de cursos".format( self.__program_name))
+            print(f"\nNo es posible agregar mas cursos al programa \"{self.__program_name}\". El programa ya ha alcanza su cuota máxima de cursos")
         else:
             for i in range(0, len(self.__courses),1):
                 if course.course_name == self.__courses[i].course_name:
-                    return print("Ya existe un curso con el nombre {} en el programa {}".format(course.course_name, self.__program_name))
+                    print(f"\nYa existe un curso con el nombre \"{course.course_name}\" en el programa \"{self.__program_name}\"")
             
             self.__courses.append(course)
-            return print("Curso {} agregado existosamente al programa {}".format(course.course_name, self.__program_name))
+            print(f"\nCurso \"{course.course_name}\" agregado existosamente al programa \"{self.__program_name}\"")
+
+    def del_course(self, course):
+        if len(self.__courses) == 0:
+            print(f"\nNo es posible elimnar cursos del programa \"{self.__program_name}\". El programa no tiene ningún curso.")
+        else:
+            course_check = False
+            for i in range(0, len(self.__courses),1):
+                if course.course_name == self.__courses[i].course_name:
+                    course_check = True
+                    del self.__courses[i]
+                    
+            if course_check == False:
+                print(f"\nNo existe un curso con el nombre \"{course.course_name}\" en el programa \"{self.__program_name}\"")
+            else:
+                print(f"\nCurso \"{course.course_name}\" eliminado existosamente del programa \"{self.__program_name}\"")
+
+    def __str__(self):
+        return "Programa"
