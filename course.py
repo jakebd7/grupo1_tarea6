@@ -1,13 +1,13 @@
 class Course:
     instances = []
 
-    def __init__(self, course_name = None, credits = None, week_hours = None, program = None, price = None, teacher = None):
+    def __init__(self, course_name = None, credits = None, week_hours = None, price = None):
         self.__course_name = course_name
         self.__credits = credits
         self.__week_hours = week_hours
-        self.__program = program
+        self.__program = "No Establecido"
         self.__price = price
-        self.__teacher = teacher
+        self.__teacher = "No Establecido"
         self.__course_status = "No Aperturado"
         self.__max_students = 0
         self.__min_students = 0
@@ -86,18 +86,21 @@ class Course:
     def teacher(self, teacher):
         teacher_counter = 0
         for course in self.__class__.instances:
-            if None == course.teacher:
+            if "No Establecido" == course.teacher:
                 pass
             elif teacher.id_teacher == course.teacher.id_teacher:
                 teacher_counter += 1
         
         if teacher_counter < teacher.min_courses -1:            
-            self.__teacher = teacher
-            print(f"\nEl profesor de nombre \"{teacher.name} {teacher.last_name}\" con id \"{teacher.id_teacher}\", aun no ha alcanzado su cuota mínima de cursos.")    
+            self.__teacher = teacher            
+            print(f"\nEl profesor \"{teacher.name} {teacher.last_name}\" con id \"{teacher.id_teacher}\", fue agregado existosamente al curso {self.__course_name}.")            
+            print(f"\nEl profesor \"{teacher.name} {teacher.last_name}\" con id \"{teacher.id_teacher}\", aun no ha alcanzado su cuota mínima de cursos.")    
+        
         elif teacher_counter >= teacher.max_courses:
             print(f"\nNo se pueden agregar mas cursos al profesor de nombre \"{teacher.name} {teacher.last_name}\" con id \"{teacher.id_teacher}\", su cuota máxima de cursos ha sido alcanzada previamente.")
         else:
             self.__teacher = teacher
+            print(f"\nEl profesor \"{teacher.name} {teacher.last_name}\" con id \"{teacher.id_teacher}\", fue agregado existosamente al curso {self.__course_name}.")
 
     @teacher.deleter
     def teacher(self):

@@ -86,8 +86,8 @@ programa_1 = Program("programa_1")
 programa_1.principal = "Jose Lopez"
 programa_1.max_students = 25
 programa_1.min_students = 10
-programa_1.max_courses = 25
-programa_1.min_courses = 10
+programa_1.max_courses = 1
+programa_1.min_courses = 0
 programa_1.program_duration = 4
 
 # Programa 2 de prueba
@@ -120,18 +120,62 @@ Juan.age = 25
 Juan.email = "ejemplo@email.com"
 Juan.max_courses = 30
 Juan.min_courses = 5
-print(f"id_profesor: {Juan.id_teacher}")
+
+# Profesor 2 de prueba
+Roberto = Person.create_person("Teacher")
+Roberto.name = "Roberto"
+Roberto.last_name = "Rios"
+Roberto.identification = 456328791
+Roberto.address = "abajo"
+Roberto.phone_number = 56789
+Roberto.date_birth = "23/12/21"
+Roberto.age = 58
+Roberto.email = "ejemplo2@email.com"
+Roberto.max_courses = 1
+Roberto.min_courses = 0
+
+# Profesor 3 de prueba
+Magdalena = Person.create_person("Teacher")
+Magdalena.name = "Magdalena"
+Magdalena.last_name = "Llanos"
+Magdalena.identification = 254671384
+Magdalena.address = "derecha"
+Magdalena.phone_number = 45128
+Magdalena.date_birth = "01/12/21"
+Magdalena.age = 35
+Magdalena.email = "ejemplo3@email.com"
+Magdalena.max_courses = 2
+Magdalena.min_courses = 0
 
 # Curso Matematica de prueba
 matematica = Course("matematica")
 matematica.credits = 5
 matematica.week_hours = 42
-matematica.program = programa_1
+#matematica.program = programa_1
 matematica.price = 200
-matematica.teacher = Juan
+#matematica.teacher = Juan
 matematica.max_students = 20
 matematica.min_students = 10
 
+# Curso robotica de prueba
+robotica = Course("robotica")
+robotica.credits = 10
+robotica.week_hours = 30
+#robotica.program = programa_1
+robotica.price = 150
+#robotica.teacher = "Jose Lopez"
+robotica.max_students = 50
+robotica.min_students = 5
+
+# Curso ingles de prueba
+ingles = Course("ingles")
+ingles.credits = 35
+ingles.week_hours = 60
+#ingles.program = programa_1
+ingles.price = 250
+#ingles.teacher = "Miguel Bose"
+ingles.max_students = 70
+ingles.min_students = 26
 
 # ----------------------------------------
 # Ejecución de las funciones mediante menú
@@ -188,7 +232,7 @@ while selected_menu != "s":
                         program_name = frontend_extra.name_check_with_numbers("programa")
                         locals()[program_name] = Program(program_name)
 
-                        frontend_extra.name_check_no_numbers(locals()[program_name], False, "director")  
+                        frontend_extra.name_check_no_numbers(locals()[program_name], False, "principal")  
 
                         frontend_extra.max_students_check(locals()[program_name]) 
 
@@ -210,22 +254,16 @@ while selected_menu != "s":
                                 
                                     if informatio_view == "s":
                                         frontend_extra.program_information_show(locals()[program_name])
-                                        
-                                        input("\nPulse enter para continuar.")
                                         break
                                     elif informatio_view == "n":
                                         break
-
-                                clear_flag()
                                 break
                             elif verification == "n":
                                 print(f"\n{TextFormat.CYAN}El programa \"{locals()[program_name].program_name}\" no se creara.{TextFormat.CLEAR}")
                                 frontend_extra.del_instance_in_class(locals()[program_name])
                                 del locals()[program_name]
-                                                                
-                                input("\nPulse enter para continuar.")
-                                clear_flag()
                                 break
+                    
                     elif selected_submenu1 == "c":
                             clear_screen()
                             print(f"\n{TextFormat.CYAN}Creación de Nuevo Curso{TextFormat.CLEAR}")
@@ -237,70 +275,48 @@ while selected_menu != "s":
 
                             frontend_extra.set_change_attr_number(locals()[course_name], False, "week_hours")
 
-                            while True:
-                                try:
-                                    program_name = input("\nNombre del programa al que pertenecera el curso: ")
-                                    only_white_spaces = True
-                                    for i in program_name:
-                                        if i != " ":
-                                            only_white_spaces = False
-                                            break
-                                    
-                                    only_underscores = True
-                                    for i in program_name:
-                                        if i != "_":
-                                            only_underscores = False
-                                            break
-                                        
-                                    if only_white_spaces == True:
-                                        raise ValueError("\nEl nombre del programa no debe contener únicamente espacios vacíos.")
-                                    elif only_underscores == True:
-                                        raise ValueError("\nEl nombre del programa no debe contener únicamente guiones bajos.")
+                            if len(Program.instances) > 0:
+                                while True:
+                                    set_check = input("\nDesea establecer en este momento el programa al que pertenecera el curso (S/N): ").lower()
+                                    if set_check == "s":
 
-                                    for i in program_name:
-                                        if i.isalnum() == False:
-                                            if i != " " and i != "_":                                        
-                                                raise ValueError("\nEl nombre del programa solo puede contener letras, números, espacios vacíos y guiones bajos.")                                
+                                        frontend_extra.view_each_instance(Program.instances[0], "courses", "max_courses", 1)
 
-                                    for instance in Program.instances:
-                                        if locals()[program_name] == instance: 
-                                            locals()[course_name].program = instance
+                                        while True:
+                                            program_name = frontend_extra.name_check_non_existence("programa")
+                                            if len (locals()[program_name].courses) < locals()[program_name].max_courses:
+                                                if locals()[program_name].add_course(locals()[course_name]):
+                                                    locals()[course_name].program = locals()[program_name]
+                                                    break
+                                        break
+                                    elif set_check == "n":
 
-                                except ValueError as arg:
-                                    print(arg)
-                                except KeyError:
-                                    print(f"\nNo existe un programa con el nombre \"{program_name}\"")
-                                else:
-                                    break   
+                                        break           
 
                             frontend_extra.set_change_attr_number(locals()[course_name], False, "price")
 
-                            print(f"id_profesor: {Juan.id_teacher}")
-                            while True:
-                                try:
-                                    id_teacher = int(input("\nId del profesor del curso: "))
-                                    if id_teacher < 0:
-                                        raise SyntaxError("\nLos Id de los profesores no son números negativos.")
+                            if len(Person.instances_teacher) == 0:
+                                pass
+                            else:
+                                while True:
+                                    set_check = input("\nDesea establecer en este momento el profesor del curso (S/N): ").lower()
+                                    if set_check == "s":
 
-                                    teacher_check = False
-                                    for instance in Person.instances_teacher:
-                                        if id_teacher == instance.id_teacher:                                            
-                                            locals()[course_name].teacher = instance
-                                            teacher_check = True
+                                        frontend_extra.view_each_instance(Person.instances_teacher[0], "courses", "max_courses", 1)  
 
-                                    if teacher_check == False:      
-                                        raise SyntaxError(f"\nNo existe ningún profesor con el id: \"{id_teacher}\".")
+                                        while True:
+                                            teacher_name = frontend_extra.id_check("profesor")
+                                            if len (locals()[teacher_name].courses) < locals()[teacher_name].max_courses:
+                                                locals()[course_name].teacher = locals()[teacher_name]
+                                                if locals()[course_name].teacher != "No Establecido":
+                                                    locals()[teacher_name].courses = locals()[course_name]
+                                                    break
 
-                                except ValueError:
-                                    print("\nDebe ingresar únicamente números enteros.")
-                                except SyntaxError as arg:
-                                    print(arg)
-                                except KeyError:
-                                    print("Entro en Keyerror")
-                                    break
-                                else:
-                                    break
-                            
+                                        break
+                                    elif set_check == "n":
+
+                                        break
+
                             frontend_extra.max_students_check(locals()[course_name])
 
                             frontend_extra.min_students_check(locals()[course_name])
@@ -308,227 +324,180 @@ while selected_menu != "s":
                             while True:
                                 verification = input(f"\nDesea crear el curso \"{locals()[course_name].course_name}\" con la información asociada que ha ingresado (S/N): ").lower()
                                 if verification == "s":
-                                    print(f"\n{TextFormat.CYAN}Se ha creado el curso \"{locals()[course_name].course_name}\" con la siguiente información asociada:\n{TextFormat.CLEAR}"
-                                        f"\nNombre del Curso: {locals()[course_name].course_name}\n"
-                                        f"Creditos del Curso: {locals()[course_name].credits}\n"
-                                        f"Cantidad de Horas Semanales: {locals()[course_name].week_hours}\n"
-                                        f"Programa al que Pertenece el Curso: {locals()[course_name].program.program_name}\n"
-                                        f"Precio del Curso: {locals()[course_name].price}\n"
-                                        f"Profesor del Curso: {locals()[course_name].teacher.name} {locals()[course_name].teacher.last_name}\n"   
-                                        f"Id del Profesor: {locals()[course_name].teacher.id_teacher}\n"
-                                        f"Máximo de Estudiantes: {locals()[course_name].max_students}\n"
-                                        f"Mínimo de Estudiantes: {locals()[course_name].min_students}\n")
+                                    print(f"\n{TextFormat.CYAN}El curso \"{locals()[course_name].course_name}\" se ha creado exitosamente.{TextFormat.CLEAR}")
+
+                                    while True:
+                                        informatio_view = input(f"\nDeseea ver la información del curso (S/N): ").lower()
+
+                                        if informatio_view == "s":
+                                            frontend_extra.course_information_show(locals()[course_name])
+                                            break
+                                        elif informatio_view == "n":
+                                            break
                                             
-                                    input("Pulse enter para continuar.")
-                                    clear_flag()
                                     break
                                 elif verification == "n":
                                     print(f"\n{TextFormat.CYAN}El curso \"{locals()[course_name].course_name}\" no se creara.{TextFormat.CLEAR}")
-                                    for instance in Course.instances:
-                                        if locals()[course_name] == instance:
-                                            instance_index = Course.instances.index(instance)
-                                            del Course.instances[instance_index]
+                                    
+                                    frontend_extra.del_instance_in_class(locals()[course_name])
                                     del locals()[course_name]
-                                                                    
-                                    input("\nPulse enter para continuar.")
-                                    clear_flag()
                                     break
+
+                    input("\nPulse enter para continuar.")          
                     clear_flag()
-                if selected_submenu2 == "a":
+                
+                elif selected_submenu2 == "a":
                     if selected_submenu1 == "p":
                         clear_screen()
                         print(f"\n{TextFormat.CYAN}Sub Menú - Agregar Cursos a Programas{TextFormat.CLEAR}")
                         if len(Program.instances) == 0:
                             print("\nNo existe ningún programa creado.")
 
-                            input("\nPresione enter para continuar.")
-                            clear_flag()
                         elif len(Course.instances) == 0:
                             print("\nNo existe ningún curso creado.")
 
-                            input("\nPresione enter para continuar.")
-                            clear_flag()
+                        elif not (frontend_extra.programs_availability()):
+                            print("\nTodos los programas creados ya alcanzaron su cuota máxima de cursos establecida.")
+
+                        elif not (frontend_extra.courses_availability()):
+                            print("\nTodos los cursos creados ya estan agregados a un programa.")
+                        
                         else:
-                            program_name = str
-                            while True:
-                                try:
-                                    program_name = input("\nIngrese el nombre de un programa: ")
-                                    only_white_spaces = True
-                                    for i in program_name:
-                                        if i != " ":
-                                            only_white_spaces = False
-                                            break
+                            print(f"\nSeleccione un Programa")
 
-                                    only_underscores = True
-                                    for i in program_name:
-                                        if i != "_":
-                                            only_underscores = False
-                                            break
-                                    
-                                    if only_white_spaces == True:
-                                        raise ValueError("\nEl nombre del programa no debe contener únicamente espacios vacíos.")
-                                    elif only_underscores == True:                                    
-                                        raise ValueError("\nEl nombre del programa no debe contener únicamente guiones bajos.")
+                            frontend_extra.view_each_instance(Program.instances[0], "courses", "max_courses", 1)
 
-                                    for i in program_name:
-                                        if i.isalnum() == False:
-                                            if i != " " and i != "_":                                        
-                                                raise ValueError("\nEl nombre del programa solo puede contener letras, números, espacios vacíos y guiones bajos.")                                
+                            program_check = frontend_extra.add_requirements_check(Course.instances[0], "programa", "courses", "max_courses")
 
-                                    instance_check = False
-                                    for instance in Program.instances:
-                                        if locals()[program_name] == instance:
-                                            instance_check = True
+                            if program_check[0]:
+                                print("\nSeleccione un Curso")
 
-                                    if instance_check == False:
-                                        raise KeyError
-
-                                except ValueError as arg:
-                                    print(arg)
-                                except KeyError:
-                                    print(f"\nNo existe un programa con el nombre \"{program_name}\".")
-                                else:
-                                    break 
-
-                            curse_not_in_program = False
-                            for instance in Course.instances:
-                                if not (instance in locals()[program_name].courses):
-                                    curse_not_in_program = True
-                                    break
-
-                            if curse_not_in_program == False:
-                                print(f"\nTodos lo cursos existentes ya estan agregados al programa \"{program_name}\".")
- 
-                                input("\nPresione enter para continuar.")
-                                clear_flag()
-                            elif len(locals()[program_name].courses) > locals()[program_name].max_courses:
-                                print(f"\nNo se pueden agregar mas cursos al programa \"{locals()[program_name].program_name}\". El programa \"{locals()[program_name].program_name}\" ya ha alcanzado la cantidad máxima de cursos establecida.")
+                                frontend_extra.view_each_instance(Course.instances[0], "No Establecido", "program", 2)                                
                                 
-                                input("\nPresione enter para continuar.")
-                                clear_flag()
-                            else:    
-                                course_name = str
                                 while True:
-                                    try:
-                                        course_name = input(f"\nIngrese el nombre del curso que se agregara al programa \"{program_name}\": ")
-                                        only_white_spaces = True
-                                        for i in course_name:
-                                            if i != " ":
-                                                only_white_spaces = False
-                                                break
+                                    course_name = frontend_extra.name_check_non_existence("curso")
 
-                                        only_underscores = True
-                                        for i in course_name:
-                                            if i != "_":
-                                                only_underscores = False
-                                                break
-                                        
-                                        if only_white_spaces == True:
-                                            raise ValueError("\nEl nombre del curso no debe contener únicamente espacios vacíos.")
-                                        elif only_underscores == True:                                    
-                                            raise ValueError("\nEl nombre del curso no debe contener únicamente guiones bajos.")
-
-                                        for i in course_name:
-                                            if i.isalnum() == False:
-                                                if i != " " and i != "_":                                        
-                                                    raise ValueError("\nEl nombre del curso solo puede contener letras, números, espacios vacíos y guiones bajos.")                                
-
-                                        instance_check = False
-                                        for instance in Course.instances:
-                                            if locals()[course_name] == instance:
-                                                instance_check = True
-
-                                        if instance_check == False:
-                                            raise KeyError
-
-                                        for instance in locals()[program_name].courses:
-                                            if locals()[course_name] in instance:
-                                               raise ValueError(f"\nYa existe un curso con el nombre \"{course_name}\" en programa \"{program_name}\"")                                  
-                                    
-                                    except ValueError as arg:
-                                        print(arg)
-                                    except KeyError as arg:
-                                        print(f"\nNo existe un curso con el nombre \"{course_name}\".")
-                                    else:
-                                        break 
-
-                                locals()[program_name].add_course(locals()[course_name])
-                                
-                                input("\nPresione enter para continuar.")
-                                clear_flag()
+                                    if program_check[1].add_course(locals()[course_name]):
+                                        locals()[course_name].program = program_check[1]
+                                        break
                      
                     elif selected_submenu1 == "c":
                         clear_screen()
                         print(f"\n{TextFormat.CYAN}Sub Menú - Agregar a Cursos{TextFormat.CLEAR}")
-                        print("\nLa opción de agregar no esta permitida para los cursos.")
+                        if len(Course.instances) == 0:
+                            print("\nNo existe ningún curso creado.")
+                        else:
+                            print("\nSeleccione un Curso")
+                            
+                            frontend_extra.view_each_instance(Course.instances[0])
+                            course_name = frontend_extra.name_check_non_existence("curso")        
 
-                        input("\nPresione enter para continuar.")
-                    
-                    
+                            clear_screen()
+                            print(f"\n{TextFormat.CYAN}Sub Menú - Agregar al Curso \"{locals()[course_name].course_name}\"\n{TextFormat.CLEAR}"
+                                f"[P] Agregar el Curso a un {TextFormat.BOLD_UNDERLINE}P{TextFormat.CLEAR}rograma\n"
+                                f"[F] Agregar Pro{TextFormat.BOLD_UNDERLINE}f{TextFormat.CLEAR}esor al Curso\n"
+                                f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
+                            selected_submenu3 = input("Digite una opción: ").lower() 
+                            if selected_submenu3 in "pf" and selected_submenu3 != "":    
+                                if selected_submenu3 == "p": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Agregar el Curso \"{locals()[course_name].course_name}\" a un Programa{TextFormat.CLEAR}")
+                                    
+                                    if len(Program.instances) == 0:
+                                        print("\nNo existe ningún programa creado.")
+
+                                    elif not (frontend_extra.programs_availability()):
+                                        print("\nTodos los programas creados ya alcanzaron su cuota máxima de cursos establecida.")
+
+                                    elif not (frontend_extra.courses_availability()):
+                                        print("\nTodos los cursos creados ya estan agregados a un programa.")
+
+                                    elif locals()[course_name].program != "No Establecido":
+
+                                        print(f"\nEl curso \"{locals()[course_name].course_name}\" se encuentra agregado al programa \"{locals()[course_name].program.program_name}\".")
+
+                                    else:
+
+                                        print(f"\nSeleccione un Programa")
+
+                                        frontend_extra.view_each_instance(Program.instances[0], "courses", "max_courses", 1)
+
+                                        program_check = frontend_extra.add_requirements_check(Course.instances[0], "programa", "courses", "max_courses")
+
+                                        if program_check[0]:
+                                            while True:
+                                                if program_check[1].add_course(locals()[course_name]):
+                                                    locals()[course_name].program = program_check[1]
+                                                    break
+
+                                elif selected_submenu3 == "f": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Agregar un Profesor al Curso \"{locals()[course_name].course_name}\"{TextFormat.CLEAR}")
+                                    
+                                    if len(Person.instances_teacher) == 0:
+                                        print("\nNo existe ningún profesor creado.")
+
+                                    elif not (frontend_extra.teachers_availability()):
+                                        print("\nTodos los profesores han alcanzado la cantidad máxima de curos que pueden impartir.")
+
+                                    elif locals()[course_name].teacher != "No Establecido":
+                                        print(f"\nEl curso \"{locals()[course_name].course_name}\" ya tiene agregado un profesor.")
+
+                                    else:
+
+                                        print(f"\nSeleccione un Profesor")
+
+                                        frontend_extra.view_each_instance(Person.instances_teacher[0], "courses", "max_courses", 1)
+
+                                        teacher_check = frontend_extra.add_requirements_check(Course.instances[0], "profesor", "courses", "max_courses")
+
+                                        if teacher_check[0]:
+                                            while True:
+                                                locals()[course_name].teacher = teacher_check[1]
+                                                if locals()[course_name].teacher != "No Establecido":
+                                                    teacher_check[1].courses = locals()[course_name]
+                                                    break   
+
+                    input("\nPresione enter para continuar.")
                     clear_flag()
-                if selected_submenu2 == "o":
+                
+                elif selected_submenu2 == "o":
                     if selected_submenu1 == "p":
                         clear_screen()
                         print(f"\n{TextFormat.CYAN}Sub Menú - Consultar Información de Programas{TextFormat.CLEAR}") 
                         if len(Program.instances) == 0:
                             print("\nNo existe ningún programa creado.")
-
-                            input("\nPresione enter para continuar.")
-                            clear_flag()
                         else: 
-                            while True:
-                                program_list = input("\nDesea ver una lista de todos los programas creados (S/N): ").lower()
-                                if program_list == "s":
-                                    print("")
-                                    for i in range(0, len(Program.instances),1):
-                                        print(f"({i}) {Program.instances[i].program_name}")
-                                    break
-                                elif program_list == "n":
-                                    break
 
+                            frontend_extra.view_each_instance(Program.instances[0])
                             program_name = frontend_extra.name_check_non_existence("programa")
 
                             frontend_extra.program_information_show(locals()[program_name])
-
-                            input("\nPulse enter para continuar.")
-                            clear_screen() 
 
                     elif selected_submenu1 == "c":
                         clear_screen()
                         print(f"\n{TextFormat.CYAN}Sub Menú - Consultar Información de Cursos{TextFormat.CLEAR}") 
                         if len(Course.instances) == 0:
                             print("\nNo existe ningún curso creado.")
-
-                            input("\nPresione enter para continuar.")
-                            clear_flag()
                         else: 
-                            while True:
-                                course_list = input("\nDesea ver una lista de todos los cursos creados (S/N): ").lower()
-                                if course_list == "s":
-                                    print("")
-                                    for i in range(0, len(Course.instances),1):
-                                        print(f"({i}) {Course.instances[i].course_name}")
-                                    break
-                                elif course_list == "n":
-                                    break
-                                
+                            
+                            frontend_extra.view_each_instance(Course.instances[0])                                
                             course_name = frontend_extra.name_check_non_existence("curso")
 
                             frontend_extra.course_information_show(locals()[course_name])
 
-                            input("\nPulse enter para continuar.")
-                            clear_screen() 
+                    input("\nPulse enter para continuar.")          
+                    clear_flag()
 
-                if selected_submenu2 == "m":
+                elif selected_submenu2 == "m":
                     if selected_submenu1 == "p":
                         clear_screen()
                         print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Información de Programas{TextFormat.CLEAR}")
                         if len(Program.instances) == 0:
                             print("\nNo existe ningún programa creado.")
-
-                            input("\nPresione enter para continuar.")
-                            clear_flag()
                         else:
+
+                            frontend_extra.view_each_instance(Program.instances[0])
                             program_name = frontend_extra.name_check_non_existence("programa")        
 
                             clear_screen()
@@ -554,118 +523,119 @@ while selected_menu != "s":
                                     if change_name[0]:
                                         locals()[new_program_name] = change_name[1]
                                         del locals()[program_name]
-                                    
-                                    input("\nPresione enter para continuar.")
-                                    clear_flag()
 
                                 elif selected_submenu3 == "d": 
                                     clear_screen()
                                     print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Nombre del Director del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
                                     
-                                    frontend_extra.name_check_no_numbers(locals()[program_name], True, "director")
-                                    
-                                    input("\nPresione enter para continuar.")
-                                    clear_flag()
+                                    frontend_extra.name_check_no_numbers(locals()[program_name], True, "principal")
 
                                 elif selected_submenu3 == "e": 
                                     clear_screen()
                                     print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad Máxima de Alumnos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
 
-                                    frontend_extra.max_students_check(locals()[program_name], True)                            
-                                    
-                                    input("\nPresione enter para continuar.")
-                                    clear_flag()
+                                    frontend_extra.max_students_check(locals()[program_name], True)  
 
                                 elif selected_submenu3 == "s": 
                                     clear_screen()
                                     print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad Mínima de Alumnos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
 
-                                    frontend_extra.min_students_check(locals()[program_name], True)                               
-                                    
-                                    input("\nPresione enter para continuar.")
-                                    clear_flag()
+                                    frontend_extra.min_students_check(locals()[program_name], True)   
 
                                 elif selected_submenu3 == "c": 
                                     clear_screen()
                                     print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad Máxima de Cursos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
 
-                                    new_max_courses = frontend_extra.max_courses_check(locals()[program_name], True)                              
-                                    
-                                    input("\nPresione enter para continuar.")
-                                    clear_flag()
+                                    new_max_courses = frontend_extra.max_courses_check(locals()[program_name], True) 
 
                                 elif selected_submenu3 == "u": 
                                     clear_screen()
                                     print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad Mínima de Cursos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
 
-                                    new_min_courses = frontend_extra.min_courses_check(locals()[program_name], True)                          
-                                    
-                                    input("\nPresione enter para continuar.")
-                                    clear_flag()
+                                    new_min_courses = frontend_extra.min_courses_check(locals()[program_name], True)
 
                                 elif selected_submenu3 == "g": 
                                     clear_screen()
                                     print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Duración del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
 
-                                    new_program_durations = frontend_extra.program_duration_check(locals()[program_name], True)                              
+                                    new_program_durations = frontend_extra.program_duration_check(locals()[program_name], True)   
+
+                    elif selected_submenu1 == "c":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Información de Cursos{TextFormat.CLEAR}")
+                        if len(Course.instances) == 0:
+                            print("\nNo existe ningún curso creado.")
+                        else:
+                            
+                            frontend_extra.view_each_instance(Course.instances[0])
+                            course_name = frontend_extra.name_check_non_existence("curso")        
+
+                            clear_screen()
+                            print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Información del Curso \"{locals()[course_name].course_name}\"\n{TextFormat.CLEAR}"
+                                f"[N] Modificar {TextFormat.BOLD_UNDERLINE}N{TextFormat.CLEAR}onmbre del Curso\n"
+                                f"[C] Modificar {TextFormat.BOLD_UNDERLINE}C{TextFormat.CLEAR}reditos del Curso\n"
+                                f"[H] Modificar {TextFormat.BOLD_UNDERLINE}H{TextFormat.CLEAR}oras Semanales del Curso\n"
+                                f"[P] Modificar {TextFormat.BOLD_UNDERLINE}P{TextFormat.CLEAR}recio del Curso\n"
+                                f"[A] Modificar Cantidad Máxima de {TextFormat.BOLD_UNDERLINE}A{TextFormat.CLEAR}lumnos del Curso\n"
+                                f"[L] Modificar Cantidad Mínima de A{TextFormat.BOLD_UNDERLINE}l{TextFormat.CLEAR}umnos del Curso\n"
+                                f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
+                            selected_submenu3 = input("Digite una opción: ").lower() 
+                            if selected_submenu3 in "nchpal" and selected_submenu3 != "":    
+                                if selected_submenu3 == "n": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Nombre del Curso \"{locals()[course_name].course_name}\"{TextFormat.CLEAR}")
+
+                                    new_course_name = frontend_extra.name_check_with_numbers("curso", True)
+
+                                    change_name = frontend_extra.change_instance_name(locals()[course_name], new_course_name)
                                     
-                                    input("\nPresione enter para continuar.")
-                                    clear_flag()
-                            elif selected_submenu3 == "r":
-                                clear_flag()
-                            else:
-                                invalid_selection()
+                                    if change_name[0]:
+                                        locals()[new_course_name] = change_name[1]
+                                        del locals()[course_name]
+
+                                elif selected_submenu3 == "c": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Creditos del Curso \"{locals()[course_name].course_name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.set_change_attr_number(locals()[course_name], True, "credits")
+
+                                elif selected_submenu3 == "h": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Horas Semanales del Curso \"{locals()[course_name].course_name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.set_change_attr_number(locals()[course_name], True, "week_hours")
+ 
+                                elif selected_submenu3 == "p": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Precio del Curso \"{locals()[course_name].course_name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.set_change_attr_number(locals()[course_name], True, "price")
+
+                                elif selected_submenu3 == "a": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad Máxima de Alumnos del Curso \"{locals()[course_name].course_name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.max_students_check(locals()[course_name], True)
+
+                                elif selected_submenu3 == "l": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad Mínima de Alumnos del Curso \"{locals()[course_name].course_name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.min_students_check(locals()[course_name], True)
+
+                    input("\nPulse enter para continuar.")          
                     clear_flag()
-                if selected_submenu2 == "e":
+
+                elif selected_submenu2 == "e":
                     if selected_submenu1 == "p":
                         clear_screen()
                         print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Programas{TextFormat.CLEAR}") 
                         if len(Program.instances) == 0:
                             print("\nNo existe ningún programa creado.")
-
-                            input("\nPresione enter para continuar.")
-                            clear_flag()
                         else:
-                            program_name = str
-                            while True:
-                                try:
-                                    program_name = input("\nIngrese el nombre de un programa: ")
-                                    only_white_spaces = True
-                                    for i in program_name:
-                                        if i != " ":
-                                            only_white_spaces = False
-                                            break
-
-                                    only_underscores = True
-                                    for i in program_name:
-                                        if i != "_":
-                                            only_underscores = False
-                                            break
-                                    
-                                    if only_white_spaces == True:
-                                        raise ValueError("\nEl nombre del programa no debe contener únicamente espacios vacíos.")
-                                    elif only_underscores == True:                                    
-                                        raise ValueError("\nEl nombre del programa no debe contener únicamente guiones bajos.")
-
-                                    for i in program_name:
-                                        if i.isalnum() == False:
-                                            if i != " " and i != "_":                                        
-                                                raise ValueError("\nEl nombre del programa solo puede contener letras, números, espacios vacíos y guiones bajos.")                                
-
-                                    instance_check = False
-                                    for instance in Program.instances:
-                                        if locals()[program_name] == instance:
-                                            instance_check = True
-
-                                    if instance_check == False:
-                                        raise KeyError
-
-                                except ValueError as arg:
-                                    print(arg)
-                                except KeyError:
-                                    print(f"\nNo existe un programa con el nombre \"{program_name}\".")
-                                else:
-                                    break   
+                            
+                            frontend_extra.view_each_instance(Program.instances[0])
+                            program_name = frontend_extra.name_check_non_existence("programa")
 
                             clear_screen()
                             print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Programa \"{locals()[program_name].program_name}\"\n{TextFormat.CLEAR}"
@@ -673,23 +643,15 @@ while selected_menu != "s":
                                 f"[C] Eliminar {TextFormat.BOLD_UNDERLINE}C{TextFormat.CLEAR}ursos del Programa \"{locals()[program_name].program_name}\"\n"
                                 f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
                             selected_submenu3 = input("Digite una opción: ").lower() 
-                            clear_screen()
-                            print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
                             if selected_submenu3 in "pcr" and selected_submenu3 != "":     
-                                if selected_submenu3 == "p":                                    
+                                if selected_submenu3 == "p":      
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Eliminar Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")                                                                  
                                     while True:
                                         review_information = input(f"\nDesea revisar la información asociada al programa \"{locals()[program_name].program_name}\" antes de elimninarlo (S/N): ").lower()
                                         if review_information == "s":
-                                            print(f"\nNombre del Programa: {locals()[program_name].program_name}\n"
-                                                  f"Fecha de Creación del Programa: {locals()[program_name].creation_date_program}\n"
-                                                  f"Estatus del Programa: {locals()[program_name].program_status}\n"
-                                                  f"Director: {locals()[program_name].principal}\n"
-                                                  f"Número de Cursos del Programa: {len(locals()[program_name].courses)}\n"
-                                                  f"Máximo de Estudiantes: {locals()[program_name].max_students}\n"
-                                                  f"Mínimo de Estudiantes: {locals()[program_name].min_students}\n"
-                                                  f"Máximo de Cursos: {locals()[program_name].max_courses}\n"
-                                                  f"Mínimo de Cursos: {locals()[program_name].min_courses}\n"                            
-                                                  f"Duración del Programa en años: {locals()[program_name].program_duration}")
+
+                                            frontend_extra.program_information_show(locals()[program_name])
                                             break
                                         elif review_information == "n":
                                             break
@@ -698,101 +660,130 @@ while selected_menu != "s":
                                         print(f"\n{TextFormat.RED}La acción de eliminación no puede ser revertida, tenga cuidado con los programas que elimina.{TextFormat.CLEAR}")
                                         delete_check = input(f"\nConfirme eliminación del programa \"{locals()[program_name].program_name}\" (S/N): ").lower()
                                         if delete_check == "s":
-                                            for instance in Program.instances:
-                                                if locals()[program_name] == instance:
-                                                    instance_index = Program.instances.index(instance)
-                                                    del Program.instances[instance_index]
+
+                                            if len(locals()[program_name].courses) == 0: 
+                                                frontend_extra.set_attribute_in_list_in_instance(locals()[program_name], "courses", "program", "No Establecido") 
+                                            
+                                            frontend_extra.del_instance_in_class(locals()[program_name])                                          
                                             
                                             del locals()[program_name]               
+
                                             print(f"\nEl programa de nombre \"{program_name}\" fue eliminado exitosamente.")
                                             break
                                         elif delete_check == "n":
-                                            print(f"\nNo se realizo níngun acción, el programa de nombre \"{locals()[program_name].program_name}\" no fue eliminado.")
+                                            print(f"\nNo se realizo ningún acción, el programa de nombre \"{locals()[program_name].program_name}\" no fue eliminado.")
                                             break
-                                    
-                                    input("\nPresione enter para continuar.")
-                                    clear_flag()
 
                                 elif selected_submenu3 == "c":  
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Eliminar Cursos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
+
                                     if len(locals()[program_name].courses) == 0:
-                                        print(f"\nEl programa \"{locals()[program_name].program_name}\" no tiene cursos agreados.")  
-                                        
-                                        input("\nPresione enter para continuar.")
-                                        clear_flag()                         
+                                        print(f"\nEl programa \"{locals()[program_name].program_name}\" no tiene cursos agreados.")                         
                                     else:
-                                        while True:
-                                            course_list = input("\nDesea ver una lista de todos los cursos del programa (S/N): ").lower()
-                                            if course_list == "s":
-                                                print("")
-                                                for i in range(0, len(Program.instances),1):
-                                                    for j in Program.instances[i].courses:
-                                                        print(f"({i}) {j.course_name}")
-                                                break
-                                            elif course_list == "n":
-                                                break                                        
-                                        
-                                        course_name = str
-                                        while True:
-                                            try:
-                                                course_name = input(f"\nIngrese el nombre del curso que se eliminara del programa \"{program_name}\": ")
-                                                only_white_spaces = True
-                                                for i in course_name:
-                                                    if i != " ":
-                                                        only_white_spaces = False
-                                                        break
-
-                                                only_underscores = True
-                                                for i in course_name:
-                                                    if i != "_":
-                                                        only_underscores = False
-                                                        break
                                                 
-                                                if only_white_spaces == True:
-                                                    raise ValueError("\nEl nombre del curso no debe contener únicamente espacios vacíos.")
-                                                elif only_underscores == True:                                    
-                                                    raise ValueError("\nEl nombre del curso no debe contener únicamente guiones bajos.")
+                                        frontend_extra.view_each_instance(locals()[program_name], "courses", "course_name", 3)                                    
+                                        
+                                        print("\nEliminar curso.")
 
-                                                for i in course_name:
-                                                    if i.isalnum() == False:
-                                                        if i != " " and i != "_":                                        
-                                                            raise ValueError("\nEl nombre del curso solo puede contener letras, números, espacios vacíos y guiones bajos.")                                
-
-                                                instance_check = False
-                                                for instance in Course.instances:
-                                                    if locals()[course_name] == instance:
-                                                        instance_check = True
-
-                                                if instance_check == False:
-                                                    raise KeyError
-
-                                            except ValueError as arg:
-                                                print(arg)
-                                            except KeyError:
-                                                print(f"\nNo existe un curso con el nombre \"{course_name}\".")
-                                            else:
-                                                break 
+                                        course_name = frontend_extra.name_check_non_existence("curso")
 
                                         while True:
                                             delete_check = input(f"\nConfirme eliminación del curso \"{locals()[course_name].course_name}\" del programa \"{locals()[program_name].program_name}\" (S/N): ").lower()
                                             if delete_check == "s":
                                                 locals()[program_name].del_course(locals()[course_name])
-
-                                                input("\nPresione enter para continuar.")
-                                                clear_flag()
                                                 break
                                             elif delete_check == "n":
-                                                print(f"\nNo se realizo níngun acción, el curso de nombre \"{locals()[course_name].course_name}\" no fue eliminado del programa \"{locals()[program_name].program_name}\".")
-                                                
-                                                input("\nPresione enter para continuar.")
-                                                clear_flag()
+                                                print(f"\nNo se realizo ningún acción, el curso de nombre \"{locals()[course_name].course_name}\" no fue eliminado del programa \"{locals()[program_name].program_name}\".")
+                                                break                               
+
+                    elif selected_submenu1 == "c":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Cursos{TextFormat.CLEAR}") 
+                        if len(Course.instances) == 0:
+                            print("\nNo existe ningún curso creado.")
+                        else:
+                            
+                            frontend_extra.view_each_instance(Course.instances[0])
+                            course_name = frontend_extra.name_check_non_existence("curso")
+
+                            clear_screen()
+                            print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Curso \"{locals()[course_name].course_name}\"\n{TextFormat.CLEAR}"
+                                f"\n[C] Eliminar el {TextFormat.BOLD_UNDERLINE}C{TextFormat.CLEAR}urso \"{locals()[course_name].course_name}\"\n"
+                                f"[P] Eliminar el {TextFormat.BOLD_UNDERLINE}P{TextFormat.CLEAR}rograma del Curso \"{locals()[course_name].course_name}\"\n"
+                                f"[F] Eliminar el Pro{TextFormat.BOLD_UNDERLINE}f{TextFormat.CLEAR}esor del Curso \"{locals()[course_name].course_name}\"\n"
+                                f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
+                            selected_submenu3 = input("Digite una opción: ").lower() 
+                            clear_screen()
+                            if selected_submenu3 in "cpf" and selected_submenu3 != "":     
+                                if selected_submenu3 == "c":
+                                    print(f"\n{TextFormat.CYAN}Eliminar Curso \"{locals()[course_name].course_name}\"{TextFormat.CLEAR}")                                                                  
+                                    while True:
+                                        review_information = input(f"\nDesea revisar la información asociada al curso \"{locals()[course_name].course_name}\" antes de elimninarlo (S/N): ").lower()
+                                        if review_information == "s":
+
+                                            frontend_extra.course_information_show(locals()[course_name])
+                                            break
+                                        elif review_information == "n":
+                                            break
+
+                                    while True:
+                                        print(f"\n{TextFormat.RED}La acción de eliminación no puede ser revertida, tenga cuidado con los cursos que elimina.{TextFormat.CLEAR}")
+                                        delete_check = input(f"\nConfirme eliminación del curso \"{locals()[course_name].course_name}\" (S/N): ").lower()
+                                        if delete_check == "s":
+                                            if locals()[course_name].program != "No Establecido":
+                                                frontend_extra.del_instance_in_other_instance_list(locals()[course_name], "program", "courses")                                            
+                                            
+                                            if locals()[course_name].teacher != "No Establecido":
+                                                frontend_extra.del_instance_in_other_instance_list(locals()[course_name], "teacher", "courses")
+                                            
+                                            frontend_extra.del_instance_in_class(locals()[course_name])
+                                            del locals()[course_name]              
+
+                                            print(f"\nEl curso de nombre \"{course_name}\" fue eliminado exitosamente.")
+                                            break
+                                        elif delete_check == "n":
+                                            print(f"\nNo se realizo ningún acción, el curso de nombre \"{locals()[course_name].course_name}\" no fue eliminado.")
+                                            break
+
+                                elif selected_submenu3 == "p":
+                                    print(f"\n{TextFormat.CYAN}Eliminar Profesor del Curso \"{locals()[course_name].course_name}\"{TextFormat.CLEAR}")                                                                  
+                                    if len(Program.instances) == 0:
+                                        print("\nNo existe ningún programa creado.")
+                                    elif locals()[course_name].program == "No Establecido":
+                                        print(f"\nEl curso \"{locals()[course_name].course_name}\" no tiene ningún programa asignado.")
+                                    else:
+                                        print("\nEliminar programa.")
+                                        while True:
+                                            delete_check = input(f"\nConfirme eliminación del programa \"{locals()[course_name].program.program_name}\" del curso \"{locals()[course_name].course_name}\" (S/N): ").lower()
+                                            if delete_check == "s":
+                                                frontend_extra.del_instance_in_other_instance_list(locals()[course_name], "program","courses")
+                                                locals()[course_name].program = "No Establecido"
+                                                break
+                                            elif delete_check == "n":
+                                                print(f"\nNo se realizo ningún acción, el programa \"{locals()[course_name].program.program_name}\" no fue eliminado del curso \"{locals()[course_name].course_name}\".")
                                                 break
 
-                                elif selected_submenu3 == "r":
-                                    clear_flag()
-                            else:
-                                invalid_selection()                                    
+                                elif selected_submenu3 == "f":
+                                    print(f"\n{TextFormat.CYAN}Eliminar Profesor del Curso \"{locals()[course_name].course_name}\"{TextFormat.CLEAR}")                                                                  
+                                    if len(Person.instances_teacher) == 0:
+                                        print("\nNo existe ningún profesor creado.")
+                                    elif locals()[course_name].teacher == "No Establecido":
+                                        print(f"\nEl curso \"{locals()[course_name].course_name}\" no tiene ningún profesor asignado.")
+                                    else:
+                                        print("\nEliminar profesor.")
+                                        while True:
+                                            delete_check = input(f"\nConfirme eliminación del profesor \"{locals()[course_name].teacher.name} {locals()[course_name].teacher.last_name}\" con id: \"{locals()[course_name].teacher.id_teacher}\" del curso \"{locals()[course_name].course_name}\" (S/N): ").lower()
+                                            if delete_check == "s":
+                                                frontend_extra.del_instance_in_other_instance_list(locals()[course_name], "teacher","courses")
+                                                locals()[course_name].teacher = "No Establecido"
+                                                break
+                                            elif delete_check == "n":
+                                                print(f"\nNo se realizo ningún acción, el profesor \"{locals()[course_name].teacher.name} {locals()[course_name].teacher.last_name}\" con id: \"{locals()[course_name].teacher.id_teacher}\" no fue eliminado del curso \"{locals()[course_name].course_name}\".")
+                                                break
 
-                clear_flag()
+                    input("\nPulse enter para continuar.")          
+                    clear_flag()
 
             elif selected_submenu2 == "r":
                 clear_flag()

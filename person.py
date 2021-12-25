@@ -16,6 +16,20 @@ class Person:
         self.__email = email
         self.__max_courses = 0
         self.__min_courses = 0
+        self.__courses = []
+
+    @property
+    def courses(self):
+        return self.__courses
+
+    @courses.setter
+    def courses(self, value):
+        if len(self.__courses) <= self.__max_courses:
+            self.__courses.append(value)
+
+    @courses.deleter
+    def courses(self):
+        del self.__courses
 
     @property
     def name(self):
@@ -157,7 +171,6 @@ class Person:
             def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None, id_teacher = None):
                 super(Teacher, self).__init__(name, last_name, identification, address, phone_number, date_birth , email)
                 self.__id_teacher = int("{}{}{}".format(random.randint(10,99), random.randint(10,99), random.randint(10,99)))
-                self.__courses = []
                 self.__teacher_type = None
                 self.__turn = None
                 Person.instances_teacher.append(self)

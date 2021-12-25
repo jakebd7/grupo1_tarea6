@@ -158,13 +158,17 @@ class Program:
     def add_course(self, course):
         if (len(self.__courses) + 1) > self.__max_courses:
             print(f"\nNo es posible agregar mas cursos al programa \"{self.__program_name}\". El programa ya ha alcanza su cuota máxima de cursos")
+            return False
+        elif course in self.__courses:
+            print(f"\nEl curso \"{course.course_name}\" ya se encuentra agregado al programa \"{self.__program_name}\"")
+            return False
+        elif course.program != "No Establecido":
+            print(f"\nEl curso \"{course.course_name}\" ya se encuentra agregado al programa \"{course.program.program_name}\"")
+            return False           
         else:
-            for i in range(0, len(self.__courses),1):
-                if course.course_name == self.__courses[i].course_name:
-                    print(f"\nYa existe un curso con el nombre \"{course.course_name}\" en el programa \"{self.__program_name}\"")
-            
             self.__courses.append(course)
             print(f"\nCurso \"{course.course_name}\" agregado existosamente al programa \"{self.__program_name}\"")
+            return True
 
     def del_course(self, course):
         if len(self.__courses) == 0:
@@ -174,7 +178,9 @@ class Program:
             for i in range(0, len(self.__courses),1):
                 if course.course_name == self.__courses[i].course_name:
                     course_check = True
+                    course.program = "No Establecido"
                     del self.__courses[i]
+                    break
                     
             if course_check == False:
                 print(f"\nNo existe un curso con el nombre \"{course.course_name}\" en el programa \"{self.__program_name}\"")
