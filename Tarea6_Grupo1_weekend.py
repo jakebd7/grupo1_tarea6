@@ -732,6 +732,8 @@ while selected_menu != "s":
                             else:
                                 invalid_selection()
 
+# Iniciando Codificacion para Edificio
+
                 if selected_submenu2 == "a":
                     if selected_submenu1 == "e":
                         clear_screen()
@@ -825,10 +827,10 @@ while selected_menu != "s":
                                 break
 
                         while True:
-                            verification = input(f"\nDesea crear un edificio \"{locals()[building_name].building_name}\" con la información asociada que ha ingresado (S/N): ").lower()
+                            verification = input(f"\nDesea crear un edificio \"{locals()[building_name]._Building__name}\" con la información asociada que ha ingresado (S/N): ").lower()
                             if verification == "s":
-                                print(f"\n{TextFormat.CYAN}Se ha creado el edificio \"{locals()[building_name].building_name}\" con la siguiente información asociada:\n{TextFormat.CLEAR}"
-                                      f"\nNombre del Edificio: {locals()[building_name].building_name}\n"
+                                print(f"\n{TextFormat.CYAN}Se ha creado el edificio \"{locals()[building_name]._Building__name}\" con la siguiente información asociada:\n{TextFormat.CLEAR}"
+                                      f"\nNombre del Edificio: {locals()[building_name]._Building__name}\n"
                                       f"Direccion: {locals()[building_name].principal}\n"
                                       f"Numero de Pisos: {locals()[building_name].number_of_floors}\n"
                                       f"Numero de Aula: {locals()[building_name].number_of_classrooms}\n")
@@ -864,7 +866,7 @@ while selected_menu != "s":
                                 if building_list == "s":
                                     print("")
                                     for i in range(0, len(Building.instances), 1):
-                                        print(f"({i}) {Building.instances[i].building_name}")
+                                        print(f"({i}) {Building.instances[i]._Building__name}")
                                     break
                                 elif building_list == "n":
                                     break
@@ -899,9 +901,9 @@ while selected_menu != "s":
                                     break
 
                             print(
-                                f"\nLa información asociada al edificio \"{locals()[building_name].building_name}\" es: "
+                                f"\nLa información asociada al edificio \"{locals()[building_name]._Building__name}\" es: "
                                 "\n"
-                                f"\nNombre del Edificio: {locals()[building_name].building_name}\n"
+                                f"\nNombre del Edificio: {locals()[building_name]._Building__name}\n"
                                 f"Direccion: {locals()[building_name].principal}\n"
                                 f"Numero de Pisos: {locals()[building_name].number_of_floors}\n"
                                 f"Numero de Aulas: {locals()[building_name].number_of_classrooms}\n")
@@ -951,7 +953,7 @@ while selected_menu != "s":
 
                             clear_screen()
                             print(
-                                f"\n{TextFormat.CYAN}Sub Menú - Modificar Información del Programa \"{locals()[building_name].building_name}\"\n{TextFormat.CLEAR}"
+                                f"\n{TextFormat.CYAN}Sub Menú - Modificar Información del Programa \"{locals()[building_name]._Building__name}\"\n{TextFormat.CLEAR}"
                                 f"[E] Modificar Nombre del {TextFormat.BOLD_UNDERLINE}P{TextFormat.CLEAR}dificio\n"
                                 f"[D] Modificar Nombre de la {TextFormat.BOLD_UNDERLINE}D{TextFormat.CLEAR}ireccionr\n"
                                 f"[N] Modificar la Cantidad de {TextFormat.BOLD_UNDERLINE}E{TextFormat.CLEAR}umero de Pisos\n"
@@ -961,7 +963,7 @@ while selected_menu != "s":
                             if selected_submenu3 in "pdescug" and selected_submenu3 != "":
                                 if selected_submenu3 == "e":
                                     clear_screen()
-                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Nombre del Edificio \"{locals()[building_name].building_name}\"{TextFormat.CLEAR}")
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Nombre del Edificio \"{locals()[building_name]._Building__name}\"{TextFormat.CLEAR}")
                                     new_building_name = str
                                     while True:
                                         try:
@@ -992,7 +994,7 @@ while selected_menu != "s":
                                             break
 
                                     while True:
-                                        change_check = input(f"\nConfirme que desea cambiar el nombre del edificio de \"{locals()[building_name].building_name}\" a \"{new_building_name}\" (S/N): ").lower()
+                                        change_check = input(f"\nConfirme que desea cambiar el nombre del edificio de \"{locals()[building_name]._Building__name}\" a \"{new_building_name}\" (S/N): ").lower()
                                         if change_check == "s":
                                             locals()[new_building_name] = copy.deepcopy(locals()[building_name])
                                             locals()[new_building_name].building_name = new_building_name
@@ -1006,14 +1008,14 @@ while selected_menu != "s":
                                             print(f"\nEl nuevo nombre del edificio es \"{locals()[new_building_name].building_name}\".")
                                             break
                                         elif change_check == "n":
-                                            print(f"\nNo se realizo níngun cambio, el nombre del edificio continua siendo \"{locals()[building_name].building_name}\".")
+                                            print(f"\nNo se realizo níngun cambio, el nombre del edificio continua siendo \"{locals()[building_name]._Building__name}\".")
                                             break
 
                                     input("\nPresione enter para continuar.")
                                     clear_flag()
                                 elif selected_submenu3 == "d":
                                     clear_screen()
-                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar la Direccion del Edificio \"{locals()[building_name].building_name}\"{TextFormat.CLEAR}")
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar la Direccion del Edificio \"{locals()[building_name]._Building__name}\"{TextFormat.CLEAR}")
                                     new_building_address = str
                                     while True:
                                         try:
@@ -1052,7 +1054,7 @@ while selected_menu != "s":
                                 elif selected_submenu3 == "n":
                                     clear_screen()
                                     print(
-                                        f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad de Pisos de un Edificio \"{locals()[building_name].building_name}\"{TextFormat.CLEAR}")
+                                        f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad de Pisos de un Edificio \"{locals()[building_name]._Building__name}\"{TextFormat.CLEAR}")
                                     new_number_of_floors = int
                                     while True:
                                         try:
@@ -1083,7 +1085,7 @@ while selected_menu != "s":
                                 elif selected_submenu3 == "u":
                                     clear_screen()
                                     print(
-                                        f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad de Aulas en un Edificio \"{locals()[building_name].building_name}\"{TextFormat.CLEAR}")
+                                        f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad de Aulas en un Edificio \"{locals()[building_name]._Building__name}\"{TextFormat.CLEAR}")
 
                                     new_number_of_classrooms = int
                                     while True:
@@ -1156,20 +1158,20 @@ while selected_menu != "s":
                                     break
 
                             clear_screen()
-                            print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Edificio \"{locals()[building_name].building_name}\"\n{TextFormat.CLEAR}"
-                                f"\n[E] {TextFormat.BOLD_UNDERLINE}E{TextFormat.CLEAR}liminar el Edificio \"{locals()[building_name].building_name}\"\n"
+                            print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Edificio \"{locals()[building_name]._Building__name}\"\n{TextFormat.CLEAR}"
+                                f"\n[E] {TextFormat.BOLD_UNDERLINE}E{TextFormat.CLEAR}liminar el Edificio \"{locals()[building_name]._Building__name}\"\n"
                                 f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
                             selected_submenu3 = input("Digite una opción: ").lower()
                             clear_screen()
-                            print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Edificio \"{locals()[building_name].building_name}\"{TextFormat.CLEAR}")
+                            print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Edificio \"{locals()[building_name]._Building__name}\"{TextFormat.CLEAR}")
                             if selected_submenu3 in "er" and selected_submenu3 != "":
                                 if selected_submenu3 == "e":
                                     while True:
                                         review_information = input(
-                                            f"\nDesea revisar la información asociada al edificio \"{locals()[building_name].building_name}\" antes de elimninarlo (S/N): ").lower()
+                                            f"\nDesea revisar la información asociada al edificio \"{locals()[building_name]._Building__name}\" antes de elimninarlo (S/N): ").lower()
                                         if review_information == "s":
                                             print(
-                                                f"\nNombre del Edificio: {locals()[building_name].building_name}\n"
+                                                f"\nNombre del Edificio: {locals()[building_name]._Building__name}\n"
                                                 f"Direccion: {locals()[building_name].principal}\n"
                                                 f"Numero de Pisos: {locals()[building_name].number_of_floors}\n"
                                                 f"Numero de Aulas: {locals()[building_name].number_of_classrooms}\n")
@@ -1181,7 +1183,7 @@ while selected_menu != "s":
 
                                     while True:
                                         print(f"\n{TextFormat.RED}La acción de eliminación no puede ser revertida, tenga cuidado con los edificios que elimina.{TextFormat.CLEAR}")
-                                        delete_check = input(f"\nConfirme eliminación del edificio \"{locals()[building_name].building_name}\" (S/N): ").lower()
+                                        delete_check = input(f"\nConfirme eliminación del edificio \"{locals()[building_name]._Building__name}\" (S/N): ").lower()
                                         if delete_check == "s":
                                             for instance in Building.instances:
                                                 if locals()[building_name] == instance:
@@ -1192,7 +1194,7 @@ while selected_menu != "s":
                                             print(f"\nEl Edificio de nombre \"{building_name}\" fue eliminado.")
                                             break
                                         elif delete_check == "n":
-                                            print(f"\nNo se realizo níngun acción, el edificio de nombre \"{locals()[building_name].building_name}\" no fue eliminado.")
+                                            print(f"\nNo se realizo níngun acción, el edificio de nombre \"{locals()[building_name]._Building__name}\" no fue eliminado.")
                                             break
 
                                     input("\nPresione enter para continuar.")
@@ -1201,7 +1203,7 @@ while selected_menu != "s":
                                 clear_flag()
                             else:
                                 invalid_selection()
-
+# Finalizando Edificio
                         #     clear_flag()
 
             elif selected_submenu2 == "r":
