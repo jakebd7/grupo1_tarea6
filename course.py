@@ -84,19 +84,17 @@ class Course:
 
     @teacher.setter
     def teacher(self, teacher):
-        teacher_counter = 0
-        for course in self.__class__.instances:
-            if "No Establecido" == course.teacher:
-                pass
-            elif teacher.id_teacher == course.teacher.id_teacher:
-                teacher_counter += 1
-        
-        if teacher_counter < teacher.min_courses -1:            
+
+        if teacher == "No Establecido":
+            self.__teacher = teacher   
+            return        
+
+        if len(teacher.courses) < teacher.min_courses:            
             self.__teacher = teacher            
             print(f"\nEl profesor \"{teacher.name} {teacher.last_name}\" con id \"{teacher.id_teacher}\", fue agregado existosamente al curso {self.__course_name}.")            
             print(f"\nEl profesor \"{teacher.name} {teacher.last_name}\" con id \"{teacher.id_teacher}\", aun no ha alcanzado su cuota mínima de cursos.")    
         
-        elif teacher_counter >= teacher.max_courses:
+        elif len(teacher.courses) >= teacher.max_courses:
             print(f"\nNo se pueden agregar mas cursos al profesor de nombre \"{teacher.name} {teacher.last_name}\" con id \"{teacher.id_teacher}\", su cuota máxima de cursos ha sido alcanzada previamente.")
         else:
             self.__teacher = teacher

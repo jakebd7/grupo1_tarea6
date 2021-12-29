@@ -4,7 +4,6 @@ __autor__ = 'David Weeber, Jason Ortiz, Jekson Pineda, Amilcar Ibarra, Leonardo 
 # Importación de Módulos
 # ----------------------
 
-#import extra_for_test
 import copy
 import frontend_extra
 from classroom import Classroom
@@ -147,6 +146,45 @@ Magdalena.email = "ejemplo3@email.com"
 Magdalena.max_courses = 2
 Magdalena.min_courses = 0
 
+# Estudiante 1 de prueba
+Miguel = Person.create_person("Student")
+Miguel.name = "Miguel"
+Miguel.last_name = "Bose"
+Miguel.identification = 421065482
+Miguel.address = "al lago"
+Miguel.phone_number = 4276
+Miguel.date_birth = "25/12/21"
+Miguel.age = 23
+Miguel.email = "ejemplo8@email.com"
+Miguel.max_courses = 14
+Miguel.min_courses = 2
+
+# Estudiante 2 de prueba
+Carlos = Person.create_person("Student")
+Carlos.name = "Carlos"
+Carlos.last_name = "Fonseca"
+Carlos.identification = 4107127546
+Carlos.address = "junto al cine"
+Carlos.phone_number = 9713
+Carlos.date_birth = "08/12/21"
+Carlos.age = 41
+Carlos.email = "ejemplo9@email.com"
+Carlos.max_courses = 26
+Carlos.min_courses = 7
+
+# Estudiante 3 de prueba
+Robin = Person.create_person("Student")
+Robin.name = "Robin"
+Robin.last_name = "Hood"
+Robin.identification = 748532156
+Robin.address = "cerda del volcan"
+Robin.phone_number = 6574
+Robin.date_birth = "04/12/21"
+Robin.age = 18
+Robin.email = "ejemplo10@email.com"
+Robin.max_courses = 13
+Robin.min_courses = 0
+
 # Curso Matematica de prueba
 matematica = Course("matematica")
 matematica.credits = 5
@@ -176,6 +214,21 @@ ingles.price = 250
 #ingles.teacher = "Miguel Bose"
 ingles.max_students = 70
 ingles.min_students = 26
+
+# Turno Matutio 
+matutino = Turn("matutino")
+
+# Turno Vespertino
+vespertino = Turn("vespertino")
+
+# Turno Nocturno
+nocturno = Turn("nocturno")
+
+# Tipo de Profesor - De planta
+planta = Teacher_type("planta")
+
+# Tipo de Profesor - Horaio
+horario = Teacher_type("horario")
 
 # ----------------------------------------
 # Ejecución de las funciones mediante menú
@@ -225,7 +278,39 @@ while selected_menu != "s":
             selected_submenu2 = input("Digite una opción: ").lower()
             if selected_submenu2 in "caome" and selected_submenu2 != "":
                 if selected_submenu2 == "c":
-                    if selected_submenu1 == "p":
+                    if selected_submenu1 == "m":                        
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Creación de Nueva Matricula{TextFormat.CLEAR}")
+
+                        if len(Tuition.instances) > 0:
+                            print(f"\nYa existe una matricula creada, no puede existir mas de una matricula creada a la vez.")
+                        else:
+
+                            tuition_name = frontend_extra.name_check_with_numbers("matricula")
+
+                            locals()[tuition_name] = Tuition("matricula")
+
+                            while True:
+                                verification = input(f"\nDesea crear la matricula \"{locals()[tuition_name].name}\" (S/N): ").lower()
+                                if verification == "s":
+                                    print(f"\n{TextFormat.CYAN}La matricula \"{locals()[tuition_name].name}\" se ha creado exitosamente.{TextFormat.CLEAR}")
+
+                                    while True:
+                                        informatio_view = input(f"\nDeseea ver la información de la matricula (S/N): ").lower()
+                                    
+                                        if informatio_view == "s":
+                                            frontend_extra.program_information_show(locals()[program_name])
+                                            break
+                                        elif informatio_view == "n":
+                                            break
+                                    break
+                                elif verification == "n":
+                                    print(f"\n{TextFormat.CYAN}El programa \"{locals()[program_name].program_name}\" no se creara.{TextFormat.CLEAR}")
+                                    frontend_extra.del_instance_in_class(locals()[program_name])
+                                    del locals()[program_name]
+                                    break
+
+                    elif selected_submenu1 == "p":
                         clear_screen()
                         print(f"\n{TextFormat.CYAN}Creación de Nuevo Programa{TextFormat.CLEAR}")
       
@@ -265,89 +350,219 @@ while selected_menu != "s":
                                 break
                     
                     elif selected_submenu1 == "c":
-                            clear_screen()
-                            print(f"\n{TextFormat.CYAN}Creación de Nuevo Curso{TextFormat.CLEAR}")
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Creación de Nuevo Curso{TextFormat.CLEAR}")
 
-                            course_name = frontend_extra.name_check_with_numbers("curso")                              
-                            locals()[course_name] = Course(course_name)
+                        course_name = frontend_extra.name_check_with_numbers("curso")                              
+                        locals()[course_name] = Course(course_name)
 
-                            frontend_extra.set_change_attr_number(locals()[course_name], False, "credits")
+                        frontend_extra.set_change_attr_number(locals()[course_name], False, "credits")
 
-                            frontend_extra.set_change_attr_number(locals()[course_name], False, "week_hours")
+                        frontend_extra.set_change_attr_number(locals()[course_name], False, "week_hours")
 
-                            if len(Program.instances) > 0:
-                                while True:
-                                    set_check = input("\nDesea establecer en este momento el programa al que pertenecera el curso (S/N): ").lower()
-                                    if set_check == "s":
-
-                                        frontend_extra.view_each_instance(Program.instances[0], "courses", "max_courses", 1)
-
-                                        while True:
-                                            program_name = frontend_extra.name_check_non_existence("programa")
-                                            if len (locals()[program_name].courses) < locals()[program_name].max_courses:
-                                                if locals()[program_name].add_course(locals()[course_name]):
-                                                    locals()[course_name].program = locals()[program_name]
-                                                    break
-                                        break
-                                    elif set_check == "n":
-
-                                        break           
-
-                            frontend_extra.set_change_attr_number(locals()[course_name], False, "price")
-
-                            if len(Person.instances_teacher) == 0:
-                                pass
-                            else:
-                                while True:
-                                    set_check = input("\nDesea establecer en este momento el profesor del curso (S/N): ").lower()
-                                    if set_check == "s":
-
-                                        frontend_extra.view_each_instance(Person.instances_teacher[0], "courses", "max_courses", 1)  
-
-                                        while True:
-                                            teacher_name = frontend_extra.id_check("profesor")
-                                            if len (locals()[teacher_name].courses) < locals()[teacher_name].max_courses:
-                                                locals()[course_name].teacher = locals()[teacher_name]
-                                                if locals()[course_name].teacher != "No Establecido":
-                                                    locals()[teacher_name].courses = locals()[course_name]
-                                                    break
-
-                                        break
-                                    elif set_check == "n":
-
-                                        break
-
-                            frontend_extra.max_students_check(locals()[course_name])
-
-                            frontend_extra.min_students_check(locals()[course_name])
-
+                        if len(Program.instances) > 0:
                             while True:
-                                verification = input(f"\nDesea crear el curso \"{locals()[course_name].course_name}\" con la información asociada que ha ingresado (S/N): ").lower()
-                                if verification == "s":
-                                    print(f"\n{TextFormat.CYAN}El curso \"{locals()[course_name].course_name}\" se ha creado exitosamente.{TextFormat.CLEAR}")
+                                set_check = input("\nDesea establecer en este momento el programa al que pertenecera el curso (S/N): ").lower()
+                                if set_check == "s":
+
+                                    frontend_extra.view_each_instance(Program.instances[0], "courses", "max_courses", 1)
 
                                     while True:
-                                        informatio_view = input(f"\nDeseea ver la información del curso (S/N): ").lower()
+                                        program_name = frontend_extra.name_check_non_existence("programa")
+                                        if len (locals()[program_name].courses) < locals()[program_name].max_courses:
+                                            if locals()[program_name].add_course(locals()[course_name]):
+                                                locals()[course_name].program = locals()[program_name]
+                                                break
+                                    break
+                                elif set_check == "n":
 
-                                        if informatio_view == "s":
-                                            frontend_extra.course_information_show(locals()[course_name])
-                                            break
-                                        elif informatio_view == "n":
-                                            break
-                                            
+                                    break           
+
+                        frontend_extra.set_change_attr_number(locals()[course_name], False, "price")
+
+                        if len(Person.instances_teacher) > 0:
+                            while True:
+                                set_check = input("\nDesea establecer en este momento el profesor del curso (S/N): ").lower()
+                                if set_check == "s":
+
+                                    frontend_extra.view_each_instance(Person.instances_teacher[0], "courses", "max_courses", 1)  
+
+                                    while True:
+                                        teacher_name = frontend_extra.id_check("profesor")
+                                        if len (locals()[teacher_name].courses) < locals()[teacher_name].max_courses:
+                                            locals()[course_name].teacher = locals()[teacher_name]
+                                            if locals()[course_name].teacher != "No Establecido":
+                                                locals()[teacher_name].courses = locals()[course_name]
+                                                break
+
                                     break
-                                elif verification == "n":
-                                    print(f"\n{TextFormat.CYAN}El curso \"{locals()[course_name].course_name}\" no se creara.{TextFormat.CLEAR}")
+                                elif set_check == "n":
+
+                                    break
+
+                        frontend_extra.max_students_check(locals()[course_name])
+
+                        frontend_extra.min_students_check(locals()[course_name])
+
+                        while True:
+                            verification = input(f"\nDesea crear el curso \"{locals()[course_name].course_name}\" con la información asociada que ha ingresado (S/N): ").lower()
+                            if verification == "s":
+                                print(f"\n{TextFormat.CYAN}El curso \"{locals()[course_name].course_name}\" se ha creado exitosamente.{TextFormat.CLEAR}")
+
+                                while True:
+                                    informatio_view = input(f"\nDeseea ver la información del curso (S/N): ").lower()
+
+                                    if informatio_view == "s":
+                                        frontend_extra.course_information_show(locals()[course_name])
+                                        break
+                                    elif informatio_view == "n":
+                                        break
+                                        
+                                break
+                            elif verification == "n":
+                                print(f"\n{TextFormat.CYAN}El curso \"{locals()[course_name].course_name}\" no se creara.{TextFormat.CLEAR}")
+                                
+                                frontend_extra.del_instance_in_class(locals()[course_name])
+                                del locals()[course_name]
+                                break
+
+                    elif selected_submenu1 == "o":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Creación de Nuevo Profesor{TextFormat.CLEAR}")
+
+                        teacher_name = frontend_extra.name_check_no_numbers("profesor") 
+                        locals()[teacher_name] = Person.create_person("Teacher")
+                        
+                        locals()[teacher_name].name = teacher_name
+
+                        frontend_extra.name_check_no_numbers(locals()[teacher_name], False, "last_name")
+
+                        frontend_extra.set_change_attr_number(locals()[teacher_name], False, "identification")
+
+                        frontend_extra.name_check_without_instance(locals()[teacher_name], False, "address")
+
+                        frontend_extra.set_change_attr_number(locals()[teacher_name], False, "phone_number")
+                        
+                        frontend_extra.set_change_date(locals()[teacher_name], False, "date_birth")
+
+                        frontend_extra.set_change_age(locals()[teacher_name])
+
+                        frontend_extra.name_check_without_instance(locals()[teacher_name], False, "email")
+
+                        frontend_extra.max_courses_check(locals()[teacher_name])
+
+                        frontend_extra.min_courses_check(locals()[teacher_name])
+
+                        if len(Teacher_type.instances) > 0:
+                            while True:
+                                set_check = input(f"\nDesea establecer en este momento el tipo de profesor que sera \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" (S/N): ").lower()
+                                if set_check == "s":
+
+                                    frontend_extra.view_each_instance(Teacher_type.instances[0])
                                     
-                                    frontend_extra.del_instance_in_class(locals()[course_name])
-                                    del locals()[course_name]
+                                    teacher_type_name = frontend_extra.name_check_non_existence("tipo de profesor")
+                                    locals()[teacher_name].teacher_type = teacher_type_name
+                                    
                                     break
+                                elif set_check == "n":
+
+                                    break      
+
+                        if len(Turn.instances) > 0:
+                            while True:
+                                set_check = input(f"\nDesea establecer en este momento el turno del profesor (S/N): ").lower()
+                                if set_check == "s":
+
+                                    frontend_extra.view_each_instance(Turn.instances[0])
+                                    
+                                    turn_name = frontend_extra.name_check_non_existence("turno")
+                                    locals()[teacher_name].teacher_type = turn_name
+                                    
+                                    break
+                                elif set_check == "n":
+
+                                    break   
+
+                        while True:
+                            verification = input(f"\nDesea crear al profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id: {locals()[teacher_name].id_teacher}, usando la información asociada que ha ingresado (S/N): ").lower()
+                            if verification == "s":
+                                print(f"\n{TextFormat.CYAN}El profesor de nombre \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id: {locals()[teacher_name].id_teacher} ha sido creado exitosamente.{TextFormat.CLEAR}")
+
+                                while True:
+                                    informatio_view = input(f"\nDeseea ver la información del profesor (S/N): ").lower()
+
+                                    if informatio_view == "s":
+                                        frontend_extra.person_information_show(locals()[teacher_name])
+                                        break
+                                    elif informatio_view == "n":
+                                        break
+                                        
+                                break
+                            elif verification == "n":
+                                print(f"\n{TextFormat.CYAN}El profesor de nombre \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id: {locals()[teacher_name].id_teacher} no sera creaado.{TextFormat.CLEAR}")
+                                
+                                frontend_extra.del_instance_in_class(locals()[teacher_name])
+                                del locals()[teacher_name]
+                                break
+
+                    elif selected_submenu1 == "s":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Creación de Nuevo Estudiante{TextFormat.CLEAR}")
+
+                        student_name = frontend_extra.name_check_no_numbers("estudiante") 
+                        locals()[student_name] = Person.create_person("Student")
+
+                        locals()[student_name].name = student_name
+                        
+                        frontend_extra.name_check_no_numbers(locals()[student_name], False, "last_name")
+
+                        frontend_extra.set_change_attr_number(locals()[student_name], False, "identification")
+
+                        frontend_extra.name_check_without_instance(locals()[student_name], False, "address")
+
+                        frontend_extra.set_change_attr_number(locals()[student_name], False, "phone_number")
+                        
+                        frontend_extra.set_change_date(locals()[student_name], False, "date_birth")
+
+                        frontend_extra.set_change_age(locals()[student_name])
+
+                        frontend_extra.name_check_without_instance(locals()[student_name], False, "email")
+
+                        frontend_extra.max_courses_check(locals()[student_name])
+
+                        frontend_extra.min_courses_check(locals()[student_name])
+
+                        while True:
+                            verification = input(f"\nDesea crear al estudiante \"{locals()[student_name].name} {locals()[student_name].last_name}\" con id: {locals()[student_name].id_student}, usando la información asociada que ha ingresado (S/N): ").lower()
+                            if verification == "s":
+                                print(f"\n{TextFormat.CYAN}El estudiante de nombre \"{locals()[student_name].name} {locals()[student_name].last_name}\" con id: {locals()[student_name].id_student} ha sido creado exitosamente.{TextFormat.CLEAR}")
+
+                                while True:
+                                    informatio_view = input(f"\nDeseea ver la información del estudiante (S/N): ").lower()
+
+                                    if informatio_view == "s":
+                                        frontend_extra.person_information_show(locals()[student_name])
+                                        break
+                                    elif informatio_view == "n":
+                                        break
+                                        
+                                break
+                            elif verification == "n":
+                                print(f"\n{TextFormat.CYAN}El estudiante de nombre \"{locals()[student_name].name} {locals()[student_name].last_name}\" con id: {locals()[student_name].id_student} no sera creaado.{TextFormat.CLEAR}")
+                                
+                                frontend_extra.del_instance_in_class(locals()[student_name])
+                                del locals()[student_name]
+                                break
 
                     input("\nPulse enter para continuar.")          
                     clear_flag()
                 
                 elif selected_submenu2 == "a":
-                    if selected_submenu1 == "p":
+                    if selected_submenu1 == "m":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Agregar a Matricula{TextFormat.CLEAR}")
+
+                    elif selected_submenu1 == "p":
                         clear_screen()
                         print(f"\n{TextFormat.CYAN}Sub Menú - Agregar Cursos a Programas{TextFormat.CLEAR}")
                         if len(Program.instances) == 0:
@@ -438,7 +653,7 @@ while selected_menu != "s":
                                         print("\nNo existe ningún profesor creado.")
 
                                     elif not (frontend_extra.teachers_availability()):
-                                        print("\nTodos los profesores han alcanzado la cantidad máxima de curos que pueden impartir.")
+                                        print("\nTodos los profesores han alcanzado la cantidad máxima de cursos que pueden impartir.")
 
                                     elif locals()[course_name].teacher != "No Establecido":
                                         print(f"\nEl curso \"{locals()[course_name].course_name}\" ya tiene agregado un profesor.")
@@ -458,11 +673,101 @@ while selected_menu != "s":
                                                     teacher_check[1].courses = locals()[course_name]
                                                     break   
 
+                    elif selected_submenu1 == "o":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Agregar a Profesores{TextFormat.CLEAR}")
+                        if len(Person.instances_teacher) == 0:
+                            print("\nNo existe ningún profesor creado.")
+                        else:
+                            print("\nSeleccione un Profesor")
+                            
+                            frontend_extra.view_each_instance(Person.instances_teacher[0])
+                            teacher_name = frontend_extra.id_check("profesor")
+
+                            clear_screen()
+                            print(f"\n{TextFormat.CYAN}Sub Menú - Agregar al Profesor \"{locals()[teacher_name].name}\"\n{TextFormat.CLEAR}"
+                                f"[T] Agregar {TextFormat.BOLD_UNDERLINE}T{TextFormat.CLEAR}ipo de Profesor al Profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"\n"
+                                f"[U] Agregar T{TextFormat.BOLD_UNDERLINE}u{TextFormat.CLEAR}rno al Profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"\n"
+                                f"[C] Agregar un {TextFormat.BOLD_UNDERLINE}C{TextFormat.CLEAR}urso al Profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"\n"
+                                f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
+                            selected_submenu3 = input("Digite una opción: ").lower() 
+                            if selected_submenu3 in "tuc" and selected_submenu3 != "":    
+                                if selected_submenu3 == "t": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Agregar Tipo de Profesor al Profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"{TextFormat.CLEAR}")
+                                    
+                                    if not (frontend_extra.teachers_availability(2)):
+                                        print("\nTodos los profesores ya tienen asignado el tipo de profesor que son.")                                    
+                                    
+                                    elif locals()[teacher_name].teacher_type != "No Establecido":
+                                        print(f"\nEl profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id: \"{locals()[teacher_name].id_teacher}\" ya esta establecido como profesor de tipo \"{locals()[teacher_name].teacher_type.type_teacher}\".")
+
+                                    else:
+
+                                        print(f"\nSeleccione un Tipo de Profesor")
+
+                                        frontend_extra.view_each_instance(Teacher_type.instances[0])
+                                        
+                                        type_teacher_check = frontend_extra.name_check_non_existence("tipo de profesor")
+                                        locals()[teacher_name].teacher_type = locals()[type_teacher_check]
+
+                                        print(f"\nEl profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id \"{locals()[teacher_name].id_teacher}\" fue agregado a los profesores de tipo \"{locals()[teacher_name].teacher_type.type_teacher}\".")
+
+                                elif selected_submenu3 == "u": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Agregar Turno al Profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"{TextFormat.CLEAR}")
+                                    
+                                    if not (frontend_extra.teachers_availability(3)):
+                                        print("\nTodos los profesores ya tienen asignado un turno.")   
+
+                                    elif locals()[teacher_name].turn != "No Establecido":
+                                        print(f"\nEl profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" ya esta agregado a un turno, el cual es: \"{locals()[teacher_name].turn.turn}\".")
+                                    
+                                    else:
+                                        print(f"\nSeleccione un Turno")
+
+                                        frontend_extra.view_each_instance(Turn.instances[0])
+                                        
+                                        turn_check = frontend_extra.name_check_non_existence("turno")
+                                        locals()[teacher_name].turn = locals()[turn_check]
+
+                                        print(f"\nEl profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id \"{locals()[teacher_name].id_teacher}\" fue agregado al turno \"{locals()[teacher_name].turn.turn}\"")
+
+                                elif selected_submenu3 == "c": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Agregar un Curso al Profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"{TextFormat.CLEAR}")
+
+                                    if not (frontend_extra.courses_availability(2)):
+                                        print("\nTodos los cursos creados ya tienen agregado un profesor.")
+
+                                    elif len(locals()[teacher_name].courses) >= locals()[teacher_name].max_courses:
+                                        print(f"\nEl profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" ya ha alcanzado previamente la cantidad máxima de curos que puede impartir.")
+
+                                    else:
+                                        print(f"\nSeleccione un Curso")
+
+                                        frontend_extra.view_each_instance(Course.instances[0], "No Establecido", "teacher", 2)
+
+                                        course_check = frontend_extra.add_requirements_check(Course.instances[0], "curso", "teacher", "No Establecido", 2)
+
+                                        locals()[teacher_name].courses = course_check[1]
+                                        course_check[1].teacher = locals()[teacher_name]
+
+                    elif selected_submenu1 == "s":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Agregar a Estudiantes{TextFormat.CLEAR}")
+
+                        print("\nToda acción de agregar algo a un estudiante, se debe realizar desde la matrícula.")
+
                     input("\nPresione enter para continuar.")
                     clear_flag()
                 
                 elif selected_submenu2 == "o":
-                    if selected_submenu1 == "p":
+                    if selected_submenu1 == "m":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Consultar Información de Matricula{TextFormat.CLEAR}") 
+
+                    elif selected_submenu1 == "p":
                         clear_screen()
                         print(f"\n{TextFormat.CYAN}Sub Menú - Consultar Información de Programas{TextFormat.CLEAR}") 
                         if len(Program.instances) == 0:
@@ -486,11 +791,39 @@ while selected_menu != "s":
 
                             frontend_extra.course_information_show(locals()[course_name])
 
+                    elif selected_submenu1 == "o":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Consultar Información de Profesores{TextFormat.CLEAR}") 
+                        if len(Person.instances_teacher) == 0:
+                            print("\nNo existe ningún profesor creado.")
+                        else: 
+                            
+                            frontend_extra.view_each_instance(Person.instances_teacher[0])                                
+                            teacher_name = frontend_extra.id_check("profesor")
+
+                            frontend_extra.person_information_show(locals()[teacher_name])
+
+                    elif selected_submenu1 == "s":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Consultar Información de Estudiantes{TextFormat.CLEAR}") 
+                        if len(Person.instances_student) == 0:
+                            print("\nNo existe ningún estudiante creado.")
+                        else: 
+                            
+                            frontend_extra.view_each_instance(Person.instances_student[0])                                
+                            student_name = frontend_extra.id_check("estudiante")
+
+                            frontend_extra.person_information_show(locals()[student_name])
+
                     input("\nPulse enter para continuar.")          
                     clear_flag()
 
                 elif selected_submenu2 == "m":
-                    if selected_submenu1 == "p":
+                    if selected_submenu1 == "m":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Información de Matricula{TextFormat.CLEAR}")
+
+                    elif selected_submenu1 == "p":
                         clear_screen()
                         print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Información de Programas{TextFormat.CLEAR}")
                         if len(Program.instances) == 0:
@@ -623,11 +956,185 @@ while selected_menu != "s":
                                     
                                     frontend_extra.min_students_check(locals()[course_name], True)
 
+                    elif selected_submenu1 == "o":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Información de Profesores{TextFormat.CLEAR}")
+                        if len(Person.instances_teacher) == 0:
+                            print("\nNo existe ningún profesor creado.")
+                        else:
+                            
+                            frontend_extra.view_each_instance(Person.instances_teacher[0])
+                            teacher_name = frontend_extra.id_check("profesor")        
+
+                            clear_screen()
+                            print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Información del Profesor \"{locals()[teacher_name].name}\"\n{TextFormat.CLEAR}"
+                                f"[N] Modificar {TextFormat.BOLD_UNDERLINE}N{TextFormat.CLEAR}onmbre del Profesor\n"
+                                f"[A] Modificar {TextFormat.BOLD_UNDERLINE}A{TextFormat.CLEAR}pellido del Profesor\n"
+                                f"[C] Modificar {TextFormat.BOLD_UNDERLINE}C{TextFormat.CLEAR}édula del Profesor\n"
+                                f"[D] Modificar {TextFormat.BOLD_UNDERLINE}D{TextFormat.CLEAR}irección del Profesor\n"
+                                f"[U] Modificar N{TextFormat.BOLD_UNDERLINE}ú{TextFormat.CLEAR}mero Telefónico del Profesor\n"
+                                f"[F] Modificar {TextFormat.BOLD_UNDERLINE}F{TextFormat.CLEAR}echa de Nacimiento (Edad) del Profesor\n"
+                                f"[E] Modificar {TextFormat.BOLD_UNDERLINE}E{TextFormat.CLEAR}mail del Profesor\n"
+                                f"[M] Modificar Cantidad {TextFormat.BOLD_UNDERLINE}M{TextFormat.CLEAR}áxima de Curso del Profesor\n"
+                                f"[I] Modificar Cantidad M{TextFormat.BOLD_UNDERLINE}í{TextFormat.CLEAR}nima de Curso del Profesor\n"
+                                f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
+                            selected_submenu3 = input("Digite una opción: ").lower() 
+                            if selected_submenu3 in "nacdufemi" and selected_submenu3 != "":    
+                                if selected_submenu3 == "n": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Nombre del Profesor \"{locals()[teacher_name].name}\"{TextFormat.CLEAR}")
+
+                                    new_teacher_name = frontend_extra.name_check_no_numbers("profesor", True)
+
+                                    change_name = frontend_extra.change_instance_name(locals()[teacher_name], new_teacher_name)
+                                    
+                                    if change_name[0]:
+                                        locals()[new_teacher_name] = change_name[1]
+                                        del locals()[teacher_name]
+
+                                elif selected_submenu3 == "a": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Apellido del Profesor \"{locals()[teacher_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.name_check_no_numbers(locals()[teacher_name], True, "last_name")
+
+                                elif selected_submenu3 == "c": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cédula del Profesor \"{locals()[teacher_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.set_change_attr_number(locals()[teacher_name], True, "identification")
+
+                                elif selected_submenu3 == "d": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Dirección del Profesor \"{locals()[teacher_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.name_check_without_instance(locals()[teacher_name], True, "address")
+
+                                elif selected_submenu3 == "u": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Número Telefónico del Profesor \"{locals()[teacher_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.set_change_attr_number(locals()[teacher_name], True, "phone_number")
+
+                                elif selected_submenu3 == "f": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Fecha de Nacimiento (Edad) del Profesor \"{locals()[teacher_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.set_change_date(locals()[teacher_name], True, "date_birth")
+                                    frontend_extra.set_change_age(locals()[teacher_name])
+
+                                elif selected_submenu3 == "e": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Email del Profesor \"{locals()[teacher_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.name_check_without_instance(locals()[teacher_name], True, "email")
+
+                                elif selected_submenu3 == "m": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad Máxima de Cursos del Profesor \"{locals()[teacher_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.max_courses_check(locals()[teacher_name], True)
+
+                                elif selected_submenu3 == "i": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad Mínima de Cursos del Profesor \"{locals()[teacher_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.min_courses_check(locals()[teacher_name], True)
+
+                    elif selected_submenu1 == "s":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Información de Estudiantes{TextFormat.CLEAR}")
+                        if len(Person.instances_student) == 0:
+                            print("\nNo existe ningún estudiante creado.")
+                        else:
+                            
+                            frontend_extra.view_each_instance(Person.instances_student[0])
+                            student_name = frontend_extra.id_check("estudiante")        
+
+                            clear_screen()
+                            print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Información del Estudiante \"{locals()[student_name].name}\"\n{TextFormat.CLEAR}"
+                                f"[N] Modificar {TextFormat.BOLD_UNDERLINE}N{TextFormat.CLEAR}onmbre del Estudiante\n"
+                                f"[A] Modificar {TextFormat.BOLD_UNDERLINE}A{TextFormat.CLEAR}pellido del Estudiante\n"
+                                f"[C] Modificar {TextFormat.BOLD_UNDERLINE}C{TextFormat.CLEAR}édula del Estudiante\n"
+                                f"[D] Modificar {TextFormat.BOLD_UNDERLINE}D{TextFormat.CLEAR}irección del Estudiante\n"
+                                f"[U] Modificar N{TextFormat.BOLD_UNDERLINE}ú{TextFormat.CLEAR}mero Telefónico del Estudiante\n"
+                                f"[F] Modificar {TextFormat.BOLD_UNDERLINE}F{TextFormat.CLEAR}echa de Nacimiento (Edad) del Estudiante\n"
+                                f"[E] Modificar {TextFormat.BOLD_UNDERLINE}E{TextFormat.CLEAR}mail del Estudiante\n"
+                                f"[M] Modificar Cantidad {TextFormat.BOLD_UNDERLINE}M{TextFormat.CLEAR}áxima de Cursos del Estudiante\n"
+                                f"[I] Modificar Cantidad M{TextFormat.BOLD_UNDERLINE}í{TextFormat.CLEAR}nima de Cursos del Estudiante\n"
+                                f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
+                            selected_submenu3 = input("Digite una opción: ").lower() 
+                            if selected_submenu3 in "nacdufemi" and selected_submenu3 != "":    
+                                if selected_submenu3 == "n": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Nombre del Estudiante \"{locals()[student_name].name}\"{TextFormat.CLEAR}")
+
+                                    new_student_name = frontend_extra.name_check_no_numbers("estudiante", True)
+
+                                    change_name = frontend_extra.change_instance_name(locals()[student_name], new_student_name)
+                                    
+                                    if change_name[0]:
+                                        locals()[new_student_name] = change_name[1]
+                                        del locals()[student_name]
+
+                                elif selected_submenu3 == "a": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Apellido del Estudiante \"{locals()[student_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.name_check_no_numbers(locals()[student_name], True, "last_name")
+
+                                elif selected_submenu3 == "c": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cédula del Estudiante \"{locals()[student_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.set_change_attr_number(locals()[student_name], True, "identification")
+
+                                elif selected_submenu3 == "d": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Dirección del Estudiante \"{locals()[student_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.name_check_without_instance(locals()[student_name], True, "address")
+
+                                elif selected_submenu3 == "u": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Número Telefónico del Estudiante \"{locals()[student_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.set_change_attr_number(locals()[student_name], True, "phone_number")
+
+                                elif selected_submenu3 == "f": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Fecha de Nacimiento (Edad) del Estudiante \"{locals()[student_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.set_change_date(locals()[student_name], True, "date_birth")
+                                    frontend_extra.set_change_age(locals()[student_name])
+
+                                elif selected_submenu3 == "e": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Email del Estudiante \"{locals()[student_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.name_check_without_instance(locals()[student_name], True, "email")
+
+                                elif selected_submenu3 == "m": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad Máxima de Cursos del Estudiante \"{locals()[student_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.max_courses_check(locals()[student_name], True)
+
+                                elif selected_submenu3 == "i": 
+                                    clear_screen()
+                                    print(f"\n{TextFormat.CYAN}Sub Menú - Modificar Cantidad Mínima de Cursos del Estudiante \"{locals()[student_name].name}\"{TextFormat.CLEAR}")
+                                    
+                                    frontend_extra.min_courses_check(locals()[student_name], True)
+
                     input("\nPulse enter para continuar.")          
                     clear_flag()
 
                 elif selected_submenu2 == "e":
-                    if selected_submenu1 == "p":
+                    if selected_submenu1 == "m":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Matricula{TextFormat.CLEAR}") 
+
+                    elif selected_submenu1 == "p":
                         clear_screen()
                         print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Programas{TextFormat.CLEAR}") 
                         if len(Program.instances) == 0:
@@ -661,7 +1168,7 @@ while selected_menu != "s":
                                         delete_check = input(f"\nConfirme eliminación del programa \"{locals()[program_name].program_name}\" (S/N): ").lower()
                                         if delete_check == "s":
 
-                                            if len(locals()[program_name].courses) == 0: 
+                                            if len(locals()[program_name].courses) > 0: 
                                                 frontend_extra.set_attribute_in_list_in_instance(locals()[program_name], "courses", "program", "No Establecido") 
                                             
                                             frontend_extra.del_instance_in_class(locals()[program_name])                                          
@@ -671,7 +1178,7 @@ while selected_menu != "s":
                                             print(f"\nEl programa de nombre \"{program_name}\" fue eliminado exitosamente.")
                                             break
                                         elif delete_check == "n":
-                                            print(f"\nNo se realizo ningún acción, el programa de nombre \"{locals()[program_name].program_name}\" no fue eliminado.")
+                                            print(f"\nNo se realizo ninguna acción, el programa de nombre \"{locals()[program_name].program_name}\" no fue eliminado.")
                                             break
 
                                 elif selected_submenu3 == "c":  
@@ -679,7 +1186,7 @@ while selected_menu != "s":
                                     print(f"\n{TextFormat.CYAN}Eliminar Cursos del Programa \"{locals()[program_name].program_name}\"{TextFormat.CLEAR}")
 
                                     if len(locals()[program_name].courses) == 0:
-                                        print(f"\nEl programa \"{locals()[program_name].program_name}\" no tiene cursos agreados.")                         
+                                        print(f"\nEl programa \"{locals()[program_name].program_name}\" no tiene cursos agregados.")                         
                                     else:
                                                 
                                         frontend_extra.view_each_instance(locals()[program_name], "courses", "course_name", 3)                                    
@@ -694,7 +1201,7 @@ while selected_menu != "s":
                                                 locals()[program_name].del_course(locals()[course_name])
                                                 break
                                             elif delete_check == "n":
-                                                print(f"\nNo se realizo ningún acción, el curso de nombre \"{locals()[course_name].course_name}\" no fue eliminado del programa \"{locals()[program_name].program_name}\".")
+                                                print(f"\nNo se realizo ninguna acción, el curso de nombre \"{locals()[course_name].course_name}\" no fue eliminado del programa \"{locals()[program_name].program_name}\".")
                                                 break                               
 
                     elif selected_submenu1 == "c":
@@ -743,11 +1250,11 @@ while selected_menu != "s":
                                             print(f"\nEl curso de nombre \"{course_name}\" fue eliminado exitosamente.")
                                             break
                                         elif delete_check == "n":
-                                            print(f"\nNo se realizo ningún acción, el curso de nombre \"{locals()[course_name].course_name}\" no fue eliminado.")
+                                            print(f"\nNo se realizo ninguna acción, el curso de nombre \"{locals()[course_name].course_name}\" no fue eliminado.")
                                             break
 
                                 elif selected_submenu3 == "p":
-                                    print(f"\n{TextFormat.CYAN}Eliminar Profesor del Curso \"{locals()[course_name].course_name}\"{TextFormat.CLEAR}")                                                                  
+                                    print(f"\n{TextFormat.CYAN}Eliminar Programa del Curso \"{locals()[course_name].course_name}\"{TextFormat.CLEAR}")                                                                  
                                     if len(Program.instances) == 0:
                                         print("\nNo existe ningún programa creado.")
                                     elif locals()[course_name].program == "No Establecido":
@@ -759,9 +1266,11 @@ while selected_menu != "s":
                                             if delete_check == "s":
                                                 frontend_extra.del_instance_in_other_instance_list(locals()[course_name], "program","courses")
                                                 locals()[course_name].program = "No Establecido"
+
+                                                print(f"\nPrograma eliminado exitosamente del curso \"{locals()[course_name].course_name}\".")
                                                 break
                                             elif delete_check == "n":
-                                                print(f"\nNo se realizo ningún acción, el programa \"{locals()[course_name].program.program_name}\" no fue eliminado del curso \"{locals()[course_name].course_name}\".")
+                                                print(f"\nNo se realizo ninguna acción, el programa \"{locals()[course_name].program.program_name}\" no fue eliminado del curso \"{locals()[course_name].course_name}\".")
                                                 break
 
                                 elif selected_submenu3 == "f":
@@ -777,10 +1286,124 @@ while selected_menu != "s":
                                             if delete_check == "s":
                                                 frontend_extra.del_instance_in_other_instance_list(locals()[course_name], "teacher","courses")
                                                 locals()[course_name].teacher = "No Establecido"
+                                                print(f"\nProfesor eliminado existosamente del curso \"{locals()[course_name].course_name}\".")
                                                 break
                                             elif delete_check == "n":
-                                                print(f"\nNo se realizo ningún acción, el profesor \"{locals()[course_name].teacher.name} {locals()[course_name].teacher.last_name}\" con id: \"{locals()[course_name].teacher.id_teacher}\" no fue eliminado del curso \"{locals()[course_name].course_name}\".")
+                                                print(f"\nNo se realizo ninguna acción, el profesor \"{locals()[course_name].teacher.name} {locals()[course_name].teacher.last_name}\" con id: \"{locals()[course_name].teacher.id_teacher}\" no fue eliminado del curso \"{locals()[course_name].course_name}\".")
                                                 break
+
+                    elif selected_submenu1 == "o":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar Profesores{TextFormat.CLEAR}") 
+                        if len(Person.instances_teacher) == 0:
+                            print("\nNo existe ningún profesor creado.")
+                        else:
+                            
+                            frontend_extra.view_each_instance(Person.instances_teacher[0])
+                            teacher_name = frontend_extra.id_check("profesor")
+
+                            clear_screen()
+                            print(f"\n{TextFormat.CYAN}Sub Menú - Eliminar al Profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"\n{TextFormat.CLEAR}"
+                                f"\n[P] Eliminar al {TextFormat.BOLD_UNDERLINE}P{TextFormat.CLEAR}rofesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"\n"
+                                f"[T] Eliminar el {TextFormat.BOLD_UNDERLINE}T{TextFormat.CLEAR}ipo de Profesor al Profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"\n"
+                                f"[U] Eliminar el T{TextFormat.BOLD_UNDERLINE}u{TextFormat.CLEAR}rno al Profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"\n"
+                                f"[C] Eliminar un {TextFormat.BOLD_UNDERLINE}C{TextFormat.CLEAR}urso al Profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"\n"
+                                f"[R] {TextFormat.BOLD_UNDERLINE}R{TextFormat.CLEAR}egresar al Menú Principal\n")
+                            selected_submenu3 = input("Digite una opción: ").lower() 
+                            clear_screen()
+                            if selected_submenu3 in "ptuc" and selected_submenu3 != "":     
+                                if selected_submenu3 == "p":
+                                    print(f"\n{TextFormat.CYAN}Eliminar Profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"{TextFormat.CLEAR}")                                                                  
+                                    while True:
+                                        review_information = input(f"\nDesea revisar la información asociada al profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" antes de elimninarlo (S/N): ").lower()
+                                        if review_information == "s":
+
+                                            frontend_extra.person_information_show(locals()[teacher_name])
+                                            break
+                                        elif review_information == "n":
+                                            break
+
+                                    while True:
+                                        print(f"\n{TextFormat.RED}La acción de eliminación no puede ser revertida, tenga cuidado con los profesores que elimina.{TextFormat.CLEAR}")
+                                        delete_check = input(f"\nConfirme eliminación del profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id \"{locals()[teacher_name].id_teacher}\" (S/N): ").lower()
+                                        if delete_check == "s":
+
+
+                                            if len(locals()[teacher_name].courses) > 0: 
+                                                frontend_extra.set_attribute_in_list_in_instance(locals()[teacher_name], "courses", "teacher", "No Establecido") 
+                                            
+                                            frontend_extra.del_instance_in_class(locals()[teacher_name])                                          
+                                            
+                                            del locals()[teacher_name]      
+
+                                            print(f"\nEl profesor fue eliminado exitosamente.")
+                                            break
+                                        elif delete_check == "n":
+                                            print(f"\nNo se realizo ninguna acción, el profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id \"{locals()[teacher_name].id_teacher}\" no fue eliminado.")
+                                            break
+
+                                elif selected_submenu3 == "t":
+                                    print(f"\n{TextFormat.CYAN}Eliminar el Tipo de Profesor al Profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"{TextFormat.CLEAR}")                                                                  
+                                
+                                    while True:
+                                        delete_check = input(f"\nConfirme eliminación del tipo de profesor \"{locals()[teacher_name].teacher_type.teacher_type}\" del profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id \"{locals()[teacher_name].id_teacher}\" (S/N): ").lower()
+                                        if delete_check == "s":
+                                            locals()[teacher_name].teacher_type = "No Establecido"
+
+                                            print(f"\nEl tipo de profesor fue eliminado exitosamente del profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\".")
+                                            break
+                                        elif delete_check == "n":
+                                            print(f"\nNo se realizo ninguna acción, el profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id \"{locals()[teacher_name].id_teacher}\" sigue siendo de tipo \"{locals()[teacher_name].teacher_type.teacher_type}\".")
+                                            break                                   
+                                
+                                elif selected_submenu3 == "u":
+                                    print(f"\n{TextFormat.CYAN}Eliminar el Turno al Profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"{TextFormat.CLEAR}")                                                                  
+                                
+                                    while True:
+                                        delete_check = input(f"\nConfirme eliminación del turno \"{locals()[teacher_name].turn.turn}\" del profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id \"{locals()[teacher_name].id_teacher}\" (S/N): ").lower()
+                                        if delete_check == "s":
+                                            locals()[teacher_name].turn = "No Establecido"
+
+                                            print(f"\nEl turno fue eliminado exitosamente del profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\".")
+                                            break
+                                        elif delete_check == "n":
+                                            print(f"\nNo se realizo ninguna acción, el profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id \"{locals()[teacher_name].id_teacher}\" sigue en el turno \"{locals()[teacher_name].turn.turn}\".")
+                                            break    
+
+                                elif selected_submenu3 == "c":
+                                    print(f"\n{TextFormat.CYAN}Eliminar Curso del Profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\"{TextFormat.CLEAR}")                                                                  
+
+                                    if len(locals()[teacher_name].courses) == 0:
+                                        print(f"\nEl profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id \"{locals()[teacher_name].id_teacher}\" no tiene cursos agregados.")                         
+                                    else:
+                                                
+                                        frontend_extra.view_each_instance(locals()[teacher_name], "courses", "course_name", 3)                                    
+                                        
+                                        print("\nEliminar curso.")
+
+                                        course_name = frontend_extra.name_check_non_existence("curso")
+
+                                        while True:
+                                            delete_check = input(f"\nConfirme eliminación del curso \"{locals()[course_name].course_name}\" del profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id \"{locals()[teacher_name].id_teacher}\" (S/N): ").lower()
+                                            if delete_check == "s":
+                                                
+                                                locals()[course_name].teacher = "No Establecido"
+
+                                                for i in locals()[teacher_name].courses:
+                                                    if i == locals()[course_name]:
+                                                        index = locals()[teacher_name].courses.index(i)
+                                                        del locals()[teacher_name].courses[index]
+                                                
+                                                print(f"\nCurso \"{locals()[course_name].course_name}\" elimiando exitosamente del profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\".")                                                
+
+                                                break
+
+                                            elif delete_check == "n":
+                                                print(f"\nNo se realizo ninguna acción, el curso de nombre \"{locals()[course_name].course_name}\" no fue eliminado del profesor \"{locals()[teacher_name].name} {locals()[teacher_name].last_name}\" con id \"{locals()[teacher_name].id_teacher}\".")
+                                                break    
+
+                    elif selected_submenu1 == "s":
+                        pass
 
                     input("\nPulse enter para continuar.")          
                     clear_flag()

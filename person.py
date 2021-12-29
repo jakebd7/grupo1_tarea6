@@ -61,7 +61,10 @@ class Person:
 
     @identification.setter
     def identification(self, value):
-        self.__identification = value
+        if value < 0:
+            print("\nEl número de cédula debe ser un número entero positivo.") 
+        else: 
+            self.__identification = value
 
     @identification.deleter
     def identification(self):
@@ -85,7 +88,10 @@ class Person:
 
     @phone_number.setter
     def phone_number(self, value):
-        self.__phone_number = value
+        if value < 0:
+            print("\nEl número telefónico debe ser un número entero positivo.") 
+        else:                   
+            self.__phone_number = value
 
     @phone_number.deleter
     def phone_number(self):
@@ -100,7 +106,7 @@ class Person:
         if value >= 16:
             self.__age = value
         else:
-            return print("Los estudiantes y profesores deben tener una edad igual o superior a 16 años.")
+            return print("\nLos estudiantes y profesores deben tener una edad igual o superior a 16 años.")
 
     @age.deleter
     def age(self):
@@ -137,9 +143,11 @@ class Person:
     @min_courses.setter
     def min_courses(self, value):
         if self.__max_courses == 0:
-            return print("Debe establecer primero la cantidad máxima de cursos.")
+            print("\nDebe establecer primero la cantidad máxima de cursos.")
         elif value > self.__max_courses:
-            return print("La cantidad minima de cursos debe ser menor a la cantidad máxima de cursos.")
+            print(f"\nLa cantidad mínima de cursos debe ser menor a la cantidad máxima de cursos, la cual es: \"{self.__max_courses}\"")
+        elif value < 0:
+            print("\nLa cantidad mínima de cursos debe ser mayor o igual a 0.")        
         else:
             self.__min_courses = value
 
@@ -153,8 +161,10 @@ class Person:
 
     @max_courses.setter
     def max_courses(self, value):
-        if value < self.__min_courses:
-            return print("La cantidad máxima de cursos debe ser mayor a la cantidad minima de cursos.")
+        if value <= 0:
+            print("\nLa cantidad máxima de cursos no puede ser 0 o menor que 0.")
+        elif value < self.__min_courses:
+            print(f"\nLa cantidad máxima de cursos debe ser mayor a la cantidad mínima de cursos, la cual es: \"{self.__min_courses}\"")
         else:
             self.__max_courses = value
 
@@ -168,11 +178,11 @@ class Person:
     def create_person(type):
         class Teacher(Person):
 
-            def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None, id_teacher = None):
+            def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None):
                 super(Teacher, self).__init__(name, last_name, identification, address, phone_number, date_birth , email)
                 self.__id_teacher = int("{}{}{}".format(random.randint(10,99), random.randint(10,99), random.randint(10,99)))
-                self.__teacher_type = None
-                self.__turn = None
+                self.__teacher_type = "No Establecido"
+                self.__turn = "No Establecido"
                 Person.instances_teacher.append(self)
 
             @property
@@ -210,9 +220,6 @@ class Person:
             @id_teacher.deleter
             def id_teacher(self):
                 del self.__id_teacher
-
-            def create_teacher(self):
-                print("Create teacher placeholder")
 
         class Student(Person):
             def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None):

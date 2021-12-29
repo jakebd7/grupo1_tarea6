@@ -173,7 +173,6 @@ class Tuition:
                     self.__credits_students[student.id_student] += course.credits
             print("Nota agregada exitosamente.")
 
-
     def total_fee(self):
         total_pay = 0
         

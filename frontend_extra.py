@@ -1,5 +1,6 @@
 import copy
-from time import sleep
+#from time import sleep
+import time
 from typing import Coroutine
 from classroom import Classroom
 from person import Person
@@ -26,25 +27,50 @@ class TextFormat:
     BOLD_UNDERLINE = BOLD + UNDERLINE
     CLEAR = "\033[0m"
 
-
 def name_check_with_numbers(clase: str, new = False):
-    select = int
     del_dela = "del"
+    attribute_name = str
+    attr_instances = "instances"
+    class_str = str
     if clase == "programa":
-        select = 1
+        attribute_name = "program_name"
+        class_str = "Program"
+    
     elif clase == "curso":
-        select = 2
+        attribute_name = "course_name"
+        class_str = "Course"
+    
+    elif clase == "profesor":
+        attribute_name = "name"
+        attr_instances = "instances_teacher"
+        class_str = "Person"
+    
+    elif clase == "estudiante":
+        attribute_name = "name"
+        attr_instances = "instances_student"
+        class_str = "Person"
+
     elif clase == "turno":
-        select = 3
+        attribute_name = "turn"
+        class_str = "Turn"
+    
     elif clase == "aula":
-        select = 4
+        attribute_name = "classroom_name"
+        class_str = "Classroom"
+    
     elif clase == "edificio":
-        select = 5
+        attribute_name = "name"
+        class_str = "Building"
+    
     elif clase == "tipo de profesor":
-        select = 6
+        attribute_name = "type_teacher"
+        class_str = "Teacher_type"
+    
     elif clase == "matricula":
-        select = 7 
         del_dela = "de la"
+        attribute_name = "name"
+        class_str = "Tuition"
+    
     else:
         print("\nNo ingreso una clase válida.")
         return
@@ -84,40 +110,9 @@ def name_check_with_numbers(clase: str, new = False):
                     if i != " " and i != "_":
                         raise ValueError(f"\nEl{var2}nombre {del_dela} {clase} solo puede contener letras, números, espacios vacíos y guiones bajos.")                             
 
-            if select == 1:
-                for instance in Program.instances:
-                    if instance_name == instance.program_name: 
-                        raise ValueError(f"\nYa existe un programa con el nombre \"{instance_name}\".")
-            
-            elif select == 2:
-                for instance in Course.instances:
-                    if instance_name == instance.course_name: 
-                        raise ValueError(f"\nYa existe un curso con el nombre \"{instance_name}\".")
-
-            elif select == 3:
-                for instance in Turn.instances:
-                    if instance_name == instance.turn: 
-                        raise ValueError(f"\nYa existe un turno con el nombre \"{instance_name}\".")
-
-            elif select == 4:
-                for instance in Classroom.instances:
-                    if instance_name == instance.classroom_name: 
-                        raise ValueError(f"\nYa existe un aula con el nombre \"{instance_name}\".")
-
-            elif select == 5:
-                for instance in Building.instances:
-                    if instance_name == instance.name: 
-                        raise ValueError(f"\nYa existe un edificio con el nombre \"{instance_name}\".")
-
-            elif select == 6:
-                for instance in Teacher_type.instances:
-                    if instance_name == instance.type_teacher: 
-                        raise ValueError(f"\nYa existe un tipo de profesor con el nombre \"{instance_name}\".")
-            
-            elif select == 7:
-                for instance in Tuition.instances:
-                    if instance_name == instance.name: 
-                        raise ValueError(f"\nYa existe una matricula con el nombre \"{instance_name}\".")
+            for instance in getattr(globals()[class_str], attr_instances):
+                if instance_name == getattr(instance, attribute_name): 
+                    raise ValueError(f"\nYa existe un programa con el nombre \"{instance_name}\".")
 
         except ValueError as arg:
             print(arg)
@@ -128,38 +123,166 @@ def name_check_with_numbers(clase: str, new = False):
 
     return instance_name
 
-def name_check_no_numbers(class_instance, new = False, attribute = None):
-    select = int
+def name_check_without_instance(class_instance, new = None, attribute = None):
     class_name = str
-    del_dela = "del"
-    if type(class_instance) is Program:
-        select = 1
-        class_name = "director"
-    elif type(class_instance) is Course:
-        select = 2
-        class_name = "curso"
-    elif type(class_instance) is Person:
-        select = 3
+    attribute_str = str
+    attribute_str2 = str
+    el_la = "el"
+    El_La = "El"
+    a_o = "o"
+    if isinstance(class_instance, Person):
+        if attribute == "address":
+            attribute_str = "dirección"  
+            attribute_str2 = "irección" 
+            el_la = "la" 
+            El_La = "La"
+            a_o = "a"
+        elif attribute == "email":
+            attribute_str = "email"  
+            attribute_str2 = "mail"           
         if class_instance in Person.instances_student:
             class_name = "estudiante"
         elif class_instance in Person.instances_teacher:
             class_name = "profesor"
-    elif type(class_instance) is Classroom:
-        select = 4
+    else:
+        print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
+        return     
+
+    var1 = str
+    var2 = " "
+
+    if new == True:
+        if attribute == "address":
+            var1 = "Nueva d"
+            var2 = " nueva "
+        elif attribute == "email":
+            var1 = "Nuevo e"
+            var2 = " nuevo "
+
+    else: 
+        if attribute == "address":
+            var1 = "D"
+        elif attribute == "email":
+            var1 = "E"
+
+    name = str
+    while True:
+        try:
+            name = input(f"\n{var1}{attribute_str2} del {class_name}: ")
+
+            only_white_spaces = True
+            for i in name:
+                if i != " " and  attribute != "email":
+                    only_white_spaces = False
+                    break
+                                
+            only_underscores = True
+            for i in name:
+                if i != "_":
+                    only_underscores = False
+                    break
+
+            only_dots = True
+            for i in name:
+                if i != ".":
+                    only_dots = False
+                    break
+
+            only_arroba = True
+            for i in name:
+                if i != "@" and attribute == "email":
+                    only_arroba = False
+                    break
+
+            if only_white_spaces == True and attribute != "email":
+                raise ValueError(f"\n{El_La}{var2}{attribute_str} del {class_name} no debe contener únicamente espacios vacíos.")
+            elif only_underscores == True:
+                raise ValueError(f"\n{El_La}{var2}{attribute_str} del {class_name} no debe contener únicamente guiones bajos.")
+            elif only_dots == True:
+                raise ValueError(f"\n{El_La}{var2}{attribute_str} del {class_name} no debe contener únicamente puntos.")
+            elif only_arroba == True and attribute == "email":
+                raise ValueError(f"\n{El_La}{var2}{attribute_str} del {class_name} no debe contener únicamente arrobas.")
+
+
+            for i in name:  
+               if i.isalnum() == False:
+                    if i != "_" and i != "@" and i != "." and attribute == "email": 
+                        raise ValueError(f"\n{El_La}{var2}{attribute_str} del {class_name} solo puede contener letras, puntos, arrobas y guiones bajos.")                               
+                    elif i != " " and i != "_" and i != "." and attribute != "email":
+                        raise ValueError(f"\n{El_La}{var2}{attribute_str} del {class_name} solo puede contener letras, puntos, espacios vacíos y guiones bajos.")
+
+        except ValueError as arg:
+            print(arg)
+        except KeyError:
+            break            
+        else:
+            break  
+            
+    if new == True:    
+        while True:
+            change_check = input(f"\nConfirme que desea cambiar {el_la} {attribute_str} del {class_name} de \"{getattr(class_instance, attribute)}\" a \"{name}\" (S/N): ").lower() 
+
+            if change_check == "s": 
+                setattr(class_instance, attribute, name)                                                  
+                print(f"\n{El_La} nuev{a_o} {attribute_str} del {class_name} es \"{getattr(class_instance, attribute)}\".")
+                break
+            
+            elif change_check == "n":
+                print(f"\nNo se realizo ningún cambio, {el_la} {attribute_str} del {class_name} continua siendo \"{getattr(class_instance, attribute)}\".")
+                break
+    elif new == False:
+        setattr(class_instance, attribute, name)
+    else:
+        return name
+  
+def name_check_no_numbers(class_instance, new = None, attribute = None):
+    class_name = str
+    del_dela = "del"
+    person_instance = False
+    attr_instances = "instances"
+    class_str = str
+    attribute_name = str
+    a = ""
+    if isinstance(class_instance, Program) or class_instance == "programa":
+        class_name = "director"
+        class_str = "Program"
+        attribute_name = "program_name"
+    elif isinstance(class_instance, Course) or class_instance == "curso":
+        class_name = "curso"
+        class_str = "Course"
+        attribute_name = "course_name"
+    elif isinstance(class_instance, Person) or class_instance == "estudiante" or class_instance == "profesor":
+        class_str = "Person"
+        attribute_name = "name"
+        person_instance = True
+        if class_instance in Person.instances_student or class_instance == "estudiante":
+            class_name = "estudiante"
+            attr_instances = "instances_student"
+        elif class_instance in Person.instances_teacher or class_instance == "profesor":
+            class_name = "profesor"
+            attr_instances = "instances_teacher"
+    elif isinstance(class_instance, Classroom) or class_instance == "aula":
         class_name = "aula"
-    elif type(class_instance) is Building:
-        select = 5
+        class_str = "Classroom"
+        attribute_name = "classroom_name"
+    elif isinstance(class_instance, Building) or class_instance == "edificio":
         class_name = "edificio"
-    elif type(class_instance) is Teacher_type:
-        select = 6
+        class_str = "Building"
+        attribute_name = "name"
+    elif isinstance(class_instance, Teacher_type) or class_instance == "tipo de profesor":
         class_name = "tipo de profesor"
-    elif type(class_instance) is Turn:
-        select = 7
+        class_str = "Teacher_type"
+        attribute_name = "type_teacher"
+    elif isinstance(class_instance, Turn) or class_instance == "turno":
         class_name = "turno"
-    elif type(class_instance) is Tuition:
-        select = 8
+        class_str = "Turn"
+        attribute_name = "turn"
+    elif isinstance(class_instance, Tuition) or class_instance == "matricula":
         class_name = "matricula"
         del_dela = "de la"
+        class_str = "Tuition"
+        attribute_name = "name"
+        a = "a"
     else:
         print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
         return 
@@ -167,8 +290,9 @@ def name_check_no_numbers(class_instance, new = False, attribute = None):
     var1 = str
     var2 = str
     var3 = str
+
     if new == True:
-        if select == 3 and attribute == "last_name":
+        if person_instance == True and attribute == "last_name":
             var1 = "Nuevo apellido"
             var2 = " nuevo "
             var3 = "apellido"
@@ -178,7 +302,7 @@ def name_check_no_numbers(class_instance, new = False, attribute = None):
             var3 = "nombre"
 
     else:
-        if select == 3 and attribute == "last_name":        
+        if person_instance == True and attribute == "last_name":        
             var1 = "Apellido" 
             var2 = " "
             var3 = "apellido"
@@ -214,12 +338,19 @@ def name_check_no_numbers(class_instance, new = False, attribute = None):
                     if i != " " and i != "_":  
                         raise ValueError(f"\nEl{var2}{var3} {del_dela} {class_name} solo puede contener letras, espacios vacíos y guiones bajos.")                               
 
+            if  new == None:
+                for instance in getattr(globals()[class_str], attr_instances):
+                    if name == getattr(instance, attribute_name): 
+                        raise ValueError(f"\nYa existe un{a} {class_name} con el nombre \"{name}\".")
+
         except ValueError as arg:
             print(arg)
+        except KeyError:
+            break            
         else:
             break  
 
-    if new == True:    
+    if new == True and not (isinstance(class_instance, str)):    
         while True:
             change_check = input(f"\nConfirme que desea cambiar el {var3} {del_dela} {class_name} de \"{getattr(class_instance, attribute)}\" a \"{name}\" (S/N): ").lower() 
 
@@ -231,33 +362,48 @@ def name_check_no_numbers(class_instance, new = False, attribute = None):
             elif change_check == "n":
                 print(f"\nNo se realizo ningún cambio, el {var3} {del_dela} {class_name} continua siendo \"{getattr(class_instance, attribute)}\".")
                 break
+    elif new == False and not (isinstance(class_instance, str)):
+        setattr(class_instance, attribute, name)
     else:
-        setattr(class_instance, attribute, name)  
+        return name
 
 def name_check_non_existence(clase: str, new = False):
-    select = int
     del_dela = "del"
     un_una = "un"
+    attribute_name = str
+    attr_instances = "instances"    
+    class_str = str
     if clase == "programa":
-        select = 1
+        class_str = "Program"
+        attribute_name = "program_name"
     elif clase == "curso":
-        select = 2
+        class_str = "Course"
+        attribute_name = "course_name"
     elif clase == "turno":
-        select = 3
+        class_str = "Turn"
+        attribute_name = "turn"
     elif clase == "aula":
-        select = 4
+        class_str = "Classroom"
+        attribute_name = "classroom_name"
     elif clase == "edificio":
-        select = 5
+        class_str = "Building"
+        attribute_name = "name"
     elif clase == "tipo de profesor":
-        select = 6
+        class_str = "Teacher_type"
+        attribute_name = "type_teacher"
     elif clase == "matricula":
-        select = 7
         del_dela = "de la"
         un_una = "una"
+        class_str = "Tuition"
+        attribute_name = "name"
     elif clase == "estudiante":
-         select = 8
+        class_str = "Person"
+        attr_instances = "instances_student"
+        attribute_name = "name"
     elif clase == "profesor":
-         select = 9
+        class_str = "Person"
+        attribute_name = "type_teacher"
+        attribute_name = "name"
     else:
         print("\nNo ingreso una clase válida.")
         return
@@ -298,50 +444,9 @@ def name_check_non_existence(clase: str, new = False):
                         raise ValueError(f"\nEl{var2}nombre {del_dela} {clase} solo puede contener letras, números, espacios vacíos y guiones bajos.")                              
 
             instance_check = False
-            if select == 1:
-                for instance in Program.instances:
-                    if instance_name == instance.program_name: 
-                        instance_check = True
-            
-            elif select == 2:
-                for instance in Course.instances:
-                    if instance_name == instance.course_name: 
-                        instance_check = True
-
-            elif select == 3:
-                for instance in Turn.instances:
-                    if instance_name == instance.turn: 
-                        instance_check = True
-
-            elif select == 4:
-                for instance in Classroom.instances:
-                    if instance_name == instance.classroom_name: 
-                        instance_check = True
-
-            elif select == 5:
-                for instance in Building.instances:
-                    if instance_name == instance.name: 
-                        instance_check = True
-
-            elif select == 6:
-                for instance in Teacher_type.instances:
-                    if instance_name == instance.type_teacher: 
-                        instance_check = True
-            
-            elif select == 7:
-                for instance in Tuition.instances:
-                    if instance_name == instance.name: 
-                        instance_check = True
-
-            elif select == 8:
-                for instance in Person.instances_student:
-                    if instance_name == instance.name: 
-                        instance_check = True
-
-            elif select == 9:
-                for instance in Person.instances_teacher:
-                    if instance_name == instance.name: 
-                        instance_check = True
+            for instance in getattr(globals()[class_str], attr_instances):
+                if instance_name == getattr(instance, attribute_name): 
+                    instance_check = True
 
             if instance_check == False:
                 raise SyntaxError(f"\nNo existe {un_una} {clase} con el nombre \"{instance_name}\".")
@@ -403,13 +508,13 @@ def set_change_attr_number(class_instance, new = False, attribute = None):
         return
 
     select = int
-    attr = str
+    #attr = str
     class_name = str
-    class_txt = str
-    if type(class_instance) is Program:
+    #class_txt = str
+    if isinstance(class_instance, Program):
         select = 1
         class_name = "programa"
-    elif type(class_instance) is Course:
+    elif isinstance(class_instance, Course):
         select = 2
         class_name = "curso"
         if attribute == "credits":
@@ -432,25 +537,35 @@ def set_change_attr_number(class_instance, new = False, attribute = None):
             check_txt1 = "el tipo de profesor"
             check_txt2 = "El nuevo tipo de profesor"
             check_txt3 = "es"
-    elif type(class_instance) is Person:
+    elif isinstance(class_instance, Person):
         select = 3
+        if attribute == "identification":
+            input_txt = "édula"
+            check_txt1 = "el número de cédula"
+            check_txt2 = "El nuevo número de cédula"
+            check_txt3 = "es"            
+        elif attribute == "phone_number":
+            input_txt = "úmero telefónico"
+            check_txt1 = "el número telefónico"
+            check_txt2 = "El nuevo número telefónico"
+            check_txt3 = "es"   
         if class_instance in Person.instances_student:
             class_name = "estudiante"
         elif class_instance in Person.instances_teacher:
             class_name = "profesor"
-    elif type(class_instance) is Classroom:
+    elif isinstance(class_instance, Classroom):
         select = 4
         class_name = "aula"
-    elif type(class_instance) is Building:
+    elif isinstance(class_instance, Building):
         select = 5
         class_name = "edificio"
-    elif type(class_instance) is Teacher_type:
+    elif isinstance(class_instance, Teacher_type):
         select = 6
         class_name = "tipo de profesor"
-    elif type(class_instance) is Turn:
+    elif isinstance(class_instance, Turn):
         select = 7
         class_name = "turno"
-    elif type(class_instance) is Tuition:
+    elif isinstance(class_instance, Tuition):
         select = 8
         class_name = "matricula"
     else:
@@ -468,6 +583,13 @@ def set_change_attr_number(class_instance, new = False, attribute = None):
                 var = "Nuevo p"
             elif attribute == "id_profesor":
                 var = "Nuevo t"
+        
+        elif select == 3:
+            if attribute == "identification":
+                var = "Nuevo número de c"
+            elif attribute == "phone_number":
+                var = "Nuevo n"
+
     else:
         if select == 2:
             if attribute == "credits":        
@@ -477,7 +599,13 @@ def set_change_attr_number(class_instance, new = False, attribute = None):
             elif attribute == "price":
                 var = "P"
             elif attribute == "id_profesor":
-                var = "T"    
+                var = "T" 
+
+        elif select == 3:
+            if attribute == "identification":
+                var = "Número de c"      
+            elif attribute == "phone_number":   
+                var = "N"          
 
     number = int
     while True:
@@ -505,6 +633,71 @@ def set_change_attr_number(class_instance, new = False, attribute = None):
                 break
     else:
         setattr(class_instance, attribute, number)          
+
+def set_change_date(class_instance, new = False, attribute = None):
+    class_name = str
+    attribute_str = str
+    if isinstance(class_instance, Person):
+        attribute_str = "nacimiento"
+        if class_instance in Person.instances_student:
+            class_name = "estudiante"
+        elif class_instance in Person.instances_teacher:
+            class_name = "profesor"
+    else:
+        print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
+        return     
+
+    var = str  
+    if new == True:
+        var = "Nuevo f"
+
+    else:
+        var = "F"
+
+    date = str
+    while True:
+        try:
+            date = input(f"\n{var}echa de {attribute_str} (en formato dd/mm/aaaa): ")
+            if len(date) != 10:
+                raise ValueError("\nLa fecha debe ser ingresada en el formato \"dd/mm/aaaa\". Ejemplo: 25/12/2021")
+            elif not (date[0].isdigit and date[1].isdigit and date[2] == "/" and date[3].isdigit and date[4].isdigit and date[5] == "/" and date[6].isdigit and date[7].isdigit and date[8].isdigit and date[9].isdigit):
+                raise ValueError("\nNo se ha ingresado la fecha en el formato indicado.")
+
+        except ValueError as arg:
+            print(arg)
+            continue
+        else:
+            break  
+
+    if new == True:
+        while True:
+            change_check = input(f"\nConfirme que desea cambiar la fecha de {attribute_str} del {class_name} de \"{getattr(class_instance, attribute)}\" a \"{date}\" (S/N): ").lower()
+            if change_check == "s":
+                setattr(class_instance, attribute, date)                                               
+                print(f"\nLa nueva fehca de {attribute_str} del {class_name} es \"{getattr(class_instance, attribute)}\".")
+                break
+            elif change_check == "n":
+                print(f"\nNo se realizo ningún cambio, la fecha de {attribute_str} del {class_name} continua siendo \"{getattr(class_instance, attribute)}\".")
+                break
+    else:
+        setattr(class_instance, attribute, date)   
+ 
+def set_change_age(class_instance):
+    attribute_str = str
+    if isinstance(class_instance, Person):
+        attribute_str = "date_birth"
+    else:
+        print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
+        return     
+
+    date_birthday = getattr(class_instance, attribute_str)
+    age = int(time.strftime("%Y")) - int(date_birthday[6:10]) -1
+
+    if int(time.strftime("%m")) >= int(date_birthday[3:5]):
+        if int(time.strftime("%d")) >= int(date_birthday[0:2]):
+            age += 1
+
+    setattr(class_instance, "age", age)
 
 def max_students_check(class_instance, new = False):
     class_name = str
@@ -617,8 +810,14 @@ def min_students_check(class_instance, new = False):
         class_instance.min_students = min_students    
 
 def max_courses_check(class_instance, new = False):
-    if type(class_instance) is Program:
-        pass
+    class_name = str
+    if isinstance(class_instance, Program):
+        class_name = "programa"
+    elif isinstance(class_instance, Person):
+        if class_instance in Person.instances_teacher:
+            class_name = "profesor"
+        elif class_instance in Person.instances_student:
+            class_name = "estudiante"
     else:
         print("\nEl objeto que ingreso no pertenece a ninguna clase válida.")    
         return
@@ -645,22 +844,28 @@ def max_courses_check(class_instance, new = False):
 
     if new == True:
         while True:
-            change_check = input(f"\nConfirme que desea cambiar la cantidad máxima de cursos del programa de \"{class_instance.max_courses}\" a \"{max_courses}\" (S/N): ").lower()
+            change_check = input(f"\nConfirme que desea cambiar la cantidad máxima de cursos del {class_name} de \"{class_instance.max_courses}\" a \"{max_courses}\" (S/N): ").lower()
             if change_check == "s":
                 class_instance.max_courses = max_courses                                                      
-                print(f"\nLa nueva cantidad máxima de cursos del programa es \"{class_instance.max_courses}\".")
+                print(f"\nLa nueva cantidad máxima de cursos del {class_name} es \"{class_instance.max_courses}\".")
                 break
             elif change_check == "n":
-                print(f"\nNo se realizo ningún cambio, la cantidad máxima de cursos del programa continua siendo \"{class_instance.max_courses}\".")
+                print(f"\nNo se realizo ningún cambio, la cantidad máxima de cursos del {class_name} continua siendo \"{class_instance.max_courses}\".")
                 break
     else:
         class_instance.max_courses = max_courses
 
 def min_courses_check(class_instance, new = False):
-    if type(class_instance) is Program:
-        pass
+    class_name = str
+    if isinstance(class_instance, Program):
+        class_name = "programa"
+    elif isinstance(class_instance, Person):
+        if class_instance in Person.instances_teacher:
+            class_name = "profesor"
+        elif class_instance in Person.instances_student:
+            class_name = "estudiante"
     else:
-        print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
+        print("\nEl objeto que ingreso no pertenece a ninguna clase válida.")    
         return
 
     var = str
@@ -684,13 +889,13 @@ def min_courses_check(class_instance, new = False):
 
     if new == True:
         while True:
-            change_check = input(f"\nConfirme que desea cambiar la cantidad mínima de cursos del programa de \"{class_instance.min_courses}\" a \"{min_courses}\" (S/N): ").lower()
+            change_check = input(f"\nConfirme que desea cambiar la cantidad mínima de cursos del {class_name} de \"{class_instance.min_courses}\" a \"{min_courses}\" (S/N): ").lower()
             if change_check == "s":
                 class_instance.min_courses = min_courses                                                     
-                print(f"\nLa nueva cantidad mínima de cursos del programa es \"{class_instance.min_courses}\".")
+                print(f"\nLa nueva cantidad mínima de cursos del {class_name} es \"{class_instance.min_courses}\".")
                 break
             elif change_check == "n":
-                print(f"\nNo se realizo ningún cambio, la cantidad mínima de cursos del programa continua siendo \"{class_instance.min_courses}\".")
+                print(f"\nNo se realizo ningún cambio, la cantidad mínima de cursos del {class_name} continua siendo \"{class_instance.min_courses}\".")
                 break
     else:
         class_instance.min_courses = min_courses
@@ -736,7 +941,7 @@ def program_duration_check(class_instance, new = False):
         class_instance.program_duration = program_duration
 
 def program_information_show(class_instance):
-    if type(class_instance) is Program:
+    if isinstance(class_instance, Program):
         pass
     else:
         print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
@@ -755,7 +960,7 @@ def program_information_show(class_instance):
           f"Duración del Programa en años: {class_instance.program_duration}")    
 
 def course_information_show(class_instance):
-    if type(class_instance) is Course:
+    if isinstance(class_instance, Course):
         pass
     else:
         print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
@@ -783,6 +988,58 @@ def course_information_show(class_instance):
     print(f"Estatus del Curso: {class_instance.course_status}\n"
           f"Máximo de Estudiantes: {class_instance.max_students}\n"
           f"Mínimo de Estudiantes: {class_instance.min_students}")
+
+def person_information_show(class_instance):
+    class_name = str
+    id = str
+    uppercase_letter = str
+    lowercase_letter = str
+    if isinstance(class_instance, Person):
+        if class_instance in Person.instances_teacher:
+            uppercase_letter = "P"
+            lowercase_letter = "p"
+            class_name = "rofesor"
+            id = "id_teacher"
+        elif class_instance in Person.instances_student:
+            uppercase_letter = "E"
+            lowercase_letter = "e"
+            class_name = "studiante"
+            id = "id_student"
+        pass
+    else:
+        print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
+        return 
+
+    print(f"\nLa información asociada al {lowercase_letter}{class_name} \"{class_instance.name} {class_instance.last_name}\" con id: \"{getattr(class_instance, id)}\" es: "
+           "\n"
+          f"\nNombre: {class_instance.name}\n"
+          f"Apellido: {class_instance.last_name}\n"
+          f"Id: {getattr(class_instance, id)}")
+
+    if class_instance in Person.instances_teacher:
+        if class_instance.teacher_type != "No Establecido":
+            print(f"Tipo de Profesor: {class_instance.teacher_type.type_teacher}")
+        else:
+            print(f"Tipo de Profesor: {class_instance.teacher_type}")
+        
+        if class_instance.turn != "No Establecido":
+            print(f"Turno: {class_instance.turn.turn}")
+        else:
+            print(f"Turno: {class_instance.turn}")
+
+    print(f"Cédula: {class_instance.identification}\n"
+          f"Dirección: {class_instance.address}\n"
+          f"Número Telefónico: {class_instance.phone_number}\n"
+          f"Fecha de Nacimiento: {class_instance.date_birth}\n"
+          f"Edad: {class_instance.age}\n"
+          f"Correo Electrónico: {class_instance.email}\n"
+          f"Cantidad Máxima de Cursos: {class_instance.max_courses}\n"
+          f"Cantidad Mínima de Cursos: {class_instance.min_courses}")
+          
+    if len(class_instance.courses) == 0:
+        print(f"Cursos en los que esta el {uppercase_letter}{class_name}: 0")
+    else:
+        print(f"Cursos en los que esta el {uppercase_letter}{class_name}: {[course.course_name for course in class_instance.courses]}")
 
 def set_attribute_in_list_in_instance(class_instance, attribute_list = None, attritube = None, input_x = None):
     if isinstance(class_instance, Program):
@@ -871,31 +1128,34 @@ def change_instance_name(class_instance, new_name):
     attribute = str
     class_name = str
     del_dela = "del"
-    if type(class_instance) is Program:
+    instances = "instances"
+    if isinstance(class_instance, Program):
         attribute = "program_name"
         class_name = "programa"
-    elif type(class_instance) is Course:
+    elif isinstance(class_instance, Course):
         attribute = "course_name"
         class_name = "curso"
-    elif type(class_instance) is Person:
+    elif isinstance(class_instance, Person):
         attribute = "name"
         if class_instance in Person.instances_student:
             class_name = "estudiante"
+            instances = "instances_student"
         elif class_instance in Person.instances_teacher:
             class_name = "profesor"
-    elif type(class_instance) is Classroom:
+            instances = "instances_teacher"
+    elif isinstance(class_instance, Classroom):
         attribute = "classroom_name"
         class_name = "aula"
-    elif type(class_instance) is Building:
+    elif isinstance(class_instance, Building):
         attribute = "name"
         class_name = "edificio"
-    elif type(class_instance) is Teacher_type:
+    elif isinstance(class_instance, Teacher_type):
         attribute = "type_teacher"
         class_name = "tipo de profesor"
-    elif type(class_instance) is Turn:
+    elif isinstance(class_instance, Turn):
         attribute = "turn"
         class_name = "turno"
-    elif type(class_instance) is Tuition:
+    elif isinstance(class_instance, Tuition):
         attribute = "name"
         class_name = "matricula"
         del_dela = "de la"
@@ -913,32 +1173,12 @@ def change_instance_name(class_instance, new_name):
 
             setattr(locals()[new_name], attribute, new_name)
 
-            if class_instance in Person.instances_student:
-
-                for instance in Person.instances_student:
-                    if class_instance == instance:
-                        instance_index = Person.instances_student.index(instance)
-                        del Person.instances_student[instance_index]
-                                                    
-                Person.instances_student.append(locals()[new_name])                
-            
-            elif class_instance in Person.instances_teacher:
-
-                for instance in Person.instances_teacher:
-                    if class_instance == instance:
-                        instance_index = Person.instances_teacher.index(instance)
-                        del Person.instances_teacher[instance_index]
-                                                    
-                Person.instances_teacher.append(locals()[new_name])  
-
-            else:
-
-                for instance in class_instance.__class__.instances:
-                    if class_instance == instance:
-                        instance_index = class_instance.__class__.instances.index(instance)
-                        del class_instance.__class__.instances[instance_index]
-                                                    
-                class_instance.__class__.instances.append(locals()[new_name])
+            for instance in getattr(class_instance, instances):
+                if class_instance == instance:
+                    instance_index = getattr(class_instance, instances).index(instance)
+                    del getattr(class_instance, instances)[instance_index]
+                                                
+            getattr(class_instance, instances).append(locals()[new_name])
 
             print(f"\nEl nuevo nombre {del_dela} {class_name} es \"{getattr(locals()[new_name], attribute)}\".")
 
@@ -972,7 +1212,7 @@ def view_each_instance(class_instance, input1 = None, input2 = None, mode = None
             instance = "instances_student"
             attribute2 = "id_student"
         elif class_instance in Person.instances_teacher:
-            class_name = "profesore"
+            class_name = "profesor"
             instance = "instances_teacher"
             attribute2 = "id_teacher"
     elif isinstance(class_instance, Classroom):
@@ -1032,10 +1272,10 @@ def view_each_instance(class_instance, input1 = None, input2 = None, mode = None
                             counter += 1  
                     break  
                 elif mode == 3:
-                    print("\nLogica no desarrollada para la clase Persona.")
-                    #for i in range(0, len(getattr(class_instance, input1)),1):
-                        #print(f"({i}) {getattr(class_instance, instance)[i].name} {getattr(class_instance, instance)[i].last_name} => Id: {getattr(getattr(class_instance, instance)[i], attribute2)}")
-                    break
+                    if class_instance in Person.instances_teacher:
+                        for i in range(0, len(getattr(class_instance, input1)),1):   
+                            print(f"({i}) {getattr(getattr(class_instance, input1)[i], input2)}")      
+                        break
             else:
                 if input1 == None and input2 == None and mode == None:
                     for i in range(0, len(class_instance.__class__.instances),1):                    
@@ -1064,13 +1304,20 @@ def view_each_instance(class_instance, input1 = None, input2 = None, mode = None
         elif program_list == "n":
             break
 
-def courses_availability():
+def courses_availability(choice = 1):
     var = False
-    for instance in Course.instances:
-        if "No Establecido" == instance.program:
-            var = True
-            break
 
+    if choice == 1:
+        for instance in Course.instances:
+            if "No Establecido" == instance.program:
+                var = True
+                break
+
+    elif choice == 2:
+        for instance in Course.instances:
+            if instance.teacher == "No Establecido":
+                var = True
+                break        
     return var
 
 def programs_availability():
@@ -1082,16 +1329,38 @@ def programs_availability():
 
     return var
 
-def teachers_availability():
+def teachers_availability(choice = 1):
     var = False
-    for instance in Person.instances_teacher:
-        if len(instance.courses) <= instance.max_courses:
-            var = True
-            break
+
+    if choice == 1:
+        for instance in Person.instances_teacher:
+            if len(instance.courses) <= instance.max_courses:
+                var = True
+                break
+
+    elif choice == 2:
+        for instance in Person.instances_teacher:
+            if instance.teacher_type == "No Establecido":
+                var = True
+                break
+
+    elif choice == 3:
+        for instance in Person.instances_teacher:
+            if instance.turn == "No Establecido":
+                var = True
+                break
 
     return var
 
-def add_requirements_check(class_instance, clase: str, list_parameter: str, max_parameter: str):
+def students_availability():
+    var = False
+    for instance in Person.instances_student:
+        if len(instance.courses) <= instance.max_courses:
+            var = True
+            break
+    return var
+
+def add_requirements_check(class_instance, clase: str, list_parameter: str, max_parameter: str, mode = 1):
     class_name = str
     instance = "instances"
     var1 = "El"
@@ -1139,21 +1408,29 @@ def add_requirements_check(class_instance, clase: str, list_parameter: str, max_
                 existing_instance = i
                 break
         
-        if len(getattr(existing_instance, list_parameter)) < getattr(existing_instance, max_parameter):
-            break
+        if mode == 1:
+            if len(getattr(existing_instance, list_parameter)) < getattr(existing_instance, max_parameter):
+                break
+        elif mode == 2:
+            if getattr(existing_instance, list_parameter) == max_parameter:
+                break
 
-    curse_not_in_name= False
-    for instance_x in getattr(class_instance.__class__, instance):
-        if not (instance_x in getattr(existing_instance, list_parameter)):
-            curse_not_in_name = True
-            break
+    if mode == 1:
+        curse_not_in_name= False
+        for instance_x in getattr(class_instance.__class__, instance):
+            if not (instance_x in getattr(existing_instance, list_parameter)):
+                curse_not_in_name = True
+                break
 
-    if curse_not_in_name == False:
-        print(f"\nTodos los {class_name}s existentes ya estan agregados al {clase} \"{getattr(existing_instance, atributo)}\".")
-        return [False]
+        if curse_not_in_name == False:
+            print(f"\nTodos los {class_name}s existentes ya estan agregados al {clase} \"{getattr(existing_instance, atributo)}\".")
+            return [False]
 
-    elif len(getattr(existing_instance, list_parameter)) > getattr(existing_instance, max_parameter):
-        print(f"\nNo se pueden agregar mas {class_name}s al {clase} \"{getattr(existing_instance, atributo)}\". {var1} {clase} \"{getattr(existing_instance, atributo)}\" ya ha alcanzado la cantidad máxima de {class_name}s establecida.")
-        return [False]
-    else:
-        return [True, existing_instance] 
+        elif (len(getattr(existing_instance, list_parameter)) > getattr(existing_instance, max_parameter)):
+            print(f"\nNo se pueden agregar mas {class_name}s al {clase} \"{getattr(existing_instance, atributo)}\". {var1} {clase} \"{getattr(existing_instance, atributo)}\" ya ha alcanzado la cantidad máxima de {class_name}s establecida.")
+            return [False]
+        else:
+            return [True, existing_instance]
+
+    if mode == 2:
+            return [True, existing_instance] 
