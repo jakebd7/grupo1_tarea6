@@ -340,30 +340,31 @@ while selected_menu != "s":
                         frontend_extra.set_change_attr_number(locals()[building_name], False, "number_of_classrooms")
 
                         if len(Classroom.instances) > 0:
-                            while True:
-                                set_check = input("\nDesea establecer en este momento las aulas que tendra el edificio (S/N): ").lower()
-                                if set_check == "s":
+                            if len([x for x in Classroom.instances if x.building_number == "No Establecido"]) > 0:
+                                while True:
+                                    set_check = input("\nDesea establecer en este momento las aulas que tendra el edificio (S/N): ").lower()
+                                    if set_check == "s":
 
-                                    frontend_extra.view_each_instance(Classroom.instances[0], "No Establecido", "building_number", 2)
+                                        frontend_extra.view_each_instance(Classroom.instances[0], "No Establecido", "building_number", 2)
 
-                                    while True:
-                                        classroom_name = frontend_extra.name_check_non_existence("aula")
-                                        if locals()[classroom_name].building_number == "No Establecido":
-                                            if locals()[building_name].add_classroom(locals()[classroom_name]):
-                                                locals()[classroom_name].building_number = locals()[classroom_name]
-                                            
-                                                if (len(locals()[building_name].classrooms) < locals()[building_name].number_of_classrooms) and len([x for x in Classroom.instances if x.building_number == "No Establecido"]) > 0:
-                                                    set_check2 = input("\nDesea agregar otra aula (S/N): ").lower()
-                                                    if set_check2 == "s":
-                                                        continue
-                                                    elif set_check2 == "n":
+                                        while True:
+                                            classroom_name = frontend_extra.name_check_non_existence("aula")
+                                            if locals()[classroom_name].building_number == "No Establecido":
+                                                if locals()[building_name].add_classroom(locals()[classroom_name]):
+                                                    locals()[classroom_name].building_number = locals()[building_name]
+                                                
+                                                    if (len(locals()[building_name].classrooms) < locals()[building_name].number_of_classrooms) and len([x for x in Classroom.instances if x.building_number == "No Establecido"]) > 0:
+                                                        set_check2 = input("\nDesea agregar otra aula (S/N): ").lower()
+                                                        if set_check2 == "s":
+                                                            continue
+                                                        elif set_check2 == "n":
+                                                            break
+                                                    else: 
                                                         break
-                                                else: 
-                                                    break
-                                    break
-                                elif set_check == "n":
+                                        break
+                                    elif set_check == "n":
 
-                                    break                               
+                                        break                               
 
                         while True:
                             verification = input(f"\nDesea crear el edifcio \"{locals()[building_name].name}\" con la información asociada que ha ingresado (S/N): ").lower()
@@ -406,6 +407,33 @@ while selected_menu != "s":
 
                         frontend_extra.min_courses_check(locals()[program_name])
 
+                        if len(Course.instances) > 0:
+                            if len([x for x in Course.instances if x.program == "No Establecido"]) > 0:
+                                while True:
+                                    set_check = input("\nDesea establecer en este momento los cursos que tendra el programa (S/N): ").lower()
+                                    if set_check == "s":
+
+                                        frontend_extra.view_each_instance(Course.instances[0], "No Establecido", "program", 2)
+
+                                        while True:
+                                            course_name = frontend_extra.name_check_non_existence("curso")
+                                            if locals()[course_name].program == "No Establecido":
+                                                if locals()[program_name].add_course(locals()[course_name]):
+                                                    locals()[course_name].program = locals()[program_name]
+                                                
+                                                    if (len(locals()[program_name].courses) < locals()[program_name].max_courses) and len([x for x in Course.instances if x.program == "No Establecido"]) > 0:
+                                                        set_check2 = input("\nDesea agregar otra curso (S/N): ").lower()
+                                                        if set_check2 == "s":
+                                                            continue
+                                                        elif set_check2 == "n":
+                                                            break
+                                                    else: 
+                                                        break
+                                        break
+                                    elif set_check == "n":
+
+                                        break       
+
                         frontend_extra.program_duration_check(locals()[program_name])                     
                         
                         while True:
@@ -424,6 +452,10 @@ while selected_menu != "s":
                                 break
                             elif verification == "n":
                                 print(f"\n{TextFormat.CYAN}El programa \"{locals()[program_name].program_name}\" no se creara.{TextFormat.CLEAR}")
+                                
+                                if len(locals()[program_name].courses) > 0: 
+                                    frontend_extra.set_attribute_in_list_in_instance(locals()[program_name], "courses", "program", "No Establecido") 
+
                                 frontend_extra.del_instance_in_class(locals()[program_name])
                                 del locals()[program_name]
                                 break

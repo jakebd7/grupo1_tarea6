@@ -992,6 +992,9 @@ def program_information_show(class_instance):
           f"Mínimo de Cursos: {class_instance.min_courses}\n"                            
           f"Duración del Programa en años: {class_instance.program_duration}")    
 
+    if len(class_instance.courses) > 0:
+        print(f"Cursos Agregados al Programa: {[course.course_name for course in class_instance.courses]}")
+
 def course_information_show(class_instance):
     if isinstance(class_instance, Course):
         pass
