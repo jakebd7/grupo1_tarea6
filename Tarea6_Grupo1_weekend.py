@@ -335,9 +335,9 @@ while selected_menu != "s":
 
                         frontend_extra.name_check_without_instance(locals()[building_name], False, "address")
 
-                        frontend_extra.set_change_attr_number(locals()[building_name], False, "number_of_classrooms")
-
                         frontend_extra.set_change_attr_number(locals()[building_name], False, "number_of_floors")
+
+                        frontend_extra.set_change_attr_number(locals()[building_name], False, "number_of_classrooms")
 
                         if len(Classroom.instances) > 0:
                             while True:
@@ -351,7 +351,15 @@ while selected_menu != "s":
                                         if locals()[classroom_name].building_number == "No Establecido":
                                             if locals()[building_name].add_classroom(locals()[classroom_name]):
                                                 locals()[classroom_name].building_number = locals()[classroom_name]
-                                            break
+                                            
+                                                if (len(locals()[building_name].classrooms) < locals()[building_name].number_of_classrooms) and len([x for x in Classroom.instances if x.building_number == "No Establecido"]) > 0:
+                                                    set_check2 = input("\nDesea agregar otra aula (S/N): ").lower()
+                                                    if set_check2 == "s":
+                                                        continue
+                                                    elif set_check2 == "n":
+                                                        break
+                                                else: 
+                                                    break
                                     break
                                 elif set_check == "n":
 
@@ -373,6 +381,10 @@ while selected_menu != "s":
                                 break
                             elif verification == "n":
                                 print(f"\n{TextFormat.CYAN}El edificio \"{building_name}\" no se creara.{TextFormat.CLEAR}")
+                                                                    
+                                if len(locals()[building_name].classrooms) > 0: 
+                                    frontend_extra.set_attribute_in_list_in_instance(locals()[building_name], "classrooms", "building_number", "No Establecido") 
+
                                 frontend_extra.del_instance_in_class(locals()[building_name])
                                 del locals()[building_name]
                                 break
@@ -894,7 +906,7 @@ while selected_menu != "s":
 
                             frontend_extra.person_information_show(locals()[student_name])
 
-                    input("\nPulse enter para continuar.")          
+                    input("\nPulse enter para continuar.")
                     clear_flag()
 
                 elif selected_submenu2 == "m":
