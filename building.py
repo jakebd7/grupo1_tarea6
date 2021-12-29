@@ -64,19 +64,24 @@ class Building:
     def add_classroom(self, classroom):
         for building in self.__class__.instances:
             if classroom in building.classrooms:
-                return print("No se puede añadir el aula {} al eficicio {}, porque ya se encuentra registrada en el edificio {}".format(classroom.classroom_name, self.__name, building.name))
+                print(f"\nNo se puede añadir el aula \"{classroom.classroom_name}\" al eficicio \"{self.__name}\", porque ya se encuentra registrada en el edificio \"{building.name}\".")
+                return False
 
         if classroom in self.__classrooms:
-            return print("El aula ya se encuentra registrada en este edificio.")
+            print("\nEl aula ya se encuentra registrada en este edificio.")
+            return False
         
         if self.__number_of_classrooms == 0:
-            return print("No se pueden agregar aulas al edificio {} , porque no ha establecido la cantidad de aulas que tiene el edificio.".format(self.__name))
+            print(f"\nNo se pueden agregar aulas al edificio \"{self.__names}\", porque no ha establecido la cantidad de aulas que tiene el edificio.")
+            return False
         elif len(self.__classrooms) <= self.__number_of_classrooms:
             self.__classrooms.append(classroom)
             classroom.building_number = self.__name
-            return print("Aula {} añadida exitosamente al edificio {}".format(classroom.classroom_name, self.__name))
+            print(f"\nAula \"{classroom.classroom_name}\" añadida exitosamente al edificio \"{self.__name}\".")
+            return True
         else:
-            return print("No se pueden añadir mas aulas al edificio {}. La capacidad máxima de aulas se ha alcanzado previamente.".format(self.__name))
+            print(f"\nNo se pueden añadir mas aulas al edificio \"{self.__name}\". La capacidad máxima de aulas se ha alcanzado previamente.")
+            return False
 
     def __str__(self):
         return "Edificio"

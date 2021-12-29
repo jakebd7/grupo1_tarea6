@@ -4,7 +4,7 @@ class Classroom:
     def __init__(self, classroom_name = None, floor_number = 0, seats_capacity = None):
         self.__classroom_name = classroom_name
         self.__floor_number = floor_number
-        self.__building_number = None
+        self.__building_number = "No Establecido"
         self.__courses = []
         self.__seats_capacity = seats_capacity
         self.__class__.instances.append(self)
@@ -58,7 +58,7 @@ class Classroom:
         del self.__seats_capacity
 
     def add_course(self, course):
-        if self.__building_number == None:
+        if self.__building_number == "No Establecido":
             return print("Antes de agregar un curso al aula, debe agregar el aula a un edificio.")
         
         

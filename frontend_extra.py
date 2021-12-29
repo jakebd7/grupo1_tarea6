@@ -112,7 +112,7 @@ def name_check_with_numbers(clase: str, new = False):
 
             for instance in getattr(globals()[class_str], attr_instances):
                 if instance_name == getattr(instance, attribute_name): 
-                    raise ValueError(f"\nYa existe un programa con el nombre \"{instance_name}\".")
+                    raise ValueError(f"\nYa existe un {clase} con el nombre \"{instance_name}\".")
 
         except ValueError as arg:
             print(arg)
@@ -144,6 +144,15 @@ def name_check_without_instance(class_instance, new = None, attribute = None):
             class_name = "estudiante"
         elif class_instance in Person.instances_teacher:
             class_name = "profesor"
+    elif isinstance(class_instance, Building):
+        if attribute == "address":
+            attribute_str = "dirección"  
+            attribute_str2 = "irección" 
+            el_la = "la" 
+            El_La = "La"
+            a_o = "a"
+            class_name = "edificio"
+
     else:
         print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
         return     
@@ -559,6 +568,16 @@ def set_change_attr_number(class_instance, new = False, attribute = None):
     elif isinstance(class_instance, Building):
         select = 5
         class_name = "edificio"
+        if attribute == "number_of_classrooms":
+            input_txt = "úmero de aulas"
+            check_txt1 = "el número de aulas"
+            check_txt2 = "El nuevo número de aulas"
+            check_txt3 = "es"     
+        elif attribute == "number_of_floors":   
+            input_txt = "úmero de pisos"
+            check_txt1 = "el número de pisos"
+            check_txt2 = "El nuevo número de pisos"
+            check_txt3 = "es"                   
     elif isinstance(class_instance, Teacher_type):
         select = 6
         class_name = "tipo de profesor"
@@ -589,6 +608,13 @@ def set_change_attr_number(class_instance, new = False, attribute = None):
                 var = "Nuevo número de c"
             elif attribute == "phone_number":
                 var = "Nuevo n"
+        
+        elif select == 5:
+            if attribute == "number_of_classrooms":
+                var = "Nuevo n"
+
+            elif attribute == "number_of_floors":
+                var = "Nuevo n"
 
     else:
         if select == 2:
@@ -606,6 +632,13 @@ def set_change_attr_number(class_instance, new = False, attribute = None):
                 var = "Número de c"      
             elif attribute == "phone_number":   
                 var = "N"          
+
+        elif select == 5:
+            if attribute == "number_of_classrooms":
+                var = "N"
+            elif attribute == "number_of_floors":
+                var = "N"
+
 
     number = int
     while True:
@@ -1040,6 +1073,25 @@ def person_information_show(class_instance):
         print(f"Cursos en los que esta el {uppercase_letter}{class_name}: 0")
     else:
         print(f"Cursos en los que esta el {uppercase_letter}{class_name}: {[course.course_name for course in class_instance.courses]}")
+
+def building_information_show(class_instance):
+    if isinstance(class_instance, Building):
+        pass
+    else:
+        print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
+        return 
+
+    print(f"\nLa información asociada al edificio \"{class_instance.name}\" es: "
+           "\n"
+          f"\nNombre del Edificio: {class_instance.name}\n"
+          f"Dirección del Edificio: {class_instance.address}\n"
+          f"Número de Pisos del Edificio: {class_instance.number_of_floors}\n"
+          f"Número de Aulas del Edificio: {class_instance.number_of_classrooms}")
+          
+    if len(class_instance.classrooms) == 0:
+        print(f"Aulas Agregadas al Edificio: 0")
+    else:
+        print(f"Aulas Agregadas al Edificio: {[classroom.classroom_name for classroom in class_instance.classrooms]}")
 
 def set_attribute_in_list_in_instance(class_instance, attribute_list = None, attritube = None, input_x = None):
     if isinstance(class_instance, Program):

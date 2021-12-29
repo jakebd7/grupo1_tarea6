@@ -5,6 +5,7 @@ __autor__ = 'David Weeber, Jason Ortiz, Jekson Pineda, Amilcar Ibarra, Leonardo 
 # ----------------------
 
 import copy
+from typing import BinaryIO
 import frontend_extra
 from classroom import Classroom
 from person import Person
@@ -230,6 +231,21 @@ planta = Teacher_type("planta")
 # Tipo de Profesor - Horaio
 horario = Teacher_type("horario")
 
+# Aula 1
+aula1 = Classroom("aula1")
+aula1.floor_number = 25
+aula1.seats_capacity = 30
+
+# Aula 2
+aula2 = Classroom("aula2")
+aula2.floor_number = 50
+aula2.seats_capacity = 40
+
+# Aula 2
+aula3 = Classroom("aula3")
+aula3.floor_number = 60
+aula3.seats_capacity = 50
+
 # ----------------------------------------
 # Ejecución de las funciones mediante menú
 # ----------------------------------------
@@ -309,6 +325,57 @@ while selected_menu != "s":
                                     frontend_extra.del_instance_in_class(locals()[program_name])
                                     del locals()[program_name]
                                     break
+
+                    elif selected_submenu1 == "e":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Creación de Nuevo Edificio{TextFormat.CLEAR}")
+      
+                        building_name = frontend_extra.name_check_with_numbers("edificio")
+                        locals()[building_name] = Building(building_name)
+
+                        frontend_extra.name_check_without_instance(locals()[building_name], False, "address")
+
+                        frontend_extra.set_change_attr_number(locals()[building_name], False, "number_of_classrooms")
+
+                        frontend_extra.set_change_attr_number(locals()[building_name], False, "number_of_floors")
+
+                        if len(Classroom.instances) > 0:
+                            while True:
+                                set_check = input("\nDesea establecer en este momento las aulas que tendra el edificio (S/N): ").lower()
+                                if set_check == "s":
+
+                                    frontend_extra.view_each_instance(Classroom.instances[0], "No Establecido", "building_number", 2)
+
+                                    while True:
+                                        classroom_name = frontend_extra.name_check_non_existence("aula")
+                                        if locals()[classroom_name].building_number == "No Establecido":
+                                            if locals()[building_name].add_classroom(locals()[classroom_name]):
+                                                locals()[classroom_name].building_number = locals()[classroom_name]
+                                            break
+                                    break
+                                elif set_check == "n":
+
+                                    break                               
+
+                        while True:
+                            verification = input(f"\nDesea crear el edifcio \"{locals()[building_name].name}\" con la información asociada que ha ingresado (S/N): ").lower()
+                            if verification == "s":
+                                print(f"\n{TextFormat.CYAN}El edificio \"{locals()[building_name].name}\" se ha creado exitosamente.{TextFormat.CLEAR}")
+
+                                while True:
+                                    informatio_view = input(f"\nDeseea ver la información del edificio (S/N): ").lower()
+                                
+                                    if informatio_view == "s":
+                                        frontend_extra.building_information_show(locals()[building_name])
+                                        break
+                                    elif informatio_view == "n":
+                                        break
+                                break
+                            elif verification == "n":
+                                print(f"\n{TextFormat.CYAN}El edificio \"{building_name}\" no se creara.{TextFormat.CLEAR}")
+                                frontend_extra.del_instance_in_class(locals()[building_name])
+                                del locals()[building_name]
+                                break
 
                     elif selected_submenu1 == "p":
                         clear_screen()
@@ -766,6 +833,18 @@ while selected_menu != "s":
                     if selected_submenu1 == "m":
                         clear_screen()
                         print(f"\n{TextFormat.CYAN}Sub Menú - Consultar Información de Matricula{TextFormat.CLEAR}") 
+
+                    elif selected_submenu1 == "e":
+                        clear_screen()
+                        print(f"\n{TextFormat.CYAN}Sub Menú - Consultar Información de Edificios{TextFormat.CLEAR}") 
+                        if len(Building.instances) == 0:
+                            print("\nNo existe ningún edificio creado.")
+                        else: 
+
+                            frontend_extra.view_each_instance(Building.instances[0])
+                            building_name = frontend_extra.name_check_non_existence("edificio")
+
+                            frontend_extra.building_information_show(locals()[building_name])                        
 
                     elif selected_submenu1 == "p":
                         clear_screen()
