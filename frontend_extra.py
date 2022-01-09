@@ -32,6 +32,7 @@ def name_check_with_numbers(clase: str, new = False):
     attribute_name = str
     attr_instances = "instances"
     class_str = str
+    a = " "
     if clase == "programa":
         attribute_name = "program_name"
         class_str = "Program"
@@ -70,6 +71,7 @@ def name_check_with_numbers(clase: str, new = False):
         del_dela = "de la"
         attribute_name = "name"
         class_str = "Tuition"
+        a = "a "
     
     else:
         print("\nNo ingreso una clase válida.")
@@ -112,7 +114,7 @@ def name_check_with_numbers(clase: str, new = False):
 
             for instance in getattr(globals()[class_str], attr_instances):
                 if instance_name == getattr(instance, attribute_name): 
-                    raise ValueError(f"\nYa existe un {clase} con el nombre \"{instance_name}\".")
+                    raise ValueError(f"\nYa existe un{a}{clase} con el nombre \"{instance_name}\".")
 
         except ValueError as arg:
             print(arg)
@@ -565,6 +567,17 @@ def set_change_attr_number(class_instance, new = False, attribute = None):
     elif isinstance(class_instance, Classroom):
         select = 4
         class_name = "aula"
+        if attribute == "floor_number":
+            input_txt = "úmero de piso"
+            check_txt1 = "el número de piso"
+            check_txt2 = "El nuevo número de piso"
+            check_txt3 = "es"         
+        if attribute == "seats_capacity":
+            input_txt = "apacidad de asientos"
+            check_txt1 = "la capacidad de asientos"
+            check_txt2 = "La nueva capacidad de asientos"
+            check_txt3 = "es"  
+
     elif isinstance(class_instance, Building):
         select = 5
         class_name = "edificio"
@@ -609,6 +622,13 @@ def set_change_attr_number(class_instance, new = False, attribute = None):
             elif attribute == "phone_number":
                 var = "Nuevo n"
         
+        elif select == 4:
+            if attribute == "floor_number":
+                var = "Nuevo n"
+
+            elif attribute == "seats_capacity":
+                var = "Nuevo c"
+
         elif select == 5:
             if attribute == "number_of_classrooms":
                 var = "Nuevo n"
@@ -632,6 +652,12 @@ def set_change_attr_number(class_instance, new = False, attribute = None):
                 var = "Número de c"      
             elif attribute == "phone_number":   
                 var = "N"          
+
+        elif select == 4:
+            if attribute == "floor_number":
+                var = "N"
+            elif attribute == "seats_capacity":
+                var = "C"
 
         elif select == 5:
             if attribute == "number_of_classrooms":
@@ -1071,11 +1097,49 @@ def person_information_show(class_instance):
           f"Correo Electrónico: {class_instance.email}\n"
           f"Cantidad Máxima de Cursos: {class_instance.max_courses}\n"
           f"Cantidad Mínima de Cursos: {class_instance.min_courses}")
-          
+
+    if class_instance in Person.instances_student:
+        for program in Tuition.instances[0].programs_students:
+            if class_instance.id_student in Tuition.instances[0].programs_students[program]:
+                print(f"Programa en el que esta el Estudiante: {program}")
+                for instance_program in Program.instances:
+                    if instance_program.program_name == program and instance_program.program_duration == 5:
+                        print(f"Descuento por programa de 5 años de duración: 10%")
+                    if instance_program.program_name == program and instance_program.program_duration == 4:
+                        print(f"Descuento por programa de 4 años de duración: 5%")
+                break
+            else:
+                print(f"Programa en el que esta el Estudiante: No Establecido")
+
+        if class_instance.new_tuition_counter <= 1:
+            print("Descuento por notas superiores a 90 en cursos pasados: No existen cursos pasados")
+        else:
+            if class_instance.discount_grades_old == 1:
+                print(f"Descuento por notas superiores a 90 en cursos pasados: 0%")
+            elif class_instance.discount_grades_old == 0.9:
+                print(f"Descuento por notas superiores a 90 en cursos pasados: 10%")
+        
+        print(f"Total a pagar: {class_instance.total_cost(Tuition.instances[0])}")
+
     if len(class_instance.courses) == 0:
         print(f"Cursos en los que esta el {uppercase_letter}{class_name}: 0")
     else:
         print(f"Cursos en los que esta el {uppercase_letter}{class_name}: {[course.course_name for course in class_instance.courses]}")
+
+def tuition_information_show(class_instance):
+    if isinstance(class_instance, Tuition):
+        pass
+    else:
+        print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
+        return 
+
+    print(f"\nLa información asociada a la matricula \"{class_instance.name}\" es: "
+           "\n"
+          f"\nNombre de la Matricula: {class_instance.name}\n"
+          f"Número de Programas: {len(class_instance.programs_students)}\n"
+          f"Número de Cursos: {len(class_instance.courses_students)}\n"
+          f"Número de Estudiantes: {len([student for program in class_instance.programs_students for student in class_instance.programs_students[program]])}\n"
+          f"Total Vendido: {class_instance.total_fee(1)}")
 
 def building_information_show(class_instance):
     if isinstance(class_instance, Building):
@@ -1095,6 +1159,62 @@ def building_information_show(class_instance):
         print(f"Aulas Agregadas al Edificio: 0")
     else:
         print(f"Aulas Agregadas al Edificio: {[classroom.classroom_name for classroom in class_instance.classrooms]}")
+
+def classroom_information_show(class_instance):
+    if isinstance(class_instance, Classroom):
+        pass
+    else:
+        print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
+        return 
+
+    print(f"\nLa información asociada al aula \"{class_instance.classroom_name}\" es: "
+           "\n"
+          f"\nNombre del Aula: {class_instance.classroom_name}\n"
+          f"Número de Piso: {class_instance.floor_number}")
+
+    if class_instance.building_number != "No Establecido":
+        print(f"Número de Edificio: {class_instance.building_number.name}")
+    else:
+        print(f"Número de Edificio: {class_instance.building_number}")
+    
+    print(f"Cantidad de Asientos: {class_instance.seats_capacity}")
+          
+    if len(class_instance.courses) == 0:
+        print(f"Cursos que se Imparten en el Aula: 0")
+    else:
+        print(f"Cursos que se Imparten en el Aula: {[course.course_name for course in class_instance.courses]}")
+
+def turn_information_show(class_instance):
+    if isinstance(class_instance, Turn):
+        pass
+    else:
+        print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
+        return 
+
+    print(f"\nLa información asociada al turno \"{class_instance.turn}\" es: "
+           "\n"
+          f"\nNombre del Turno: {class_instance.turn}")
+          
+    if len(class_instance.teachers) == 0:
+        print(f"Número de Profesores agregados al Turno: 0")
+    else:
+        print(f"Número de Profesores agregados al Turno: {len(class_instance.teachers)}")
+
+def teacher_type_information_show(class_instance):
+    if isinstance(class_instance, Teacher_type):
+        pass
+    else:
+        print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
+        return 
+
+    print(f"\nLa información asociada al tipo de profesor \"{class_instance.type_teacher}\" es: "
+           "\n"
+          f"\nNombre del Tipo de Profesor: {class_instance.type_teacher}")
+          
+    if len(class_instance.teachers) == 0:
+        print(f"Número de Profesores agregados al Tipo de Profesor: 0")
+    else:
+        print(f"Número de Profesores agregados al Tipo de Profesor: {len(class_instance.teachers)}")
 
 def set_attribute_in_list_in_instance(class_instance, attribute_list = None, attritube = None, input_x = None):
     if isinstance(class_instance, Program):
@@ -1247,45 +1367,44 @@ def change_instance_name(class_instance, new_name):
 
     return var
 
-def view_each_instance(class_instance, input1 = None, input2 = None, mode = None):
+def view_each_instance(class_instance, input1 = None, input2 = None, mode = None, input3 = None):
     class_name = str
-    attribute = str
-    attribute2 = str
-    instance = str
+    attribute_name = str
+    attribute_id = str
+    instance = "instances"
     as_os = "os"
-    no_include = str
     if isinstance(class_instance, Program):
         class_name = "programa"
-        attribute = "program_name"
+        attribute_name = "program_name"
     elif isinstance(class_instance, Course):
         class_name = "curso"
-        attribute = "course_name"
+        attribute_name = "course_name"
     elif isinstance(class_instance, Person): 
-        attribute = "name"
+        attribute_name = "name"
         if class_instance in Person.instances_student:
             class_name = "estudiante"
             instance = "instances_student"
-            attribute2 = "id_student"
+            attribute_id = "id_student"
         elif class_instance in Person.instances_teacher:
-            class_name = "profesor"
+            class_name = "profesore"
             instance = "instances_teacher"
-            attribute2 = "id_teacher"
+            attribute_id = "id_teacher"
     elif isinstance(class_instance, Classroom):
         class_name = "aula"
-        attribute = "classroom_name"
+        attribute_name = "classroom_name"
         as_os = "as"
     elif isinstance(class_instance, Building):
         class_name = "edificio"
-        attribute = "name"
+        attribute_name = "name"
     elif isinstance(class_instance, Teacher_type):
         class_name = "tipo de profesore"
-        attribute = "type_teacher"
+        attribute_name = "type_teacher"
     elif isinstance(class_instance, Turn):
         class_name = "turno"
-        attribute = "turn"
+        attribute_name = "turn"
     elif isinstance(class_instance, Turn):
         class_name = "matricula"
-        attribute = "name"
+        attribute_name = "name"
         as_os = "as"
     else:
         print("\nEl objeto que ingreso no pertenece a ninguna clase válida.") 
@@ -1296,10 +1415,13 @@ def view_each_instance(class_instance, input1 = None, input2 = None, mode = None
         if input1 == "courses":
             inside_instance = "curso"
 
-
     while True:
+        program_list = "n"
         if mode == 3:
             program_list = input(f"\nDesea ver una lista de tod{as_os} l{as_os} {inside_instance}s del {class_name} (S/N): ").lower()
+        
+        elif mode == 6:
+            pass
         else:
             program_list = input(f"\nDesea ver una lista de tod{as_os} l{as_os} {class_name}s disponibles (S/N): ").lower()
 
@@ -1310,44 +1432,88 @@ def view_each_instance(class_instance, input1 = None, input2 = None, mode = None
             if isinstance(class_instance, Person): 
                 if input1 == None and input2 == None and mode == None:
                     for i in range(0, len(getattr(class_instance, instance)),1):
-                        print(f"({i}) {getattr(class_instance, instance)[i].name} {getattr(class_instance, instance)[i].last_name} => Id: {getattr(getattr(class_instance, instance)[i], attribute2)}")
+                        print(f"({i}) {getattr(class_instance, instance)[i].name} {getattr(class_instance, instance)[i].last_name} => Id: {getattr(getattr(class_instance, instance)[i], attribute_id)}")
                     break    
                 
                 elif mode == 1:
                     for i in range(0, len(getattr(class_instance, instance)),1):
                         if len(getattr(getattr(class_instance, instance)[i], input1)) < getattr(getattr(class_instance, instance)[i], input2):
-                            print(f"({counter}) {getattr(class_instance, instance)[i].name} {getattr(class_instance, instance)[i].last_name} => Id: {getattr(getattr(class_instance, instance)[i], attribute2)}")
+                            print(f"({counter}) {getattr(class_instance, instance)[i].name} {getattr(class_instance, instance)[i].last_name} => Id: {getattr(getattr(class_instance, instance)[i], attribute_id)}")
                             counter += 1 
                     break 
 
                 elif mode == 2:
                     for i in range(0, len(getattr(class_instance, instance)),1):
                         if input1 == getattr(getattr(class_instance, instance)[i], input2):
-                            print(f"({counter}) {getattr(class_instance, instance)[i].name} {getattr(class_instance, instance)[i].last_name} => Id: {getattr(getattr(class_instance, instance)[i], attribute2)}")
+                            print(f"({counter}) {getattr(class_instance, instance)[i].name} {getattr(class_instance, instance)[i].last_name} => Id: {getattr(getattr(class_instance, instance)[i], attribute_id)}")
                             counter += 1  
                     break  
                 elif mode == 3:
-                    if class_instance in Person.instances_teacher:
-                        for i in range(0, len(getattr(class_instance, input1)),1):   
-                            print(f"({i}) {getattr(getattr(class_instance, input1)[i], input2)}")      
-                        break
+                    #if class_instance in Person.instances_teacher:
+                    #    for i in range(0, len(getattr(class_instance, input1)),1):   
+                    #        print(f"({i}) {getattr(getattr(class_instance, input1)[i], input2)}")      
+                    #    break
+                    #elif class_instance in Person.instances_student:
+                    for i in range(0, len(getattr(class_instance, input1)),1):   
+                        print(f"({i}) {getattr(getattr(class_instance, input1)[i], input2)}")      
+                    break
+
+                elif mode == 4:
+                    for i in range(0, len(getattr(class_instance, instance)),1):
+                        existence = False
+                        for j in getattr(Tuition.instances[0], input1):                  
+                            if getattr(getattr(class_instance, instance)[i], attribute_id) in getattr(Tuition.instances[0], input1)[j]:
+                                existence = True
+                                
+                        if existence == False:
+                            print(f"({counter}) {getattr(getattr(class_instance, instance)[i], attribute_name)} {getattr(class_instance, instance)[i].last_name} => Id: {getattr(getattr(class_instance, instance)[i], attribute_id)}")
+                            counter += 1 
+                    break                   
+
+                elif mode == 5:
+                    for i in range(0, len(getattr(class_instance, instance)),1):
+                        if  len([x for x in getattr(Tuition.instances[0], input1) if getattr(getattr(class_instance, instance)[i], attribute_id) in getattr(Tuition.instances[0], input1)[x]]) < getattr(getattr(class_instance, instance)[i], input3):
+                            check = False
+                            try:
+                                if not (getattr(getattr(class_instance, instance)[i], attribute_id) in getattr(Tuition.instances[0], input1)[input2]):
+                                    check = True
+                            except KeyError:
+                                check = True
+
+                            if check == True:
+                                print(f"({counter}) {getattr(getattr(class_instance, instance)[i], attribute_name)} {getattr(class_instance, instance)[i].last_name} => Id: {getattr(getattr(class_instance, instance)[i], attribute_id)}")
+                                counter += 1                        
+                    break
+
+                elif mode == 7:
+                    for student in Person.instances_student:
+                        if len([course for course in Tuition.instances[0].courses_students if student.id_student in Tuition.instances[0].courses_students[course]]) > 0:
+                            print(f"({counter}) {student.name} {student.last_name} => Id: {student.id_student}")
+                            counter += 1
+                    break
+
+                elif mode == 8:
+                    for teacher in getattr(input1, input2):
+                        print(f"({counter}) {teacher.name} {teacher.last_name} => id: {teacher.id_teacher}")
+                        counter += 1
+
             else:
                 if input1 == None and input2 == None and mode == None:
                     for i in range(0, len(class_instance.__class__.instances),1):                    
-                        print(f"({i}) {getattr(class_instance.__class__.instances[i], attribute)}")
+                        print(f"({i}) {getattr(class_instance.__class__.instances[i], attribute_name)}")
                     
                     break
                 elif mode == 1:
                     for i in range(0, len(class_instance.__class__.instances),1):   
                         if len(getattr(class_instance.__class__.instances[i], input1)) < getattr(class_instance.__class__.instances[i], input2):
-                            print(f"({counter}) {getattr(class_instance.__class__.instances[i], attribute)}")
+                            print(f"({counter}) {getattr(class_instance.__class__.instances[i], attribute_name)}")
                             counter += 1                      
 
                     break    
                 elif mode == 2:
                     for i in range(0, len(class_instance.__class__.instances),1): 
                         if input1 == getattr(class_instance.__class__.instances[i], input2):
-                            print(f"({counter}) {getattr(class_instance.__class__.instances[i], attribute)}")
+                            print(f"({counter}) {getattr(class_instance.__class__.instances[i], attribute_name)}")
                             counter += 1
                     break
 
@@ -1355,7 +1521,114 @@ def view_each_instance(class_instance, input1 = None, input2 = None, mode = None
                     for i in range(0, len(getattr(class_instance, input1)),1):   
                         print(f"({i}) {getattr(getattr(class_instance, input1)[i], input2)}")                        
                     break
+
+                elif mode == 4:
+                    for i in range(0, len(getattr(class_instance, instance)),1):   
+                        check = False
+                        try:
+                            if len(getattr(Tuition.instances[0], input1)[getattr(getattr(class_instance, instance)[i], attribute_name)]) < getattr(class_instance, input2):
+                                check = True
+                        except KeyError:
+                            check = True
+
+                        if check == True:
+                            print(f"({counter}) {getattr(getattr(class_instance, instance)[i], attribute_name)}")
+                            counter += 1                     
+                    break
+
+                elif mode == 5:
+                    for i in range(0, len(getattr(class_instance, instance)),1):   
+                        check = False
+                        try:
+                            if getattr(getattr(class_instance, instance)[i], attribute_name) in getattr(Tuition.instances[0], input1):
+                                check = True
+                        except KeyError:
+                            check = True
+
+                        if check == True:
+                            print(f"({counter}) {getattr(getattr(class_instance, instance)[i], attribute_name)}")
+                            counter += 1                     
+                    break
+
+                elif mode == 7:
+                    for i in range(0, len(getattr(class_instance, instance)),1):   
+                        check = False
+                        try:
+                            if len(getattr(Tuition.instances[0], input1)[getattr(getattr(class_instance, instance)[i], attribute_name)]) < getattr(class_instance, input2):
+                                check = True
+                        except KeyError:
+                            check = True
+
+                        if check == True:
+                            print(f"({counter}) {getattr(getattr(class_instance, instance)[i], attribute_name)} => Precio: {getattr(getattr(class_instance, instance)[i], input3)}")
+                            counter += 1                     
+                    break
+
             break
+        elif program_list == "n":
+            break
+
+    if mode == 6:
+        for i in range(0, len(class_instance.__class__.instances),1):                    
+            print(f"({i}) {getattr(class_instance.__class__.instances[i], attribute_name)} => Precio: {getattr(class_instance.instances[i], input1)}")
+
+def view_each_instance_course_note(mode = None, class_instance = None, input1 = None, input2 = None, input3 = None):
+    class_name = str
+    attribute_name = str
+    attribute_id = str
+    instance = "instances"
+    as_os = "os"
+    if isinstance(class_instance, Course):
+        class_name = "curso"
+        attribute_name = "course_name"
+    elif isinstance(class_instance, Person): 
+        attribute_name = "name"
+        if class_instance in Person.instances_student:
+            class_name = "estudiante"
+            instance = "instances_student"
+            attribute_id = "id_student"
+        elif class_instance in Person.instances_teacher:
+            class_name = "profesor"
+            instance = "instances_teacher"
+            attribute_id = "id_teacher"
+
+    inside_instance = str
+    if mode == 3:
+        if input1 == "courses":
+            inside_instance = "curso"
+
+    while True:
+        if mode == 3:
+            program_list = input(f"\nDesea ver una lista de tod{as_os} l{as_os} {inside_instance}s del {class_name} (S/N): ").lower()
+        else:
+            program_list = input(f"\nDesea ver una lista de tod{as_os} l{as_os} {class_name}s disponibles (S/N): ").lower()
+
+        if program_list == "s":
+            print("")
+
+            counter = 0
+            if isinstance(class_instance, Person): 
+                for id in Tuition.instances[0].courses_students[input1]:
+                    for student in Person.instances_student:
+                        if id == student.id_student:
+                            print(f"({counter}) {student.name} {student.last_name} => Id: {student.id_student}")
+                            counter += 1
+                            break
+                break
+            else:
+                for i in range(0, len(getattr(class_instance, instance)),1):   
+                    check = False
+                    try:
+                        if len(Tuition.instances[0].courses_students[getattr(class_instance, instance)[i].course_name]) > 0:
+                            check = True
+                    except KeyError:
+                        continue
+                    
+                    if check == True:
+                        print(f"({counter}) {getattr(getattr(class_instance, instance)[i], attribute_name)}")
+                        counter += 1                     
+                break                   
+
         elif program_list == "n":
             break
 
@@ -1419,6 +1692,7 @@ def add_requirements_check(class_instance, clase: str, list_parameter: str, max_
     class_name = str
     instance = "instances"
     var1 = "El"
+    var2 = "o"
     class_instances = None
     if isinstance(class_instance, Program):
         class_name = "programa"
@@ -1431,6 +1705,11 @@ def add_requirements_check(class_instance, clase: str, list_parameter: str, max_
             instance = "instances_student"
     elif isinstance(class_instance, Course):
         class_name = "curso"
+    elif isinstance(class_instance, Classroom):
+        class_name = "aula"
+        var2 = "a"
+    elif isinstance(class_instance, Building):
+        class_name = "edificio"
     else:
         print("\nClase_1 no valida.")
         return
@@ -1448,6 +1727,13 @@ def add_requirements_check(class_instance, clase: str, list_parameter: str, max_
     elif clase == "curso":
         class_instances = Course.instances
         atributo = "course_name"
+    elif clase == "aula":
+        class_instances = Classroom.instances
+        atributo = "classroom_name"
+    elif clase == "edificio":
+        class_instances = Building.instances
+        atributo = "name"
+
     else:
         print("\nClase_2 no valida.")
         return
@@ -1471,14 +1757,14 @@ def add_requirements_check(class_instance, clase: str, list_parameter: str, max_
                 break
 
     if mode == 1:
-        curse_not_in_name= False
+        curse_not_in_name = False
         for instance_x in getattr(class_instance.__class__, instance):
             if not (instance_x in getattr(existing_instance, list_parameter)):
                 curse_not_in_name = True
                 break
 
         if curse_not_in_name == False:
-            print(f"\nTodos los {class_name}s existentes ya estan agregados al {clase} \"{getattr(existing_instance, atributo)}\".")
+            print(f"\nTod{var2}s l{var2}s {class_name}s existentes ya estan agregados al {clase} \"{getattr(existing_instance, atributo)}\".")
             return [False]
 
         elif (len(getattr(existing_instance, list_parameter)) > getattr(existing_instance, max_parameter)):

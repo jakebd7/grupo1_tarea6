@@ -225,9 +225,23 @@ class Person:
             def __init__(self, name = None, last_name = None, identification = None, address = None, phone_number = None, date_birth = None, email = None):
                 super(Student, self).__init__(name, last_name, identification, address, phone_number, date_birth , email)
                 self.__id_student = int("{}{}{}".format(random.randint(10,99), random.randint(10,99), random.randint(10,99)))
-                self.__discount_grades = 1
+                self.__discount_grades_new = 1
+                self.__discount_grades_old = 1
+                self.__new_tuition_counter = 0
                 Person.instances_student.append(self)
-   
+
+            @property
+            def new_tuition_counter(self):
+                return self.__new_tuition_counter
+
+            @property
+            def discount_grades_new(self):
+                return self.__discount_grades_new
+
+            @property
+            def discount_grades_old(self):
+                return self.__discount_grades_old
+
             @property
             def id_student(self):
                 return self.__id_student
@@ -241,19 +255,36 @@ class Person:
                 del self.__id_student            
             
             def enroll(self, tuition):
-                for course in tuition.courses_students:
-                    if self.__id_student in tuition.courses_students[course]:
-                        print("Estudiante con id {} esta matriculado.".format(self.__id_student))
+                for program in tuition.programs_students:
+                    if self.__id_student in tuition.programs_students[program]:
+                        print(f"\nEl estudiante \"{self.name} {self.last_name}\" con id \"{self.__id_student}\" esta matriculado.")
                         return True
 
+                print(f"\nEl estudiante \"{self.name} {self.last_name}\" con id \"{self.__id_student}\" no esta matriculado.")
                 return False
 
-            def total_cost(self, tuition):
+            def total_cost(self, tuition, input1 = False):
                 
                 program_name = str
                 no_discount = False
                 discount_duration = 1
                 total_pay = 0
+
+                check = "n"
+                if input1 == True:
+
+                    print(f"\nAviso: Para obtener el descuento del 10% en el precio cada curso, debido a notas iguales\n"
+                        f"o superiores a 90, todos los cursos en los que esta inscrito el estudiante deben tener asignados\n"
+                        f"sus respectivas notas, ademas se debe calcular una vez el total a pagar, indicando que los cursos\n"
+                        f"en los que esta el estudiante, pertenecen a una nueva matricula, con lo cual, se evalua si el \n"
+                        f"estudiante aplica al futuro descuento y se registra el resultado, siendo utilizado dicho resultado,\n"
+                        f"en un proximo calculo del total a pagar, correspondiente a una nueva matricula.")
+
+                    
+                    while True:
+                        check = input("\n¿Los cursos inscritos actualmente pertenecen a una nueva matricula? (S/N): ").lower()
+                        if check == "s" or check == "n":
+                            break
 
                 for program_name in tuition.programs_students:
                     if self.__id_student in tuition.programs_students[program_name]:
@@ -264,30 +295,42 @@ class Person:
                                 elif i.program_duration == 4:
                                     discount_duration = 0.95
                                 else:
-                                    return print("El programa de estudios no tiene duración de 5 o 4 años.")
+                                    return print("\nEl programa de estudios no tiene duración de 5 o 4 años.")
                                 break
                         break
-                        
+
+                none_in_grades = False                
+                if check == "s":
+                    #total_pay *= self.__discount_grades_new
+                    for course in tuition.courses_students:
+                        if self.__id_student in tuition.courses_students[course]:
+                            if  tuition.courses_students[course][self.__id_student] == None:
+                                none_in_grades = True
+                                print(f"\nNo se ha agregado la nota al curso \"{course}\".")
+
+                    if none_in_grades == False:
+                        for course in tuition.courses_students:
+                            if self.__id_student in tuition.courses_students[course]:
+                                if tuition.courses_students[course][self.__id_student] < 90:
+                                    no_discount = True
+
+                        self.__discount_grades_old = self.__discount_grades_new
+
+                        if no_discount == False:                            
+                            self.__discount_grades_new = 0.9 # descuento del 10 %
+                        else:
+                            self.__discount_grades_new = 1    
+                                                
+                        self.__new_tuition_counter += 1
+
                 for course in tuition.courses_students:
                     if self.__id_student in tuition.courses_students[course]:
                         for i in tuition.courses:
                             if i.course_name == course:
-                                total_pay += (i.price * discount_duration) 
-
-                total_pay *= self.__discount_grades
-
-                for course in tuition.courses_students:
-                    if self.__id_student in tuition.courses_students[course]:
-                        if  tuition.courses_students[course][self.__id_student] == None:
-                            pass
-                        elif tuition.courses_students[course][self.__id_student] < 90:
-                            no_discount = True
-
-                if no_discount == False:
-                    self.__discount_grades = 0.9 # descuento del 10 %
-                else:
-                    self.__discount_grades = 1    
-
+                                discount_1 = i.price * (1 - discount_duration)
+                                discount_2 = i.price * (1 - self.__discount_grades_old)
+                                total_pay += (i.price - discount_1 - discount_2)
+               
                 return total_pay
 
         if (type == "Teacher"):

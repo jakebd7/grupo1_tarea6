@@ -10,6 +10,10 @@ class Classroom:
         self.__class__.instances.append(self)
 
     @property
+    def courses(self):
+        return self.__courses
+
+    @property
     def classroom_name(self):
         return self.__classroom_name
 
@@ -27,7 +31,10 @@ class Classroom:
 
     @floor_number.setter
     def floor_number(self, value):
-        self.__floor_number = value
+        if value < 0:
+            print("\nEl número de piso del aula debe ser un número entero positivo mayor o igual a 0.")
+        else:         
+            self.__floor_number = value
 
     @floor_number.deleter
     def floor_number(self):
@@ -51,7 +58,10 @@ class Classroom:
 
     @seats_capacity.setter
     def seats_capacity(self, value):
-        self.__seats_capacity = value
+        if value < 0:
+            print("\nLa capacidad de asientos del aula debe ser un número entero positivo mayor o igual a 0.")
+        else:     
+            self.__seats_capacity = value
 
     @seats_capacity.deleter
     def seats_capacity(self):
@@ -59,21 +69,27 @@ class Classroom:
 
     def add_course(self, course):
         if self.__building_number == "No Establecido":
-            return print("Antes de agregar un curso al aula, debe agregar el aula a un edificio.")
+            print("\nAntes de agregar un curso al aula, debe agregar el aula a un edificio.")
+            return False 
         
         
         if self.__seats_capacity == None:
-            return print("No ha indicado la cantidad de asientos que tiene el aula.")
+            print("\nNo ha indicado la cantidad de asientos que tiene el aula.")
+            return False
         elif course.max_students == 0:
-            return print("No ha indicado la cantidad máxima de alumnos que tendra el curso.")
+            print("\nNo ha indicado la cantidad máxima de alumnos que tendra el curso.")
+            return False
         elif course.max_students <= self.__seats_capacity:
             if course in self.__courses:
-                return print("El curso {} ya esta vinculado al aula {}.".format(course.course_name, self.__classroom_name))
+                print(f"\nEl curso \"{course.course_name}\" ya esta vinculado al aula \"{self.__classroom_name}\".")
+                return False
             else:
                 self.__courses.append(course)
-                return print("Curso {} agregado exitosamente al aula {}.".format(course.course_name, self.__classroom_name))
+                print(f"\nCurso \"{course.course_name}\" agregado exitosamente al aula \"{self.__classroom_name}\".")
+                return True
         elif course.max_students > self.__seats_capacity:
-            return print("La cantidad máxima de alumnos que tendra el curso {}, excede la capacidad de asientos del aula {}".format(course.course_name, self.__classroom_name))
+            print(f"\nLa cantidad máxima de alumnos que tendra el curso \"{course.course_name}\", excede la capacidad de asientos del aula \"{self.__classroom_name}\".")
+            return False
 
     def __str__(self):
         return "Aula"
